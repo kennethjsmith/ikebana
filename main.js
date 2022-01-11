@@ -6,6 +6,7 @@ ASSET_MANAGER.queueDownload("./sprites/unarmed_alien.png");
 ASSET_MANAGER.queueDownload("./sprites/unarmed_bad_alien.png");
 ASSET_MANAGER.queueDownload("./sprites/horror_slime.png");
 ASSET_MANAGER.queueDownload("./sprites/slime.png");
+ASSET_MANAGER.queueDownload("./testbackground.png");
 
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");
@@ -18,6 +19,7 @@ ASSET_MANAGER.downloadAll(() => {
 	gameEngine.addEntity(new BadAlien(gameEngine));
 	gameEngine.addEntity(new HorrorSlime(gameEngine));
 	gameEngine.addEntity(new Slime(gameEngine));
+	gameEngine.addEntity(new Room(gameEngine));
 
 	gameEngine.start();
 });

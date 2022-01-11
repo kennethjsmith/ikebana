@@ -8,16 +8,17 @@ class BadAlien {
         this.state = "vibing"; // walking or vibin
         this.armed = "unarmed"; // armed or uarmed
 
-        this.x = 0;
-        this.y = 110;
+        this.x = 100;
+        this.y = 200;
         // this.z
 
-        this.speed = 4;
+        //this.speed = 4;
+        this.speed = 0;
 
         this.animations = new Map;
         this.loadAnimations();
 
-        this.animation = this.animations.get("right").get("walking").get("unarmed");
+        this.animation = this.animations.get("right").get("vibing").get("unarmed");
         //Animator constructor(spritesheet, xStart, yStart, width, height, frameCount, frameDuration) {
 
     };
@@ -44,8 +45,8 @@ class BadAlien {
         // update speed
         // update position
         // update armed or unarmed
-        this.x += this.speed + this.game.clockTick;
-        if (this.x > 1024) this.x = 0;
+        //this.x += this.speed + this.game.clockTick;
+        //if (this.x > 1024) this.x = 0;
     };
 
     draw(ctx) {

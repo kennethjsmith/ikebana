@@ -7,8 +7,8 @@ class Slime {
         this.facing = "right"; // left or right
         this.state = "vibing"; // walking or vibin
 
-        this.x = 50;
-        this.y = 220;
+        this.x = 100;
+        this.y = 400;
         // this.z
 
         //this.speed = 2.5;
