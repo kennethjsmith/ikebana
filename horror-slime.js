@@ -7,8 +7,8 @@ class HorrorSlime {
         this.facing = "right"; // left or right
         this.state = "vibing"; // walking or vibin
 
-        this.x = 0;
-        this.y = 220;
+        this.x = 100;
+        this.y = 300;
         // this.z
 
         //this.speed = 2.5;
@@ -43,6 +43,6 @@ class HorrorSlime {
     };
 
     draw(ctx) {
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .3);
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .33);
     };
 };

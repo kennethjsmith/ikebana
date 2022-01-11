@@ -8,8 +8,8 @@ class Alien {
         this.state = "vibing"; // walking or vibin
         this.armed = "unarmed"; // armed or uarmed
 
-        this.x = 0;
-        this.y = 0;
+        this.x = 100;
+        this.y = 100;
         // this.z
 
         this.speed = 4;
@@ -44,8 +44,23 @@ class Alien {
         // update speed
         // update position
         // update armed or unarmed
-        this.x += this.speed + this.game.clockTick;
-        if (this.x > 1024) this.x = 0;
+        console.log(this.facing)
+        if (this.facing == "right"){
+            console.log("here1")
+            this.x += this.speed + this.game.clockTick;
+            if (this.x > 512) {
+                this.facing = "left";
+                this.animation = this.animations.get("left").get("walking").get("unarmed");
+            }
+        }
+        else{
+            console.log("here2")
+            this.x -= this.speed + this.game.clockTick;
+            if (this.x < 100) {
+                this.facing = "right";
+                this.animation = this.animations.get("right").get("walking").get("unarmed");
+            }
+        }
     };
 
     draw(ctx) {
