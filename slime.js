@@ -17,7 +17,7 @@ class Slime {
         this.animations = new Map;
         this.loadAnimations();
 
-        this.animation = this.animations.get("right").get("dying");
+        this.animation = this.animations.get("right").get("vibing");
         //Animator constructor(spritesheet, xStart, yStart, width, height, frameCount, frameDuration) {
 
     };

@@ -8,8 +8,8 @@ class BadAlien {
         this.state = "vibing"; // walking or vibin
         this.armed = "unarmed"; // armed or uarmed
 
-        this.x = 100;
-        this.y = 200;
+        this.x = 500;
+        this.y = 500;
         // this.z
 
         //this.speed = 4;
@@ -50,6 +50,6 @@ class BadAlien {
     };
 
     draw(ctx) {
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .25);
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .3);
     };
 };

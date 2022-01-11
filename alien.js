@@ -9,7 +9,7 @@ class Alien {
         this.armed = "unarmed"; // armed or uarmed
 
         this.x = 100;
-        this.y = 100;
+        this.y = 80;
         // this.z
 
         this.speed = 4;
@@ -64,6 +64,6 @@ class Alien {
     };
 
     draw(ctx) {
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .25);
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .3);
     };
 };
