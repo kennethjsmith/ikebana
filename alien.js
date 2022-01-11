@@ -1,11 +1,11 @@
 class Alien {
     constructor(game) {
         this.game = game;
-        this.spritesheet = ASSET_MANAGER.getAsset("./unarmed.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/unarmed_alien.png");
         
         // alien's state variables
         this.facing = "right"; // left or right
-        this.state = "vibin"; // walking or vibin
+        this.state = "vibing"; // walking or vibin
         this.armed = "unarmed"; // armed or uarmed
 
         this.x = 0;
@@ -27,16 +27,16 @@ class Alien {
         this.animations.set("right", new Map);
 
         this.animations.get("left").set("walking", new Map);
-        this.animations.get("left").set("vibin", new Map);
+        this.animations.get("left").set("vibing", new Map);
 
         this.animations.get("right").set("walking", new Map);
-        this.animations.get("right").set("vibin", new Map);
+        this.animations.get("right").set("vibing", new Map);
 
         this.animations.get("left").get("walking").set("unarmed", new Animator(this.spritesheet, 0, 0, 390, 430, 8, .1));
-        this.animations.get("left").get("vibin").set("unarmed", new Animator(this.spritesheet, 6240, 0, 390, 430, 8, .15));
+        this.animations.get("left").get("vibing").set("unarmed", new Animator(this.spritesheet, 6240, 0, 390, 430, 8, .15));
 
         this.animations.get("right").get("walking").set("unarmed", new Animator(this.spritesheet, 3120, 0, 390, 430, 8, .07));
-        this.animations.get("right").get("vibin").set("unarmed", new Animator(this.spritesheet, 9360, 0, 390, 430, 8, .15));
+        this.animations.get("right").get("vibing").set("unarmed", new Animator(this.spritesheet, 9360, 0, 390, 430, 8, .15));
 
     };
 
