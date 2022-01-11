@@ -1,7 +1,7 @@
 class Room {
     constructor(game) {
         this.game = game;
-        this.spritesheet = ASSET_MANAGER.getAsset("./testbackground.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./testbackground2.png");
         
        
 
