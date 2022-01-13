@@ -3,21 +3,18 @@ class Alien {
         this.game = game;
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/unarmed_alien.png");
         
-        // alien's state variables
         this.facing = "right"; // left or right
         this.state = "vibing"; // walking or vibin
         this.armed = "unarmed"; // armed or uarmed
 
         this.x = 100;
         this.y = 80;
-        // this.z
-
-        this.speed = 4;
+        this.velocity = { x: 0, y: 0 };
 
         this.animations = new Map;
         this.loadAnimations();
 
-        this.animation = this.animations.get("right").get("walking").get("unarmed");
+        this.animation = this.animations.get("right").get("vibing").get("unarmed");
         //Animator constructor(spritesheet, xStart, yStart, width, height, frameCount, frameDuration) {
 
     };
@@ -37,30 +34,47 @@ class Alien {
 
         this.animations.get("right").get("walking").set("unarmed", new Animator(this.spritesheet, 3120, 0, 390, 430, 8, .07));
         this.animations.get("right").get("vibing").set("unarmed", new Animator(this.spritesheet, 9360, 0, 390, 430, 8, .15));
-
     };
 
     update() {
-        // update speed
-        // update position
-        // update armed or unarmed
-        console.log(this.facing)
-        if (this.facing == "right"){
-            console.log("here1")
-            this.x += this.speed + this.game.clockTick;
-            if (this.x > 512) {
-                this.facing = "left";
-                this.animation = this.animations.get("left").get("walking").get("unarmed");
-            }
+        const WALK = 4;
+        const DIAGONAL = 2.8; // based on WALK speed: 4^2 = 2(a^2); where a = x = y
+        this.velocity.x = 0;
+        this.velocity.y = 0;
+
+        // update the velocity
+        // evaluates to (left XOR right) AND (up XOR down)
+        if ((this.game.left ? !this.game.right : this.game.right) && (this.game.up ? !this.game.down : this.game.down)) {
+            this.velocity.x = (this.game.left) ? -DIAGONAL : DIAGONAL;
+            this.velocity.y = (this.game.up) ? -DIAGONAL : DIAGONAL;
+        } else {
+            if (this.game.left) this.velocity.x += -WALK;
+            if (this.game.right) this.velocity.x += WALK;
+            if (this.game.up) this.velocity.y += -WALK;
+            if (this.game.down) this.velocity.y += WALK;
         }
-        else{
-            console.log("here2")
-            this.x -= this.speed + this.game.clockTick;
-            if (this.x < 100) {
-                this.facing = "right";
-                this.animation = this.animations.get("right").get("walking").get("unarmed");
-            }
+
+        // update the states
+        if (this.velocity.x > 0) {
+            this.facing = "right";
+            this.state = "walking";
+        } else if (this.velocity.x < 0) {
+            this.facing = "left";
+            this.state = "walking";
+        } else if (this.velocity.y != 0) {
+            this.state = "walking";
+        } else if (this.velocity.x == 0 && this.velocity.y == 0) {
+            this.state = "vibing";
+        } else {
+            
         }
+
+        // update the positions
+        this.x += this.velocity.x + this.game.clockTick;
+        this.y += this.velocity.y + this.game.clockTick;
+
+        // update the animation
+        this.animation = this.animations.get(this.facing).get(this.state).get("unarmed");
     };
 
     draw(ctx) {
