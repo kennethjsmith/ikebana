@@ -40,7 +40,7 @@ class Alien {
 
     update() {
         const WALK = 4;
-        const DIAGONAL = 2.8; // based on WALK speed: 4^2 = 2(a^2); where a = x = y
+        const DIAGONAL = 2.8; // based on WALK speed: 4^2 = 2(a^2); where a = x = y | sqrt [(4^2) / 2]
         this.velocity.x = 0;
         this.velocity.y = 0;
 
