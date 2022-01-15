@@ -11,6 +11,8 @@ class Alien {
         this.y = 80;
         this.velocity = { x: 0, y: 0 };
 
+        this.gun = new Gun(this.x, this.y, game);
+
         this.animations = new Map;
         this.loadAnimations();
 
@@ -70,14 +72,17 @@ class Alien {
         }
 
         // update the positions
-        this.x += this.velocity.x + this.game.clockTick;
-        this.y += this.velocity.y + this.game.clockTick;
+        this.x += this.velocity.x;
+        this.y += this.velocity.y;
+
+        this.gun.update(this.velocity.x, this.velocity.y, this.facing, this.game.mouseX, this.game.mouseY);
 
         // update the animation
-        this.animation = this.animations.get(this.facing).get(this.state).get("unarmed");
+        this.animation = this.animations.get(this.facing).get(this.state).get(this.armed);
     };
 
     draw(ctx) {
         this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .3);
+        this.gun.draw(ctx);
     };
 };

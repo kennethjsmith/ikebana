@@ -6,6 +6,7 @@ ASSET_MANAGER.queueDownload("./sprites/unarmed_alien.png");
 ASSET_MANAGER.queueDownload("./sprites/unarmed_bad_alien.png");
 ASSET_MANAGER.queueDownload("./sprites/horror_slime.png");
 ASSET_MANAGER.queueDownload("./sprites/slime.png");
+ASSET_MANAGER.queueDownload("./sprites/gun.png");
 ASSET_MANAGER.queueDownload("./testbackground2.png");
 
 ASSET_MANAGER.downloadAll(() => {
