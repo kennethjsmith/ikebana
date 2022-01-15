@@ -17,6 +17,6 @@ class Room {
     };
 
     draw(ctx) {
-        ctx.drawImage(this.spritesheet,0,0,800,800);
+        ctx.drawImage(this.spritesheet,0,0,880,800);
     };
 };
