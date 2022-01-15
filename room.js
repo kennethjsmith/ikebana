@@ -1,7 +1,7 @@
 class Room {
     constructor(game) {
         this.game = game;
-        this.spritesheet = ASSET_MANAGER.getAsset("./testbackground2.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./testbackground.png");
         
        
 
@@ -17,6 +17,6 @@ class Room {
     };
 
     draw(ctx) {
-        ctx.drawImage(this.spritesheet,0,0,800,800);
+        ctx.drawImage(this.spritesheet,0,0,880,800);
     };
 };

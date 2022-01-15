@@ -17,7 +17,8 @@ class GameEngine {
 
         // Information on the input
         this.click = null;
-        this.mouse = null;
+        this.mouseX = null;
+        this.mouseY = null;
         this.wheel = null;
 
         this.left = false;
@@ -63,7 +64,6 @@ class GameEngine {
             y: e.clientY - this.ctx.canvas.getBoundingClientRect().top
         });
 
-        // is there a way to get rid of using "that" here??
         var that = this;
 
         this.ctx.canvas.addEventListener("keydown", function (e) {
@@ -112,14 +112,16 @@ class GameEngine {
             if (this.options.debugging) {
                 console.log("MOUSE_MOVE", getXandY(e));
             }
-            this.mouse = getXandY(e);
+           that.mouseX = e.clientX;
+           that.mouseY = e.clientY;
+
         });
 
         this.ctx.canvas.addEventListener("click", e => {
             if (this.options.debugging) {
                 console.log("CLICK", getXandY(e));
             }
-            this.click = getXandY(e);
+            this.clicked = true;
         });
 
         this.ctx.canvas.addEventListener("wheel", e => {
@@ -146,6 +148,7 @@ class GameEngine {
     addEntity(entity) {
         this.entitiesToAdd.push(entity);
     };
+    
 
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
