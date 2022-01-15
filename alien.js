@@ -75,7 +75,7 @@ class Alien {
         this.x += this.velocity.x;
         this.y += this.velocity.y;
 
-        this.gun.update(this.velocity.x, this.velocity.y, this.facing, this.game.mouseX, this.game.mouseY);
+        this.gun.update(this.velocity.x, this.velocity.y, this.game.mouseX, this.game.mouseY);
 
         // update the animation
         this.animation = this.animations.get(this.facing).get(this.state).get(this.armed);

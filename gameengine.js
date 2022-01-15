@@ -122,7 +122,7 @@ class GameEngine {
             if (this.options.debugging) {
                 console.log("CLICK", getXandY(e));
             }
-           // this.click = getXandY(e);
+            this.clicked = true;
         });
 
         this.ctx.canvas.addEventListener("wheel", e => {
@@ -149,6 +149,7 @@ class GameEngine {
     addEntity(entity) {
         this.entitiesToAdd.push(entity);
     };
+    
 
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
