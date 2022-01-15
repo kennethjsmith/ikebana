@@ -35,18 +35,10 @@ class Gun {
             this.facing = "left";
         }
         else this.facing = "right";
-        // else if (this.facing == "right" && (this.rotation > -4.9 || this.rotation < -1.9 )){
-        //     this.facing = "left";
-        // }
-        // yForAtan = distanceFromGunToPlayer;
-        // xForAtan = distanceFromPlayerToCursor;
-        // alpha = Mathf.Atan2(yForAtan,xForAtan) * Mathf.Rad2Deg;
-
-        
 
         this.rotation = Math.atan2((mouseX - this.x), -(mouseY - this.y)) - Math.PI/2;
         // add alpha angle to rotation to aim gun barrel directly at cursor
-        //this.rotation -= Math.atan2(Math.hypot((mouseX - this.x),(mouseY - this.y)),40);
+        // this.rotation -= Math.atan2(Math.hypot((mouseX - this.x),(mouseY - this.y)),40);
 
         // update the animation
         console.log(this.facing + this.rotation);
@@ -55,17 +47,11 @@ class Gun {
 
     draw(ctx) {
         ctx.save();
-
-        // if(this.facing == "left") {
         ctx.translate(this.x+50,this.y+25);
-        // }
-        // if(this.facing == "right") {
-        //     ctx.translate(this.x,this.y);
-        // }
+  
         if(this.facing == "right"){
              ctx.rotate(this.rotation);
         }
-        
         // left facing gun needs additional pi rotation
         if(this.facing == "left"){
             this.rotation -= Math.PI;
@@ -74,7 +60,6 @@ class Gun {
         }
         
         this.animation.drawFrame(this.game.clockTick, ctx, -50, -25, .15);
-
         ctx.restore();
     };
 };
