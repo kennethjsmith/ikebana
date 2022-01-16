@@ -7,21 +7,29 @@ class Bullet {
         this.game = game;
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/bullet.png");
+        this.SIZE = 12; // find better way to get this pizel width
+        this.SCALE = 5;
 
-        this.x = x;
-        this.y = y;
+        // adjust x and y so bullets start at gun, WHY is this not the proper x and y passed from constructor in gun????
+        this.x = x + 55;
+        this.y = y + 30;
         this.mouseX = mouseX;
         this.mouseY = mouseY;
 
         this.xDistance = (this.mouseX-this.x);
         this.yDistance = (this.mouseY-this.y);
-        this.diagonal = Math.sqrt((this.xDistance*this.xDistance),(this.yDistance*this.yDistance));
-        //console.log(this.xDistance);
-        //console.log(this.diagonal);
+       
+        this.diagonal = Math.sqrt((this.xDistance*this.xDistance) + (this.yDistance*this.yDistance));
     
-        this.xVelocity = this.speed*(this.xDistance/this.diagonal);
-        this.yVelocity = this.speed*(this.yDistance/this.diagonal);
-        //console.log(this.xVelocity);
+        this.xTrajectory = (this.xDistance/this.diagonal);
+        this.yTrajectory = (this.yDistance/this.diagonal);
+
+        this.xVelocity = this.speed*this.xTrajectory;
+        this.yVelocity = this.speed*this.yTrajectory;
+
+        //adjust x and y to center bullet sprite drawing over trajectory, trajectory*size/2
+        this.spriteWidth = this.SIZE * this.SCALE;
+
         this.animations = new Map;
         this.loadAnimations();
         
@@ -35,7 +43,6 @@ class Bullet {
     update() {
         this.x += this.xVelocity;// * this.game.clockTick);
         this.y += this.yVelocity;// * this.game.clockTick);
-        console.log("moved");
         this.range--;
         if(this.range == 0) this.removeFromWorld = true;
         
@@ -43,6 +50,7 @@ class Bullet {
 
 
     draw(ctx) {
-        this.animations.drawFrame(this.game.clockTick, ctx, this.x, this.y, 5);
+        // dont draw until bullet is past gun barrel, this is def hacky
+        if(this.range < 95) this.animations.drawFrame(this.game.clockTick, ctx, this.x-(this.spriteWidth/2), this.y-(this.spriteWidth/2), this.SCALE);
     };
 };

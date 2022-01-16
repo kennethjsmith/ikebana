@@ -1,17 +1,13 @@
 class Gun {
     constructor(x, y, game) {
-        this.x = x;
-        this.y = y;
+        this.x = x + 55;
+        this.y = y + 50;
         this.rotation = 0;
         this.game = game;
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/gun.png");
         this.bullets = [];
         
         this.facing = "right"; // left or right
-
-        this.x = x + 55;
-        this.y = y + 50;
-
         this.animations = new Map;
         this.loadAnimations();
 
@@ -38,7 +34,7 @@ class Gun {
         }
         else this.facing = "right";
 
-        this.rotation = Math.atan2((mouseX - this.x+50), -(mouseY - this.y+25)) - Math.PI/2;
+        this.rotation = Math.atan2((mouseX - this.x), -(mouseY - this.y)) - Math.PI/2;
         // add alpha angle to rotation to aim gun barrel directly at cursor
         
         // this.rotation -= Math.atan2(Math.hypot((mouseX - this.x),(mouseY - this.y)),10);
