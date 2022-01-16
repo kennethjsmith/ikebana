@@ -6,6 +6,7 @@ ASSET_MANAGER.queueDownload("./sprites/unarmed_alien.png");
 ASSET_MANAGER.queueDownload("./sprites/unarmed_bad_alien.png");
 ASSET_MANAGER.queueDownload("./sprites/horror_slime.png");
 ASSET_MANAGER.queueDownload("./sprites/slime.png");
+ASSET_MANAGER.queueDownload("./sprites/crosshair.png");
 ASSET_MANAGER.queueDownload("./sprites/bullet.png");
 ASSET_MANAGER.queueDownload("./sprites/gun.png");
 ASSET_MANAGER.queueDownload("./testbackground.png");
@@ -17,6 +18,7 @@ ASSET_MANAGER.downloadAll(() => {
 	
 	gameEngine.init(ctx);
 	
+	gameEngine.addEntity(new Crosshair(gameEngine));
 	gameEngine.addEntity(new Alien(gameEngine));
 	gameEngine.addEntity(new BadAlien(gameEngine));
 	gameEngine.addEntity(new HorrorSlime(gameEngine));
