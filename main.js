@@ -4,7 +4,7 @@ const ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("./sprites/unarmed_alien.png");
 ASSET_MANAGER.queueDownload("./sprites/unarmed_bad_alien.png");
-ASSET_MANAGER.queueDownload("./sprites/horror_slime.png");
+ASSET_MANAGER.queueDownload("./sprites/horror_slime2.png");
 ASSET_MANAGER.queueDownload("./sprites/slime.png");
 ASSET_MANAGER.queueDownload("./sprites/crosshair.png");
 ASSET_MANAGER.queueDownload("./sprites/bullet.png");
