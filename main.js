@@ -24,7 +24,7 @@ ASSET_MANAGER.downloadAll(() => {
 	gameEngine.addEntity(new HorrorSlime(gameEngine));
 	gameEngine.addEntity(new Slime(gameEngine));
 	//gameEngine.addEntity(new Room(gameEngine));
-	gameEngine.addEntity(new Level(gameEngine));
+	gameEngine.addEntity(new LevelGenerator(gameEngine));
 
 
 	gameEngine.start();

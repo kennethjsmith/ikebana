@@ -8,21 +8,26 @@ class Level {
     // constructor(game, spritesheet) {
     constructor(game) {
         this.game = game;
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/level1.png");
-        //this.spritesheet = spritesheet;
+        // this.spritesheet = ASSET_MANAGER.getAsset("./sprites/level1.png");
+        // //this.spritesheet = spritesheet;
 
-        this.levelAssets = new Map;
+        // this.levelAssets = new Map;
 
 
         this.x = 0;
         this.y = 0;
         
-        this.loadWalls();
-        this.loadGround();
+        // this.loadWalls();
+        // this.loadGround();
 
-        this.map = null;
-        this.loadMap();
-        this.square = this.levelAssets.get("wall").get("corner").get("nw");
+        this.map = new LevelGenerator(game);
+
+        //this.map = null;
+
+        //this.loadMap();
+
+
+        //this.square = this.levelAssets.get("wall").get("corner").get("nw");
 
 
     };
@@ -205,66 +210,11 @@ class Level {
 
         for (var i = 0; i < 6; i++) {
             for (var j = 0; j < 11; j++) {
-                this.square = this.map[i][j];
+                console.log("here " + i + ", " + j);
+                square = this.map[i][j];
                 this.square.drawFrame(this.game.clockTick, ctx, j * 80, i * 80, 5);
             }
         }
     };
 
-    generateLevel() {
-        // 2d array of gridspaces
-        // enum for gridspaces (empty, floor, wall)
-        // roomSizeWorldUnits: calculated the size of the grid
-        // worldUnitsInOneGridCell = 1 is a conversion factor
-        // walker struct: holds each walkers position and direction in one place
-    };
-
-    start() {
-        //setup();
-        //createfloors();
-        //createwalls();
-        //removesinglewalls();
-        //spawnlevel();
-    }
-
-    setup(){
-        // determine how tall and wide our grid should be: roomHeight and roomWidth
-        // create gridspapce (2d array)
-        // set every cell to be an empty gradspace
-
-        // create empty list of walkers
-        // put a walker at the center of the grid
-        // give it a random direction
-        // see video at 3:00 for more info here
-        // add it to the list of walkers
-    }
-
-    randomDirection() {
-        // returns a random direction
-        // int choice = random value between 0 and 3
-        // if statement for each value: N, W, S, E
-    }
-
-    createFloors() {
-        var iteration = 0;
-        do {
-            // foreach walker in the list of walkers:
-            // create a floor where the walker currently is
-
-            // chance to destroy the walker
-            
-            // chance for walker to pick a new direction
-
-            // chance to spawn a new walker
-
-            // move the walkers
-
-            //avoid the boarder of the grid
-
-            //check to exit the loop
-
-            // increment the number of iterations
-        } while (iterations < 1000); // early termination if we are still going
-
-    };
 }

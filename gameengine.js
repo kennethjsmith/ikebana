@@ -64,46 +64,44 @@ class GameEngine {
             y: e.clientY - this.ctx.canvas.getBoundingClientRect().top
         });
 
-        var that = this;
-
-        this.ctx.canvas.addEventListener("keydown", function (e) {
+        this.ctx.canvas.addEventListener("keydown", e => {
             switch (e.code) {
                 case "ArrowLeft":
                 case "KeyA":
-                    that.left = true;
+                    this.left = true;
                     break;
                 case "ArrowRight":
                 case "KeyD":
-                    that.right = true;
+                    this.right = true;
                     break;
                 case "ArrowUp":
                 case "KeyW":
-                    that.up = true;
+                    this.up = true;
                     break;
                 case "ArrowDown":
                 case "KeyS":
-                    that.down = true;
+                    this.down = true;
                     break;
             }
         }, false);
 
-        this.ctx.canvas.addEventListener("keyup", function (e) {
+        this.ctx.canvas.addEventListener("keyup", e => {
             switch (e.code) {
                 case "ArrowLeft":
                 case "KeyA":
-                    that.left = false;
+                    this.left = false;
                     break;
                 case "ArrowRight":
                 case "KeyD":
-                    that.right = false;
+                    this.right = false;
                     break;
                 case "ArrowUp":
                 case "KeyW":
-                    that.up = false;
+                    this.up = false;
                     break;
                 case "ArrowDown":
                 case "KeyS":
-                    that.down = false;
+                    this.down = false;
                     break;
             }
         }, false);
@@ -112,8 +110,8 @@ class GameEngine {
             if (this.options.debugging) {
                 console.log("MOUSE_MOVE", getXandY(e));
             }
-           that.mouseX = e.clientX;
-           that.mouseY = e.clientY;
+           this.mouseX = e.clientX;
+           this.mouseY = e.clientY;
 
         });
 
