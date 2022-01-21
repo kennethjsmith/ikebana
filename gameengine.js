@@ -64,7 +64,6 @@ class GameEngine {
             y: e.clientY - this.ctx.canvas.getBoundingClientRect().top
         });
 
-        // is there a way to get rid of using "that" here??
         var that = this;
 
         this.ctx.canvas.addEventListener("keydown", function (e) {
