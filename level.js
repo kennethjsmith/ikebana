@@ -8,24 +8,29 @@ class Level {
     // constructor(game, spritesheet) {
     constructor(game) {
         this.game = game;
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/level1.png");
-        //this.spritesheet = spritesheet;
+        // this.spritesheet = ASSET_MANAGER.getAsset("./sprites/level1.png");
+        // //this.spritesheet = spritesheet;
 
-        this.levelAssets = new Map;
+        // this.levelAssets = new Map;
 
 
         this.x = 0;
         this.y = 0;
         
-        this.loadWalls();
-        this.loadGround();
+        // this.loadWalls();
+        // this.loadGround();
 
-        this.map = null;
-        this.loadMap();
-        this.square = this.levelAssets.get("wall").get("corner").get("nw");
+        this.map = new LevelGenerator(game);
+
+        //this.map = null;
+
+        //this.loadMap();
 
 
-    }
+        //this.square = this.levelAssets.get("wall").get("corner").get("nw");
+
+
+    };
 
     loadWalls() {
         this.levelAssets.set("wall", new Map);
@@ -71,7 +76,7 @@ class Level {
 
         this.levelAssets.get("wall").get("wallTop").set("east", new Animator(this.spritesheet, 48, 16, 16, 16, 1, 2));
         this.levelAssets.get("wall").get("wallTop").set("west", new Animator(this.spritesheet, 0, 16, 16, 16, 1, 2));
-    }
+    };
 
     loadGround() {
 
@@ -100,17 +105,21 @@ class Level {
         this.levelAssets.get("ground").get("shadow").set("invertedCorner", new Animator(this.spritesheet, 96, 64, 16, 16, 1, 2));
 
         this.levelAssets.get("ground").set("filler", new Animator(this.spritesheet, 0, 96, 16, 16, 1, 2));
-    }
+    };
 
     loadDecoration() {
 
-    }
+    };
 
     update() {
 
-    }
+    };
 
     loadMap() {
+
+        // walker algorithm
+
+
         // 5 x 5 map
 
         this.map = [
@@ -195,15 +204,17 @@ class Level {
         ]
 
 
-    }
+    };
 
     draw(ctx) {
 
         for (var i = 0; i < 6; i++) {
             for (var j = 0; j < 11; j++) {
-                this.square = this.map[i][j];
+                console.log("here " + i + ", " + j);
+                square = this.map[i][j];
                 this.square.drawFrame(this.game.clockTick, ctx, j * 80, i * 80, 5);
             }
         }
     };
+
 }
