@@ -1,7 +1,7 @@
-class BadAlien {
+class Grep {
     constructor(game) {
         this.game = game;
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/bad_alien.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/grep.png");
         
         // alien's state variables
         this.facing = "right"; // left or right

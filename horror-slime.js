@@ -1,11 +1,11 @@
 class HorrorSlime {
     constructor(game) {
         this.game = game;
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/horror_slime2.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/horror_slime.png");
         
         // alien's state variables
         this.facing = "right"; // left or right
-        this.state = "dying"; // walking or vibin
+        this.state = "vibing"; // walking or vibing
         this.deathClock = 90; //TODO: I DONT KNOW WHY THIS UPDATES 55 TIMES FOR 8 FRAMES
 
         this.x = 100;
@@ -29,12 +29,10 @@ class HorrorSlime {
 
         this.animations.get("left").set("walking", new Animator(this.spritesheet, 0, 0, 240, 210, 6, .12));
         this.animations.get("left").set("vibing", new Animator(this.spritesheet, 2880, 0, 240, 210, 5, .12));
-        this.animations.get("left").set("dying", new Animator(this.spritesheet, 5280, 0, 240, 210, 8, .2));
-
+       
         this.animations.get("right").set("walking", new Animator(this.spritesheet, 1440, 0, 240, 210, 6, .12));
         this.animations.get("right").set("vibing", new Animator(this.spritesheet, 4080, 0, 240, 210, 5, .12));
-        this.animations.get("right").set("dying", new Animator(this.spritesheet, 7200, 0, 240, 210, 8, .2));
-    };
+           };
 
     update() {
         // update speed

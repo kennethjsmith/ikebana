@@ -1,5 +1,5 @@
 class Slime {
-    constructor(game) {
+    constructor(game, x, y) {
         this.game = game;
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/slime.png");
         
@@ -7,8 +7,8 @@ class Slime {
         this.facing = "right"; // left or right
         this.state = "vibing"; // walking or vibin
 
-        this.x = 100;
-        this.y = 400;
+        this.x = x;
+        this.y = y;
         // this.z
 
         //this.speed = 2.5;

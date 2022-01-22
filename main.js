@@ -2,14 +2,15 @@ const gameEngine = new GameEngine();
 
 const ASSET_MANAGER = new AssetManager();
 
-ASSET_MANAGER.queueDownload("./sprites/unarmed_alien.png");
-ASSET_MANAGER.queueDownload("./sprites/unarmed_bad_alien.png");
-ASSET_MANAGER.queueDownload("./sprites/horror_slime2.png");
+ASSET_MANAGER.queueDownload("./sprites/goop.png");
+ASSET_MANAGER.queueDownload("./sprites/grep.png");
+ASSET_MANAGER.queueDownload("./sprites/horror_slime.png");
 ASSET_MANAGER.queueDownload("./sprites/slime.png");
+ASSET_MANAGER.queueDownload("./sprites/flower1.png");
 ASSET_MANAGER.queueDownload("./sprites/crosshair.png");
 ASSET_MANAGER.queueDownload("./sprites/bullet.png");
 ASSET_MANAGER.queueDownload("./sprites/gun.png");
-ASSET_MANAGER.queueDownload("./sprites/level1.png");
+ASSET_MANAGER.queueDownload("./sprites/level2.png");
 
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");
@@ -19,13 +20,11 @@ ASSET_MANAGER.downloadAll(() => {
 	gameEngine.init(ctx);
 	
 	gameEngine.addEntity(new Crosshair(gameEngine));
-	gameEngine.addEntity(new Alien(gameEngine));
-	gameEngine.addEntity(new BadAlien(gameEngine));
+	gameEngine.addEntity(new Goop(gameEngine));
+	gameEngine.addEntity(new Grep(gameEngine));
 	gameEngine.addEntity(new HorrorSlime(gameEngine));
-	gameEngine.addEntity(new Slime(gameEngine));
-	//gameEngine.addEntity(new Room(gameEngine));
+	gameEngine.addEntity(new Slime(gameEngine,100,400));
+	gameEngine.addEntity(new Flower(gameEngine,200,400));
 	gameEngine.addEntity(new LevelGenerator(gameEngine));
-
-
 	gameEngine.start();
 });

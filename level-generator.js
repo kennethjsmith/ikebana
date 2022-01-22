@@ -2,7 +2,7 @@ class LevelGenerator {
 
     constructor(game, levelAssets) {
         this.game = game;
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/level1.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/level2.png");
         this.levelAssets = new Map;
         this.loadWalls();
         this.loadGround();
