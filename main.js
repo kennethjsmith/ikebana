@@ -10,7 +10,7 @@ ASSET_MANAGER.queueDownload("./sprites/flower1.png");
 ASSET_MANAGER.queueDownload("./sprites/crosshair.png");
 ASSET_MANAGER.queueDownload("./sprites/bullet.png");
 ASSET_MANAGER.queueDownload("./sprites/gun.png");
-ASSET_MANAGER.queueDownload("./sprites/level2.png");
+ASSET_MANAGER.queueDownload("./sprites/level1.png");
 
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");
