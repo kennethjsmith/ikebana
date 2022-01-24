@@ -17,8 +17,8 @@ class GameEngine {
 
         // Information on the input
         this.click = null;
-        this.mouseX = null;
-        this.mouseY = null;
+        this.mouseX = 0;
+        this.mouseY = 0;
         this.wheel = null;
 
         this.left = false;
@@ -115,11 +115,20 @@ class GameEngine {
 
         });
 
-        this.ctx.canvas.addEventListener("click", e => {
+        this.ctx.canvas.addEventListener("mousedown", e => {
             if (this.options.debugging) {
                 console.log("CLICK", getXandY(e));
             }
             this.clicked = true;
+            console.log("pressed");
+        });
+
+        this.ctx.canvas.addEventListener("mouseup", e => {
+            if (this.options.debugging) {
+                console.log("CLICK", getXandY(e));
+            }
+            this.clicked = false;
+            console.log("released");
         });
 
         this.ctx.canvas.addEventListener("wheel", e => {
@@ -166,7 +175,7 @@ class GameEngine {
         this.entities = this.entities.filter(entity => !entity.removeFromWorld);
 
         // Add new things
-        this.entities = this.entities.concat(this.entitiesToAdd);
+        this.entities = this.entitiesToAdd.concat(this.entities);
         this.entitiesToAdd = [];
     };
 

@@ -1,9 +1,11 @@
 class Goop {
     constructor(game) {
         this.game = game;
-        this.game.alien = this;
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/goop2.png");
-        this.alt_spritesheet = ASSET_MANAGER.getAsset("./sprites/grep.png");
+        this.game.goop = this;
+        this.game.goop.gun = this.game.gun;
+        this.spritesheet = { level1: ASSET_MANAGER.getAsset("./sprites/goop.png"), 
+                            level2: ASSET_MANAGER.getAsset("./sprites/goop2.png") };
+        //this.alt_spritesheet = ASSET_MANAGER.getAsset("./sprites/grep.png");
         
         this.facing = "right"; // left or right
         this.state = "vibing"; // walking or vibin
@@ -12,8 +14,6 @@ class Goop {
         this.x = 100;
         this.y = 80;
         this.velocity = { x: 0, y: 0 };
-
-        this.gun = new Gun(this.x, this.y, game);
 
         this.animations = new Map;
         this.loadAnimations();
@@ -33,11 +33,11 @@ class Goop {
         this.animations.get("right").set("walking", new Map);
         this.animations.get("right").set("vibing", new Map);
 
-        this.animations.get("left").get("walking").set("unarmed", new Animator(this.spritesheet, 0, 0, 390, 430, 8, .1));
-        this.animations.get("left").get("vibing").set("unarmed", new Animator(this.spritesheet, 6240, 0, 390, 430, 8, .15));
+        this.animations.get("left").get("walking").set("unarmed", new Animator(this.spritesheet.level2, 0, 0, 390, 430, 8, .1));
+        this.animations.get("left").get("vibing").set("unarmed", new Animator(this.spritesheet.level2, 6240, 0, 390, 430, 8, .15));
 
-        this.animations.get("right").get("walking").set("unarmed", new Animator(this.spritesheet, 3120, 0, 390, 430, 8, .1));
-        this.animations.get("right").get("vibing").set("unarmed", new Animator(this.spritesheet, 9360, 0, 390, 430, 8, .15));
+        this.animations.get("right").get("walking").set("unarmed", new Animator(this.spritesheet.level2, 3120, 0, 390, 430, 8, .1));
+        this.animations.get("right").get("vibing").set("unarmed", new Animator(this.spritesheet.level2, 9360, 0, 390, 430, 8, .15));
     };
 
     update() {
@@ -77,14 +77,11 @@ class Goop {
         this.x += this.velocity.x;
         this.y += this.velocity.y;
 
-        this.gun.update(this.velocity.x, this.velocity.y, this.game.mouseX, this.game.mouseY);
-
         // update the animation
         this.animation = this.animations.get(this.facing).get(this.state).get(this.armed);
     };
 
     draw(ctx) {
         this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .3);
-        this.gun.draw(ctx);
     };
 };
