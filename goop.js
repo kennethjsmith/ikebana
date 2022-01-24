@@ -35,7 +35,7 @@ class Goop {
         this.animations.get("left").get("walking").set("unarmed", new Animator(this.spritesheet, 0, 0, 390, 430, 8, .1));
         this.animations.get("left").get("vibing").set("unarmed", new Animator(this.spritesheet, 6240, 0, 390, 430, 8, .15));
 
-        this.animations.get("right").get("walking").set("unarmed", new Animator(this.spritesheet, 3120, 0, 390, 430, 8, .07));
+        this.animations.get("right").get("walking").set("unarmed", new Animator(this.spritesheet, 3120, 0, 390, 430, 8, .1));
         this.animations.get("right").get("vibing").set("unarmed", new Animator(this.spritesheet, 9360, 0, 390, 430, 8, .15));
     };
 
