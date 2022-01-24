@@ -2,7 +2,8 @@ class Goop {
     constructor(game) {
         this.game = game;
         this.game.alien = this;
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/goop.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/goop2.png");
+        this.alt_spritesheet = ASSET_MANAGER.getAsset("./sprites/grep.png");
         
         this.facing = "right"; // left or right
         this.state = "vibing"; // walking or vibin

@@ -1,7 +1,7 @@
 class Flower {
     constructor(game, x, y) {
         this.game = game;
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/flower1.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/flower2.png");
         
         // flower's state variables
         this.state = "growing"; // walking or vibin
@@ -18,9 +18,9 @@ class Flower {
     };
 
     loadAnimations() {
-        this.animations.set("growing", new Animator(this.spritesheet, 0, 0, 100, 200, 6, .2));
-        this.animations.set("grown", new Animator(this.spritesheet, 500, 0, 100, 200, 1, .08));
-        this.animations.set("picked", new Animator(this.spritesheet, 600, 0, 100, 200, 1, .08));
+        this.animations.set("growing", new Animator(this.spritesheet, 0, 0, 12, 20, 6, .2));
+        this.animations.set("grown", new Animator(this.spritesheet, 60, 0, 12, 20, 1, .08));
+        this.animations.set("picked", new Animator(this.spritesheet, 72, 0, 12, 20, 1, .08));
 
     };
 
@@ -37,6 +37,6 @@ class Flower {
     };
 
     draw(ctx) {
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 5);
     };
 };

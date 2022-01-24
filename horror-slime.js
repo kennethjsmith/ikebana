@@ -1,7 +1,7 @@
 class HorrorSlime {
     constructor(game) {
         this.game = game;
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/horror_slime.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/horror_slime2.png");
         
         // alien's state variables
         this.facing = "right"; // left or right
