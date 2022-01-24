@@ -8,7 +8,7 @@ class Level {
     // constructor(game, spritesheet) {
     constructor(game) {
         this.game = game;
-        // this.spritesheet = ASSET_MANAGER.getAsset("./sprites/level1.png");
+        //this.spritesheet = ASSET_MANAGER.getAsset("./sprites/level1.png");
         // //this.spritesheet = spritesheet;
 
         // this.levelAssets = new Map;
