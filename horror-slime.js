@@ -1,5 +1,5 @@
 class HorrorSlime {
-    constructor(game) {
+    constructor(game,x,y) {
         this.game = game;
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/horror_slime2.png");
         
@@ -8,8 +8,8 @@ class HorrorSlime {
         this.state = "vibing"; // walking or vibing
         this.deathClock = 90; //TODO: I DONT KNOW WHY THIS UPDATES 55 TIMES FOR 8 FRAMES
 
-        this.x = 100;
-        this.y = 300;
+        this.xMap = x;
+        this.yMap = y;
         // this.z
 
         //this.speed = 2.5;
@@ -49,6 +49,10 @@ class HorrorSlime {
     };
 
     draw(ctx) {
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .33);
+        ctx.save();
+        ctx.translate(-this.game.goop.xMap+this.game.goop.xStart, -this.game.goop.yMap+this.game.goop.yStart);
+
+        this.animation.drawFrame(this.game.clockTick, ctx, this.xMap, this.yMap, .33);
+        ctx.restore();
     };
 };

@@ -8,14 +8,16 @@ class Bullet {
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/bullet.png");
         this.SIZE = 12; // find better way to get this pizel width
-        this.SCALE = 5;
+        this.SCALE = 4;
 
         // adjust x and y so bullets start at gun, WHY is this not the proper x and y passed from constructor in gun????
-        this.x = this.game.goop.gun.x + 55;
-        this.y = this.game.goop.gun.y + 30;
-
-        this.xDistance = (this.game.mouseX-this.x);
-        this.yDistance = (this.game.mouseY-this.y);
+        this.xMap = this.game.gun.xBarrelTipMap;
+        this.yMap = this.game.gun.yBarrelTipMap;
+        this.xCanvas = this.game.gun.xBarrelTipCanvas;
+        this.yCanvas = this.game.gun.yBarrelTipCanvas;
+        
+        this.xDistance = (this.game.crosshair.xCanvas-this.xCanvas);
+        this.yDistance = (this.game.crosshair.yCanvas-this.yCanvas);
        
         this.diagonal = Math.sqrt((this.xDistance*this.xDistance) + (this.yDistance*this.yDistance));
     
@@ -39,8 +41,12 @@ class Bullet {
     };
 
     update() {
-        this.x += this.xVelocity;// * this.game.clockTick);
-        this.y += this.yVelocity;// * this.game.clockTick);
+        this.xMap += this.xVelocity;// * this.game.clockTick);
+        this.yMap += this.yVelocity;// * this.game.clockTick);
+        // bullets need to move on canvas in the opposite direction of goop movement
+        this.xCanvas += this.xVelocity-this.game.goop.velocity.x;
+        this.yCanvas += this.yVelocity-this.game.goop.velocity.y;
+
         this.range--;
         if(this.range == 0) this.removeFromWorld = true;
         
@@ -48,8 +54,11 @@ class Bullet {
 
 
     draw(ctx) {
-        console.log("should be drawing bullet");
-        // dont draw until bullet is past gun barrel, this is def hacky
-        if(this.range < 95) this.animations.drawFrame(this.game.clockTick, ctx, this.x-(this.spriteWidth/2), this.y-(this.spriteWidth/2), this.SCALE);
+
+        console.log("drawing bullet");
+        ctx.save();
+        //ctx.translate(this.xCanvas, this.yCanvas);
+        if(this.range < 95) this.animations.drawFrame(this.game.clockTick, ctx, this.xCanvas-(this.spriteWidth/2), this.yCanvas-(this.spriteWidth/2), this.SCALE);
+        ctx.restore();
     };
 };

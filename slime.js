@@ -7,8 +7,8 @@ class Slime {
         this.facing = "right"; // left or right
         this.state = "vibing"; // walking or vibin
 
-        this.x = x;
-        this.y = y;
+        this.xMap = x;
+        this.yMap = y;
         // this.z
 
         //this.speed = 2.5;
@@ -45,6 +45,10 @@ class Slime {
     };
 
     draw(ctx) {
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 2.5);
+        ctx.save();
+        ctx.translate(-this.game.goop.xMap+this.game.goop.xStart, -this.game.goop.yMap+this.game.goop.yStart);
+
+        this.animation.drawFrame(this.game.clockTick, ctx, this.xMap, this.yMap, 2.5);
+        ctx.restore();
     };
 };

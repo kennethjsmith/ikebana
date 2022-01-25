@@ -4,8 +4,30 @@ class Gun {
         this.game = game;
         this.game.gun = this;
 
-        this.x = 100 + 50;//(100,80) is goops starting location. (55,50) is the offset to the hand
-        this.y = 80 + 50;
+        this.facing = "right"; // left or right
+
+        //canvas location
+        this.xCanvas = 385;
+        this.yCanvas = 280;
+        this.xMap = 1000;
+        this.yMap = 1000;
+        //barrel tip for bullet spawn
+        this.xBarrelTipCanvas = this.xCanvas+55;
+        this.yBarrelTipCanvas = this.yCanvas+30;
+        this.xBarrelTipMap = this.xMap+55;
+        this.yBarrelTipMap = this.yMap+30;
+
+
+        // if(this.facing == "right"){
+        //     this.xBarrelTip = this.xCanvas +50;
+        //     this.yBarrelCanvas = 100;
+        // }
+        // else{a
+        //     this.xBarrelCanvas = 400;
+        //     this.yBarrelCanvas = 300;
+        // }
+
+
         this.rotation = 0;
         
         this.spritesheet = { gun: ASSET_MANAGER.getAsset("./sprites/gun.png"), 
@@ -14,7 +36,7 @@ class Gun {
         this.guncooldown = 20;
         this.uzicooldown = 5;                   
         
-        this.facing = "right"; // left or right
+        
         this.animations = new Map;
         this.loadAnimations();
 
@@ -29,8 +51,8 @@ class Gun {
             this.animations.set("right", new Animator(this.spritesheet.gun, 660, 0, 660, 360, 1, 1));
         }
         else if(this.type == "uzi"){
-            this.animations.set("left", new Animator(this.spritesheet.uzi, 0, 0, 660, 470, 1, 1));
-            this.animations.set("right", new Animator(this.spritesheet.uzi, 660, 0, 660, 470, 1, 1));
+            this.animations.set("left", new Animator(this.spritesheet.uzi, 0, 0, 700, 500, 1, 1));
+            this.animations.set("right", new Animator(this.spritesheet.uzi, 700, 0, 700, 500, 1, 1));
         }
     };
     // update() {
@@ -39,15 +61,17 @@ class Gun {
 
     update() {
 
-        this.x += this.game.goop.velocity.x;
-        this.y += this.game.goop.velocity.y;
-
-        if (this.rotation < -1.5 ){
+        this.xMap = this.game.goop.xMap;
+        this.yMap = this.game.goop.yMap;
+        // point right or left based on relatived location of crosshair
+        if (this.facing == "right" && this.game.crosshair.xCanvas-(this.game.crosshair.spriteWidth/2) < 385){
             this.facing = "left";
         }
-        else this.facing = "right";
+        else if (this.facing == "left" && this.game.crosshair.xCanvas-(this.game.crosshair.spriteWidth/2) >= 385){
+            this.facing = "right";
+        }
 
-        this.rotation = Math.atan2((this.game.mouseX - this.x), -(this.game.mouseY - this.y)) - Math.PI/2;
+        this.rotation = Math.atan2((this.game.mouseX - this.xCanvas), -(this.game.mouseY - this.yCanvas)) - Math.PI/2;
         // add alpha angle to rotation to aim gun barrel directly at cursor
         
         // this.rotation -= Math.atan2(Math.hypot((mouseX - this.x),(mouseY - this.y)),10);
@@ -80,8 +104,6 @@ class Gun {
              if(this.type == "gun" && this.guncooldown > 0) this.guncooldown--;
              else if(this.type == "uzi" && this.uzicooldown > 0) this.uzicooldown--;
         }
-
-
         this.animation = this.animations.get(this.facing);
 
         // this.bullets.forEach(bullet => {
@@ -97,19 +119,19 @@ class Gun {
 
     draw(ctx) {
         ctx.save();
-        ctx.translate(this.x+50,this.y+25);
-  
-        if(this.facing == "right"){
-             ctx.rotate(this.rotation);
-        }
+        ctx.translate(0, 0);
+        //ctx.rotate(this.rotation);
+        // if(this.facing == "right"){
+        //      ctx.rotate(this.rotation);
+        // }
         // left facing gun needs additional pi rotation
-        if(this.facing == "left"){
-            this.rotation -= Math.PI;
-            ctx.rotate(this.rotation);
-            this.rotation += Math.PI;
-        }
-        
-        this.animation.drawFrame(this.game.clockTick, ctx, -50, -25, .15);
+        // if(this.facing == "left"){
+        //     this.rotation -= Math.PI;
+        //     ctx.rotate(this.rotation);
+        //     this.rotation += Math.PI;
+        // }
+        //ctx.translate(this.xCanvas, this.yCanvas);
+        this.animation.drawFrame(this.game.clockTick, ctx, this.xCanvas, this.yCanvas, .15);
         ctx.restore();
 
         // this.bullets.forEach(bullet => {

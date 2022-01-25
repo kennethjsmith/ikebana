@@ -106,12 +106,23 @@ class GameEngine {
             }
         }, false);
 
+        this;
+        //mouse position in canvas
+        function getMousePos(canvas, e) {
+            var rect = canvas.getBoundingClientRect();
+            return {
+              x: e.clientX - rect.left,//400 width of canvas. 300 height
+              y: e.clientY - rect.top
+            };
+          }
+
         this.ctx.canvas.addEventListener("mousemove", e => {
             if (this.options.debugging) {
                 console.log("MOUSE_MOVE", getXandY(e));
             }
-           this.mouseX = e.clientX;
-           this.mouseY = e.clientY;
+            var pos = getMousePos(this.ctx.canvas, e, this.goop);
+            this.mouseX = pos.x;
+            this.mouseY = pos.y;
 
         });
 
@@ -168,6 +179,7 @@ class GameEngine {
     };
 
     update() {
+        
         // Update Entities
         this.entities.forEach(entity => entity.update(this));
 
@@ -186,4 +198,5 @@ class GameEngine {
     };
 
     get["deltaTime"]() { return this.clockTick; }
+
 };

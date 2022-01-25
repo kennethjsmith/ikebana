@@ -866,15 +866,18 @@ class LevelGenerator {
     };
 
     draw(ctx) {
+        ctx.save();
+        ctx.translate(-this.game.goop.xMap+this.game.goop.xStart, -this.game.goop.yMap+this.game.goop.yStart);
 
         for (var i = 0; i < this.height; i++) {
             for (var j = 0; j < this.width; j++) {
                 var square = this.spriteGrid[i][j]; 
-                square.drawFrame(this.game.clockTick, ctx, j * 16, i * 16, 1); 
+                square.drawFrame(this.game.clockTick, ctx, j * 80, i * 80, 5); 
                 // *16 because each tile is 16 x 16 pixels
                 // if changing the scale, the multiplier also needs to change
             }
         }
+        ctx.restore();
     };
 
 }

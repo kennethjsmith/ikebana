@@ -1,12 +1,15 @@
 class Crosshair {
     constructor(game) {
         this.game = game;
+        this.game.crosshair = this;
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/crosshair.png");
         this.SIZE = 13; // find better way to get this pizel width
-        this.SCALE = 4;
+        this.SCALE = 3;
 
-        this.x = 400;
-        this.y = 400;
+        this.xCanvas = 0;
+        this.yCanvas = 0;
+        this.xMap = 0;
+        this.yMap = 0;
 
 
         //adjust x and y to center bullet sprite drawing over trajectory, trajectory*size/2
@@ -23,13 +26,21 @@ class Crosshair {
     };
 
     update() {
-        this.x = this.game.mouseX;
-        this.y = this.game.mouseY;
+        this.xCanvas = this.game.mouseX;
+        this.yCanvas = this.game.mouseY;
+
+        this.xMap = this.xCanvas + this.game.goop.xMap;
+        this.yMap = this.yCanvas + this.game.goop.yMap;
+
     };
 
 
     draw(ctx) {
         // I don't know why this 9 is necessary to center
-        this.animations.drawFrame(this.game.clockTick, ctx, this.x-(this.spriteWidth/2)-9, this.y-(this.spriteWidth/2), this.SCALE);
+        // ctx.save();
+        // ctx.translate(-this.game.goop.x, -this.game.goop.y);//400 is half canvas width,300 height, - half player widthand height
+        
+        this.animations.drawFrame(this.game.clockTick, ctx, this.xCanvas-(this.spriteWidth/2), this.yCanvas-(this.spriteWidth/2), this.SCALE); //this had -9 on the x
+        // ctx.restore();
     };
 };

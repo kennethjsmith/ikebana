@@ -13,6 +13,8 @@ ASSET_MANAGER.queueDownload("./sprites/crosshair.png");
 ASSET_MANAGER.queueDownload("./sprites/bullet.png");
 ASSET_MANAGER.queueDownload("./sprites/gun.png");
 ASSET_MANAGER.queueDownload("./sprites/uzi.png");
+ASSET_MANAGER.queueDownload("./sprites/HUD_mockup.png");
+ASSET_MANAGER.queueDownload("./sprites/level1.png");
 ASSET_MANAGER.queueDownload("./sprites/level2.png");
 
 ASSET_MANAGER.downloadAll(() => {
@@ -22,11 +24,12 @@ ASSET_MANAGER.downloadAll(() => {
 	
 	gameEngine.init(ctx);
 	gameEngine.addEntity(new Crosshair(gameEngine));
+	gameEngine.addEntity(new Hud(gameEngine));
 	gameEngine.addEntity(new Gun("uzi", gameEngine));
-	gameEngine.addEntity(new Goop(gameEngine));
-	gameEngine.addEntity(new HorrorSlime(gameEngine));
-	gameEngine.addEntity(new Slime(gameEngine,100,400));
-	gameEngine.addEntity(new Flower(gameEngine,200,400));
+	gameEngine.addEntity(new Goop(gameEngine, 1000, 1000));
+	gameEngine.addEntity(new HorrorSlime(gameEngine,2800,2800));
+	gameEngine.addEntity(new Slime(gameEngine,3000,3000));
+	gameEngine.addEntity(new Flower(gameEngine,2900,2900));
 	gameEngine.addEntity(new LevelGenerator(gameEngine));
 	gameEngine.start();
 });

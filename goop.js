@@ -1,7 +1,9 @@
 class Goop {
-    constructor(game) {
+    constructor(game, x, y) {
         this.game = game;
         this.game.goop = this;
+        this.xStart = x;
+        this.yStart = y;
         this.game.goop.gun = this.game.gun;
         this.spritesheet = { level1: ASSET_MANAGER.getAsset("./sprites/goop.png"), 
                             level2: ASSET_MANAGER.getAsset("./sprites/goop2.png") };
@@ -11,8 +13,13 @@ class Goop {
         this.state = "vibing"; // walking or vibin
         this.armed = "unarmed"; // armed or uarmed
 
-        this.x = 100;
-        this.y = 80;
+
+        this.xCanvas = 350;
+        this.yCanvas = 250;
+
+        this.xMap = this.xStart;
+        this.yMap = this.yStart;
+
         this.velocity = { x: 0, y: 0 };
 
         this.animations = new Map;
@@ -41,8 +48,8 @@ class Goop {
     };
 
     update() {
-        const WALK = 4;
-        const DIAGONAL = 2.8; // based on WALK speed: 4^2 = 2(a^2); where a = x = y
+        const WALK = 6;
+        const DIAGONAL = 4.24; // 4 -> 2.8 based on WALK speed: 4^2 = 2(a^2); where a = x = y
         this.velocity.x = 0;
         this.velocity.y = 0;
 
@@ -74,14 +81,17 @@ class Goop {
         }
 
         // update the positions
-        this.x += this.velocity.x;
-        this.y += this.velocity.y;
+        this.xMap += this.velocity.x;
+        this.yMap += this.velocity.y;
 
         // update the animation
         this.animation = this.animations.get(this.facing).get(this.state).get(this.armed);
     };
 
     draw(ctx) {
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .3);
+        //ctx.save();
+        //ctx.translate(-this.xMap+this.xStart, -this.yMap+this.xStart);//400 is half canvas width,300 height, - half player widthand height
+        this.animation.drawFrame(this.game.clockTick, ctx, this.xCanvas, this.yCanvas, .25);
+        //ctx.restore();
     };
 };

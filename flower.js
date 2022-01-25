@@ -6,8 +6,8 @@ class Flower {
         // flower's state variables
         this.state = "growing"; // walking or vibin
 
-        this.x = x;
-        this.y = y;
+        this.xMap = x;
+        this.yMap = y;
 
         this.animations = new Map;
         this.loadAnimations();
@@ -37,6 +37,10 @@ class Flower {
     };
 
     draw(ctx) {
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 5);
+        ctx.save();
+        ctx.translate(-this.game.goop.xMap+this.game.goop.xStart, -this.game.goop.yMap+this.game.goop.yStart);
+
+        this.animation.drawFrame(this.game.clockTick, ctx, this.xMap, this.yMap, 5);
+        ctx.restore();
     };
 };
