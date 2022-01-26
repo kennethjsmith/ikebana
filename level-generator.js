@@ -2,17 +2,21 @@ class LevelGenerator {
 
     constructor(game, levelAssets) {
         this.game = game;
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/level2.png");
+        this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/level1.png");
+        this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/level2.png");
+        if (this.game.level == "level1") this.spritesheet = this.level1SpriteSheet;
+        else this.spritesheet = this.level2SpriteSheet;
+        
         this.levelAssets = new Map;
         this.loadWalls();
         this.loadGround();
         
         this.height = 41; // each increment of height is 16 pixels
         this.width = 75; // each increment of width is 16 pixels
+        this.scale = 5;
 
         this.setup();
         this.createFloors();
-        //this.createWalls();
         this.postProcessGrid();
         this.postProcessGrid();
         this.spawnLevel();        
@@ -868,13 +872,14 @@ class LevelGenerator {
     draw(ctx) {
         ctx.save();
         ctx.translate(-this.game.goop.xMap+this.game.goop.xStart, -this.game.goop.yMap+this.game.goop.yStart);
-
         for (var i = 0; i < this.height; i++) {
             for (var j = 0; j < this.width; j++) {
                 var square = this.spriteGrid[i][j]; 
-                square.drawFrame(this.game.clockTick, ctx, j * 80, i * 80, 5); 
+                square.drawFrame(this.game.clockTick, ctx, j * 16 * this.scale, i * 16 * this.scale, this.scale); 
                 // *16 because each tile is 16 x 16 pixels
                 // if changing the scale, the multiplier also needs to change
+                // 80, 80, 5 -> regular view
+                // 16, 16, 1 -> view whole map
             }
         }
         ctx.restore();

@@ -5,8 +5,12 @@ class Goop {
         this.xStart = x;
         this.yStart = y;
         this.game.goop.gun = this.game.gun;
-        this.spritesheet = { level1: ASSET_MANAGER.getAsset("./sprites/goop.png"), 
-                            level2: ASSET_MANAGER.getAsset("./sprites/goop2.png") };
+        this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/goop.png");
+        this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/goop2.png");
+
+        if (this.game.level == "level1") this.spritesheet = this.level1SpriteSheet;
+        else this.spritesheet = this.level2SpriteSheet;
+
         //this.alt_spritesheet = ASSET_MANAGER.getAsset("./sprites/grep.png");
         
         this.facing = "right"; // left or right
@@ -40,11 +44,11 @@ class Goop {
         this.animations.get("right").set("walking", new Map);
         this.animations.get("right").set("vibing", new Map);
 
-        this.animations.get("left").get("walking").set("unarmed", new Animator(this.spritesheet.level2, 0, 0, 390, 430, 8, .1));
-        this.animations.get("left").get("vibing").set("unarmed", new Animator(this.spritesheet.level2, 6240, 0, 390, 430, 8, .15));
+        this.animations.get("left").get("walking").set("unarmed", new Animator(this.spritesheet, 0, 0, 390, 430, 8, .1));
+        this.animations.get("left").get("vibing").set("unarmed", new Animator(this.spritesheet, 6240, 0, 390, 430, 8, .15));
 
-        this.animations.get("right").get("walking").set("unarmed", new Animator(this.spritesheet.level2, 3120, 0, 390, 430, 8, .1));
-        this.animations.get("right").get("vibing").set("unarmed", new Animator(this.spritesheet.level2, 9360, 0, 390, 430, 8, .15));
+        this.animations.get("right").get("walking").set("unarmed", new Animator(this.spritesheet, 3120, 0, 390, 430, 8, .1));
+        this.animations.get("right").get("vibing").set("unarmed", new Animator(this.spritesheet, 9360, 0, 390, 430, 8, .15));
     };
 
     update() {

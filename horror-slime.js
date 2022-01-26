@@ -1,7 +1,11 @@
 class HorrorSlime {
     constructor(game,x,y) {
         this.game = game;
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/horror_slime2.png");
+
+        this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/horror_slime.png");
+        this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/horror_slime2.png");
+        if (this.game.level == "level1") this.spritesheet = this.level1SpriteSheet;
+        else this.spritesheet = this.level2SpriteSheet;        
         
         // alien's state variables
         this.facing = "right"; // left or right
