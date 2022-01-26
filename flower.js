@@ -1,7 +1,7 @@
 class Flower {
     constructor(game, x, y) {
         this.game = game;
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/flower2.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/flower.png");
         
         // flower's state variables
         this.state = "growing"; // walking or vibin

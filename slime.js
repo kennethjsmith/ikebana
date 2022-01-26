@@ -1,7 +1,7 @@
 class Slime {
     constructor(game, x, y) {
         this.game = game;
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/slime2.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/slime.png");
         
         // alien's state variables
         this.facing = "right"; // left or right
