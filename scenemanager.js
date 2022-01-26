@@ -287,4 +287,4 @@ class SceneManager {
 //             this.game.entities[i].drawMinimap(ctx, this.x, this.y);
 //         }
 //     };
-};
+
