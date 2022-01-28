@@ -8,7 +8,6 @@ class Slime {
         if (this.game.level == "level1") this.spritesheet = this.level1SpriteSheet;
         else this.spritesheet = this.level2SpriteSheet;        
         
-        
         // alien's state variables
         this.facing = "right"; // left or right
         this.state = "vibing"; // walking or vibin

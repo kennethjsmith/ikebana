@@ -1,6 +1,7 @@
 class Flower {
     constructor(game, x, y) {
         this.game = game;
+
         this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/flower.png");
         this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/flower2.png");
         if (this.game.level == "level1") this.spritesheet = this.level1SpriteSheet;

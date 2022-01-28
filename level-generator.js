@@ -1,25 +1,34 @@
 class LevelGenerator {
 
-    constructor(game, levelAssets) {
+    constructor(game, width, height) {
         this.game = game;
+
         this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/level1.png");
         this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/level2.png");
-        if (this.game.level == "level1") this.spritesheet = this.level1SpriteSheet;
+        if (this.game.level == "level2") this.spritesheet = this.level1SpriteSheet;
         else this.spritesheet = this.level2SpriteSheet;
-        
+
         this.levelAssets = new Map;
         this.loadWalls();
         this.loadGround();
         
-        this.height = 41; // each increment of height is 16 pixels
-        this.width = 75; // each increment of width is 16 pixels
+        this.height = height; // each increment of height is 16 pixels
+        this.width = width; // each increment of width is 16 pixels
         this.scale = 5;
 
         this.setup();
         this.createFloors();
         this.postProcessGrid();
         this.postProcessGrid();
-        this.spawnLevel();        
+        this.spawnLevel();   
+        
+        // let x1 = (1 * 16 * this.scale) -(this.game.camera.x);
+        // let y1 = (1 * 16 * this.scale) -(this.game.camera.y);
+        // console.log("original x: " + (1 * 16 * this.scale));
+        // console.log("original y: " +  (1 * 16 * this.scale));
+        // console.log("camera x: " + this.game.camera.x);
+        // console.log("new x: " + x1);
+        // console.log("new y: " +  y1);
     };
 
     setup() {
@@ -870,19 +879,28 @@ class LevelGenerator {
     };
 
     draw(ctx) {
-        ctx.save();
-        ctx.translate(-this.game.goop.xMap+this.game.goop.xStart, -this.game.goop.yMap+this.game.goop.yStart);
+        // ctx.save();
+        // ctx.translate(-this.game.goop.xMap+this.game.goop.xStart, -this.game.goop.yMap+this.game.goop.yStart);
         for (var i = 0; i < this.height; i++) {
             for (var j = 0; j < this.width; j++) {
                 var square = this.spriteGrid[i][j]; 
-                square.drawFrame(this.game.clockTick, ctx, j * 16 * this.scale, i * 16 * this.scale, this.scale); 
+                // let x1 = (j * 16 * this.scale) -(this.game.camera.x);
+                // let y1 = (i * 16 * this.scale) -(this.game.camera.y);
+                // console.log("original x: " + (j * 16 * this.scale));
+                // console.log("original y: " +  (i * 16 * this.scale));
+                // console.log("new x: " + x1);
+                // console.log("new y: " +  y1);
+                
+                
+                //console.log("x,y: <"+((j * 16 * this.scale) -(this.game.camera.x))+","+((i * 16 * this.scale) -(this.game.camera.y))+">")
+                square.drawFrame(this.game.clockTick, ctx, (j * 16 * this.scale)-(this.game.camera.x), (i * 16 * this.scale) -(this.game.camera.y), this.scale); 
                 // *16 because each tile is 16 x 16 pixels
                 // if changing the scale, the multiplier also needs to change
                 // 80, 80, 5 -> regular view
                 // 16, 16, 1 -> view whole map
             }
         }
-        ctx.restore();
+        // ctx.restore();
     };
 
 }

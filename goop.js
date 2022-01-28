@@ -1,14 +1,17 @@
 class Goop {
-    constructor(game, x, y) {
+    constructor(game, xStart, yStart) { // these starting locations should possibly be based on xMidpoint and yMidpoint of the sprite
         this.game = game;
         this.game.goop = this;
-        this.xStart = x;
-        this.yStart = y;
+
         this.game.goop.gun = this.game.gun;
         this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/goop.png");
         this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/goop2.png");
 
-        if (this.game.level == "level1") this.spritesheet = this.level1SpriteSheet;
+        this.scale = 3;
+        this.spriteWidth = 39 * this.scale;
+        this.spriteHeight = 43 * this.scale;
+
+        if (this.game.camera.level == "level1") this.spritesheet = this.level1SpriteSheet;
         else this.spritesheet = this.level2SpriteSheet;
 
         //this.alt_spritesheet = ASSET_MANAGER.getAsset("./sprites/grep.png");
@@ -17,12 +20,8 @@ class Goop {
         this.state = "vibing"; // walking or vibin
         this.armed = "unarmed"; // armed or uarmed
 
-
-        this.xCanvas = 350;
-        this.yCanvas = 250;
-
-        this.xMap = this.xStart;
-        this.yMap = this.yStart;
+        this.xMap = xStart;
+        this.yMap = yStart;
 
         this.velocity = { x: 0, y: 0 };
 
@@ -44,11 +43,11 @@ class Goop {
         this.animations.get("right").set("walking", new Map);
         this.animations.get("right").set("vibing", new Map);
 
-        this.animations.get("left").get("walking").set("unarmed", new Animator(this.spritesheet, 0, 0, 390, 430, 8, .1));
-        this.animations.get("left").get("vibing").set("unarmed", new Animator(this.spritesheet, 6240, 0, 390, 430, 8, .15));
+        this.animations.get("left").get("walking").set("unarmed", new Animator(this.spritesheet, 0, 0, 39, 43, 8, .1));
+        this.animations.get("left").get("vibing").set("unarmed", new Animator(this.spritesheet, 624, 0, 39, 43, 8, .15));
 
-        this.animations.get("right").get("walking").set("unarmed", new Animator(this.spritesheet, 3120, 0, 390, 430, 8, .1));
-        this.animations.get("right").get("vibing").set("unarmed", new Animator(this.spritesheet, 9360, 0, 390, 430, 8, .15));
+        this.animations.get("right").get("walking").set("unarmed", new Animator(this.spritesheet, 312, 0, 39, 43, 8, .1));
+        this.animations.get("right").get("vibing").set("unarmed", new Animator(this.spritesheet, 936, 0, 39, 43, 8, .15));
     };
 
     update() {
@@ -95,7 +94,7 @@ class Goop {
     draw(ctx) {
         //ctx.save();
         //ctx.translate(-this.xMap+this.xStart, -this.yMap+this.xStart);//400 is half canvas width,300 height, - half player widthand height
-        this.animation.drawFrame(this.game.clockTick, ctx, this.xCanvas, this.yCanvas, .25);
+        this.animation.drawFrame(this.game.clockTick, ctx, this.xMap-this.game.camera.x, this.yMap-this.game.camera.y, this.scale);
         //ctx.restore();
     };
 };
