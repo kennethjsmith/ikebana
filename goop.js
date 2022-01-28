@@ -88,8 +88,9 @@ class Goop {
         this.xMap += this.velocity.x;
         this.yMap += this.velocity.y;
 
-        //update the gun
+        //update the gun and crosshair
         this.game.gun.move(this.xMap,this.yMap);
+        this.game.crosshair.update();
 
         this.updateBoundingBox();
 

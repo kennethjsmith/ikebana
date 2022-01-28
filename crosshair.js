@@ -5,9 +5,10 @@ class Crosshair {
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/crosshair.png");
         this.SIZE = 13; // find better way to get this pizel width
         this.SCALE = 3;
+        this.spriteSize = this.SIZE * this.SCALE;
 
-        this.xMap = 0;
-        this.yMap = 0;
+        this.xMap = null;
+        this.yMap = null;
 
 
         //adjust x and y to center bullet sprite drawing over trajectory, trajectory*size/2
@@ -24,6 +25,7 @@ class Crosshair {
     };
 
     update() {
+        console.log("mousex and camerax:" +this.game.mouseX + this.game.camera.x);
         this.xMap = this.game.mouseX + this.game.camera.x;
         this.yMap = this.game.mouseY + this.game.camera.y;
 

@@ -123,7 +123,7 @@ class GameEngine {
             var pos = getMousePos(this.ctx.canvas, e, this.goop);
             this.mouseX = pos.x;
             this.mouseY = pos.y;
-
+            this.crosshair.update(); //update here since not in entities list, update after movement too so that camera updates
         });
 
         this.ctx.canvas.addEventListener("mousedown", e => {
