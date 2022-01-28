@@ -5,7 +5,7 @@ class GameEngine {
         // What you will use to draw
         // Documentation: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
         this.ctx = null;
-        this.level = "level2";
+        this.level = "level1";
 
         // Context dimensions
         this.surfaceWidth = null;
