@@ -5,7 +5,6 @@ class GameEngine {
         // What you will use to draw
         // Documentation: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
         this.ctx = null;
-        this.level = "level1";
 
         // Context dimensions
         this.surfaceWidth = null;
@@ -173,12 +172,14 @@ class GameEngine {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
-        this.level.draw(this.ctx, this);
+        this.level.draw(this.ctx);
 
         // Draw latest things first
         for (let i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx, this);
         }
+
+        this.crosshair.draw(this.ctx);
     };
 
     update() {

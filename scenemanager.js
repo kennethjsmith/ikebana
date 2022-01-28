@@ -17,7 +17,7 @@ class SceneManager {
 
 
         //this.gameOver = false;
-        this.level = "level1";
+        this.level = "level2";
         this.levelXSize = 75; // # of tiles
         this.levelYSize = 41;
 
@@ -33,6 +33,7 @@ class SceneManager {
 
     loadLevel(level) {
 
+        
         // add goop
         this.game.addEntity(new Goop(this.game, (this.levelXSize*5*16)/2, (this.levelYSize*5*16)/2)); // 5 is level scaler and 16 is the sprite width/height for level tiles
 
@@ -43,6 +44,9 @@ class SceneManager {
 
         this.x = this.game.goop.xMap - this.xMidpoint;
         this.y = this.game.goop.yMap - this.yMidpoint;
+
+        // add crosshair
+        this.game.crosshair= new Crosshair(this.game);
 
         // build level map
         this.game.level = new LevelGenerator(this.game, this.levelXSize, this.levelYSize);

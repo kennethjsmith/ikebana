@@ -6,8 +6,6 @@ class Crosshair {
         this.SIZE = 13; // find better way to get this pizel width
         this.SCALE = 3;
 
-        this.xCanvas = 0;
-        this.yCanvas = 0;
         this.xMap = 0;
         this.yMap = 0;
 
@@ -26,21 +24,13 @@ class Crosshair {
     };
 
     update() {
-        this.xCanvas = this.game.mouseX;
-        this.yCanvas = this.game.mouseY;
-
-        this.xMap = this.xCanvas + this.game.goop.xMap;
-        this.yMap = this.yCanvas + this.game.goop.yMap;
+        this.xMap = this.game.mouseX + this.game.camera.x;
+        this.yMap = this.game.mouseY + this.game.camera.y;
 
     };
 
 
     draw(ctx) {
-        // I don't know why this 9 is necessary to center
-        // ctx.save();
-        // ctx.translate(-this.game.goop.x, -this.game.goop.y);//400 is half canvas width,300 height, - half player widthand height
-        
-        this.animations.drawFrame(this.game.clockTick, ctx, this.xCanvas-(this.spriteWidth/2), this.yCanvas-(this.spriteWidth/2), this.SCALE); //this had -9 on the x
-        // ctx.restore();
+        this.animations.drawFrame(this.game.clockTick, ctx, this.game.mouseX, this.game.mouseY, this.SCALE); //this had -9 on the x
     };
 };
