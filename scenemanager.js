@@ -17,12 +17,16 @@ class SceneManager {
 
 
         //this.gameOver = false;
-        this.level = "level2";
+        this.level = "level1";
         this.levelXSize = 75; // # of tiles
         this.levelYSize = 41;
 
+        this.startXPlayer = (this.levelXSize*5*16)/2;
+        this.startYPlayer = (this.levelYSize*5*16)/2;
+
         this.loadLevel(this.level);
 
+        
         // this.mario = new Mario(this.game, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH);
 
         //this.loadLevel(this.level);//levelOne, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH, false, true);
@@ -33,11 +37,12 @@ class SceneManager {
 
     loadLevel(level) {
 
+        // add gun
+        this.game.addEntity(new Gun("uzi",this.game)); // 5 is level scaler and 16 is the sprite width/height for level tiles
         
         // add goop
-        this.game.addEntity(new Goop(this.game, (this.levelXSize*5*16)/2, (this.levelYSize*5*16)/2)); // 5 is level scaler and 16 is the sprite width/height for level tiles
-
-        console.log("goop max: " + this.game.goop.xMap);
+        this.game.addEntity(new Goop(this.game)); // 5 is level scaler and 16 is the sprite width/height for level tiles
+        
 
         this.xMidpoint = this.game.ctx.canvas.width/2 - (this.game.goop.spriteWidth/2);
         this.yMidpoint = this.game.ctx.canvas.height/2 - (this.game.goop.spriteHeight/2);

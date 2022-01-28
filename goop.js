@@ -1,5 +1,5 @@
 class Goop {
-    constructor(game, xStart, yStart) { // these starting locations should possibly be based on xMidpoint and yMidpoint of the sprite
+    constructor(game) { // these starting locations should possibly be based on xMidpoint and yMidpoint of the sprite
         this.game = game;
         this.game.goop = this;
 
@@ -20,13 +20,14 @@ class Goop {
         this.state = "vibing"; // walking or vibin
         this.armed = "unarmed"; // armed or uarmed
 
-        this.xMap = xStart;
-        this.yMap = yStart;
+        this.xMap = this.game.camera.startXPlayer;
+        this.yMap = this.game.camera.startYPlayer;
 
         this.velocity = { x: 0, y: 0 };
 
         this.animations = new Map;
         this.loadAnimations();
+        this.updateBoundingBox();
 
         this.animation = this.animations.get("right").get("vibing").get("unarmed");
         //Animator constructor(spritesheet, xStart, yStart, width, height, frameCount, frameDuration) {
@@ -87,6 +88,11 @@ class Goop {
         this.xMap += this.velocity.x;
         this.yMap += this.velocity.y;
 
+        //update the gun
+        this.game.gun.move(this.xMap,this.yMap);
+
+        this.updateBoundingBox();
+
         // update the animation
         this.animation = this.animations.get(this.facing).get(this.state).get(this.armed);
     };
@@ -96,5 +102,12 @@ class Goop {
         //ctx.translate(-this.xMap+this.xStart, -this.yMap+this.xStart);//400 is half canvas width,300 height, - half player widthand height
         this.animation.drawFrame(this.game.clockTick, ctx, this.xMap-this.game.camera.x, this.yMap-this.game.camera.y, this.scale);
         //ctx.restore();
+        drawBoundingBox(this.hurtBox, ctx, this.game, "red");
+        drawBoundingBox(this.boundingBox, ctx, this.game, "white");
+    };
+
+    updateBoundingBox() {
+        this.hurtBox = new BoundingBox(this.xMap, this.yMap, this.spriteWidth, this.spriteHeight);
+        this.boundingBox = new BoundingBox(this.xMap, this.yMap + 2*(this.spriteHeight/3), this.spriteWidth, this.spriteHeight/3);
     };
 };
