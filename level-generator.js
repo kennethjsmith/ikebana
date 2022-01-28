@@ -5,7 +5,7 @@ class LevelGenerator {
 
         this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/level1.png");
         this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/level2.png");
-        if (this.game.level == "level2") this.spritesheet = this.level1SpriteSheet;
+        if (this.game.level == "level1") this.spritesheet = this.level1SpriteSheet;
         else this.spritesheet = this.level2SpriteSheet;
 
         this.levelAssets = new Map;
