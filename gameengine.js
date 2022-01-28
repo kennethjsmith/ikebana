@@ -64,6 +64,40 @@ class GameEngine {
             y: e.clientY - this.ctx.canvas.getBoundingClientRect().top
         });
 
+        var self = this;
+
+        // on click, lock input
+        this.ctx.canvas.onclick = () => {
+            if (!self.locked) {
+                this.ctx.canvas.requestPointerLock({
+                    unadjustedMovement: true,
+                });
+                this.mouseX = this.ctx.canvas.width / 2;
+                this.mouseY = this.ctx.canvas.height / 2;
+                self.locked = true;
+            }
+        };
+
+        // handle locked cursor movement
+        document.addEventListener("pointerlockchange", lockChangeAlert, false);
+        document.addEventListener("mozpointerlockchange", lockChangeAlert, false);
+
+        function lockChangeAlert() {
+            if (document.pointerLockElement === self.ctx.canvas || document.mozPointerLockElement === self.ctx.canvas) {
+                document.addEventListener("mousemove", updatePosition, false);
+                self.locked = true;
+            } else {
+                document.removeEventListener("mousemove", updatePosition, false);
+                self.locked = false;
+            }
+        }
+
+        function updatePosition(e) {
+            self.mouseX = Math.min(Math.max(0, (self.mouseX += (e.movementX/4))), self.ctx.canvas.width - self.crosshair.spriteSize);
+            self.mouseY = Math.min(Math.max(0, (self.mouseY += (e.movementY/4))), self.ctx.canvas.height - self.crosshair.spriteSize);
+        }
+
+
         this.ctx.canvas.addEventListener("keydown", e => {
             switch (e.code) {
                 case "ArrowLeft":
@@ -120,10 +154,13 @@ class GameEngine {
             if (this.options.debugging) {
                 console.log("MOUSE_MOVE", getXandY(e));
             }
-            var pos = getMousePos(this.ctx.canvas, e, this.goop);
-            this.mouseX = pos.x;
-            this.mouseY = pos.y;
-            this.crosshair.update(); //update here since not in entities list, update after movement too so that camera updates
+            // var pos = getMousePos(this.ctx.canvas, e, this.goop);
+            // this.mouseX = pos.x;
+            // this.mouseY = pos.y;
+            if(this.locked){
+                updatePosition(e);
+                this.crosshair.update(); //update here since not in entities list, update after movement too so that camera updates
+            }
         });
 
         this.ctx.canvas.addEventListener("mousedown", e => {
@@ -161,6 +198,9 @@ class GameEngine {
             }
             this.rightclick = getXandY(e);
         });
+
+        this.mouseX = this.ctx.canvas.width / 2;
+        this.mouseY = this.ctx.canvas.height / 2;
     };
 
     addEntity(entity) {

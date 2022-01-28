@@ -64,9 +64,6 @@ class SceneManager {
     };
 
     update() {
-        console.log("crosshair:" + this.game.crosshair.xMap+","+this.game.crosshair.yMap)
-        console.log("goop:" + this.game.goop.xMap+","+this.game.goop.yMap)
-        
         let radius = 200;
         let xDistance = ((this.game.crosshair.xMap + this.game.crosshair.spriteSize/2) - (this.game.goop.xMap + this.game.goop.spriteWidth/2));
         let yDistance = ((this.game.crosshair.yMap + this.game.crosshair.spriteSize/2) - (this.game.goop.yMap + this.game.goop.spriteHeight/2));

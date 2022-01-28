@@ -25,7 +25,6 @@ class Crosshair {
     };
 
     update() {
-        console.log("mousex and camerax:" +this.game.mouseX + this.game.camera.x);
         this.xMap = this.game.mouseX + this.game.camera.x;
         this.yMap = this.game.mouseY + this.game.camera.y;
 
@@ -33,6 +32,6 @@ class Crosshair {
 
 
     draw(ctx) {
-        this.animations.drawFrame(this.game.clockTick, ctx, this.game.mouseX, this.game.mouseY, this.SCALE); //this had -9 on the x
+        this.animations.drawFrame(this.game.clockTick, ctx, this.xMap-this.game.camera.x, this.yMap-this.game.camera.y, this.SCALE); //this had -9 on the x
     };
 };
