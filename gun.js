@@ -44,12 +44,19 @@ class Gun {
     //     //     this.facing = "right";
     //     // }
 
-    console.log("PI: "+ Math.PI/4);
+    // console.log("PI: "+ Math.PI/4);
     // console.log("mouse y: " + this.game.mouseY)
     // console.log("mouse x: " + this.game.mouseX)
-    console.log("xmap: " + this.xMap);
-    console.log("yMap: " + this.yMap);
-    this.rotation = Math.atan2((this.game.crosshair.yMap - this.yMap), (this.game.crosshair.xMap - this.xMap)) + Math.PI/4;
+        // console.log("xMap: " + (this.xMap+this.spriteSize/2));
+        // console.log("yMap: " + (this.yMap+this.spriteSize/2));
+        // console.log("crosshair xmap: " + (this.game.crosshair.xMap+this.game.crosshair.spriteSize/2));
+        // console.log("crosshair yMap: " + (this.game.crosshair.yMap+this.game.crosshair.spriteSize/2));
+
+        this.rotation = Math.atan2(((this.game.crosshair.yMap+this.game.crosshair.spriteSize/2) - (this.yMap+this.spriteSize /2)), ((this.game.crosshair.xMap+this.game.crosshair.spriteSize/2) - (this.xMap+15+this.spriteSize/2)));
+        console.log(this.rotation);
+
+        if (this.rotation < -Math.PI/2 || this.rotation > Math.PI/2) this.facing = "left";
+        else this.facing = "right";
     //     // add alpha angle to rotation to aim gun barrel directly at cursor
         
         //this.rotation -= Math.atan2(Math.hypot((this.game.mouseX - this.xMap),(this.game.mouseY - this.yMap)),10);
@@ -118,28 +125,50 @@ class Gun {
         let offscreenCanvas = null;
         let degrees = Math.floor(this.rotation * (180/Math.PI));
         console.log("degrees: " + degrees + ", radians: " + this.rotation);
-
-
-        if (this.sprites.get("uzi").get("left").has(degrees)) {
-            offscreenCanvas = this.sprites.get("uzi").get("left").get(degrees);
-        } else {
-            this.count++;
-            // create the canvas with the rotated image
-            offscreenCanvas = document.createElement('canvas')                                                              
-            offscreenCanvas.width = (2*(this.spriteSize / 3)*2);
-            console.log("canvas width: " + offscreenCanvas.width)
-            offscreenCanvas.height = (2*(this.spriteSize / 3)*2);
-            let offscreenCtx = offscreenCanvas.getContext('2d');
-            offscreenCtx.imageSmoothingEnabled = false;
-            offscreenCtx.save();
-            offscreenCtx.translate(2*(this.spriteSize / 3), this.spriteSize / 2);
-            offscreenCtx.rotate(this.rotation);
-            offscreenCtx.translate(-2*(this.spriteSize / 3), -this.spriteSize / 2);     
-                
-            offscreenCtx.drawImage(this.spritesheet, this.SIZE, 0, this.SIZE, this.SIZE, 10, 10,this.spriteSize,this.spriteSize)
-            offscreenCtx.restore();
-            this.sprites.get("uzi").get("left").set(degrees, offscreenCanvas);
+        
+        if (this.facing == "right"){
+            if (this.sprites.get("uzi").get("right").has(degrees)) {
+                offscreenCanvas = this.sprites.get("uzi").get("right").get(degrees);
+            } else {
+                this.count++;
+                // create the canvas with the rotated image
+                offscreenCanvas = document.createElement('canvas')                                                              
+                offscreenCanvas.width = (2*(this.spriteSize / 3)*2);
+                offscreenCanvas.height = (2*(this.spriteSize / 3)*2);
+                let offscreenCtx = offscreenCanvas.getContext('2d');
+                offscreenCtx.imageSmoothingEnabled = false;
+                offscreenCtx.save();
+                offscreenCtx.translate(2*(this.spriteSize / 3), this.spriteSize / 2);
+                offscreenCtx.rotate(this.rotation + Math.PI/2);
+                offscreenCtx.translate(-2*(this.spriteSize / 3), -this.spriteSize / 2);     
+                    
+                offscreenCtx.drawImage(this.spritesheet, this.SIZE, 0, this.SIZE, this.SIZE, 10, 10,this.spriteSize,this.spriteSize)
+                offscreenCtx.restore();
+                this.sprites.get("uzi").get("right").set(degrees, offscreenCanvas);
+            }
         }
+        else if (this.facing == "left"){
+            if (this.sprites.get("uzi").get("left").has(degrees)) {
+                offscreenCanvas = this.sprites.get("uzi").get("left").get(degrees);
+            } else {
+                this.count++;
+                // create the canvas with the rotated image
+                offscreenCanvas = document.createElement('canvas')                                                              
+                offscreenCanvas.width = (2*(this.spriteSize / 3)*2);
+                offscreenCanvas.height = (2*(this.spriteSize / 3)*2);
+                let offscreenCtx = offscreenCanvas.getContext('2d');
+                offscreenCtx.imageSmoothingEnabled = false;
+                offscreenCtx.save();
+                offscreenCtx.translate(2*(this.spriteSize / 3), this.spriteSize / 2);
+                offscreenCtx.rotate(this.rotation + Math.PI/2);
+                offscreenCtx.translate(-2*(this.spriteSize / 3), -this.spriteSize / 2);     
+                    
+                offscreenCtx.drawImage(this.spritesheet, 0, 0, this.SIZE, this.SIZE, 10, 10,this.spriteSize,this.spriteSize)
+                offscreenCtx.restore();
+                this.sprites.get("uzi").get("left").set(degrees, offscreenCanvas);
+            }
+        }
+
         console.log(this.count);
 
         ctx.drawImage(offscreenCanvas, this.xMap-this.game.camera.x, this.yMap-this.game.camera.y);
