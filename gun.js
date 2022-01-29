@@ -127,6 +127,7 @@ class Gun {
             // create the canvas with the rotated image
             offscreenCanvas = document.createElement('canvas')                                                              
             offscreenCanvas.width = (2*(this.spriteSize / 3)*2);
+            console.log("canvas width: " + offscreenCanvas.width)
             offscreenCanvas.height = (2*(this.spriteSize / 3)*2);
             let offscreenCtx = offscreenCanvas.getContext('2d');
             offscreenCtx.imageSmoothingEnabled = false;
