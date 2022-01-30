@@ -32,6 +32,10 @@ class Crosshair {
 
 
     draw(ctx) {
+        console.log("cursor x: " + (this.xMap));
+        console.log("cursor y: " + (this.yMap));
+
         this.animations.drawFrame(this.game.clockTick, ctx, this.xMap-this.game.camera.x, this.yMap-this.game.camera.y, this.SCALE); //this had -9 on the x
+
     };
 };

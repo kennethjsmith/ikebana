@@ -107,7 +107,10 @@ class Gun {
         
         if (this.facing == "right"){
             if (this.sprites.get("uzi").get("right").has(degrees)) {
-                offscreenCanvas = this.sprites.get("uzi").get("right").get(degrees);
+                offscreenCanvas = this.sprites.get("uzi").get("right").get(degrees).image;
+                //console.log(this.sprites.get("uzi").get("right").get(degrees));
+                console.log("x: " + this.sprites.get("uzi").get("right").get(degrees).barrelLocation.x);
+                console.log("y: " + this.sprites.get("uzi").get("right").get(degrees).barrelLocation.y);
             } else {
                 // create the canvas with the rotated image
                 offscreenCanvas = document.createElement('canvas')                                                              
@@ -123,13 +126,15 @@ class Gun {
                                             // drawImage(image, sx, sy, sWidth, sHeight, dx, dy, destinationWidth, destinationHeight)
                 offscreenCtx.drawImage(this.spritesheet, this.SIZE, 0, this.SIZE, this.SIZE, 10, 10,this.spriteSize,this.spriteSize)
                 offscreenCtx.restore();
-                this.sprites.get("uzi").get("right").set(degrees, offscreenCanvas);
+                //console.log("ROTATION: " + this.rotation);
+                //console.log((Math.cos(this.rotation)));
+                this.sprites.get("uzi").get("right").set(degrees, { image: offscreenCanvas, barrelLocation : { x : ((Math.cos(this.rotation) * this.spriteSize / 2) + this.xMap), y:  ((Math.sin(this.rotation) * this.spriteSize / 2) + this.yMap) } });
 
             }
         }
         else if (this.facing == "left"){
             if (this.sprites.get("uzi").get("left").has(degrees)) {
-                offscreenCanvas = this.sprites.get("uzi").get("left").get(degrees);
+                offscreenCanvas = this.sprites.get("uzi").get("left").get(degrees).image;
             } else {
                 // create the canvas with the rotated image
                 offscreenCanvas = document.createElement('canvas')                                                              
@@ -145,7 +150,7 @@ class Gun {
                             // drawImage(image, sx, sy, sWidth, sHeight, dx, dy, destinationWidth, destinationHeight)
                 offscreenCtx.drawImage(this.spritesheet, 0, 0, this.SIZE, this.SIZE, 10, 10, this.spriteSize, this.spriteSize)
                 offscreenCtx.restore();
-                this.sprites.get("uzi").get("left").set(degrees, offscreenCanvas);
+                this.sprites.get("uzi").get("left").set(degrees, { image: offscreenCanvas, barrelLocation : { x: 0, y: 0 } });
             }
         }
 
