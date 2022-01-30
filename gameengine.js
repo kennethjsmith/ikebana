@@ -42,6 +42,7 @@ class GameEngine {
     init(ctx) {
         this.ctx = ctx;
         this.surfaceWidth = this.ctx.canvas.width;
+        console.log(this.surfaceWidth);
         this.surfaceHeight = this.ctx.canvas.height;
         this.startInput();
         this.timer = new Timer();

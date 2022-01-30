@@ -69,6 +69,10 @@ class Goop {
             if (this.game.down) this.velocity.y += WALK;
         }
 
+        // update the positions
+        this.xMap += this.velocity.x;
+        this.yMap += this.velocity.y;
+
         // update the states
         if (this.velocity.x > 0) {
             this.facing = "right";
@@ -84,16 +88,13 @@ class Goop {
             
         }
 
-        // update the positions
-        this.xMap += this.velocity.x;
-        this.yMap += this.velocity.y;
+
         this.game.camera.x += this.velocity.x;
         this.game.camera.y += this.velocity.y;
         this.game.crosshair.update();
         this.game.camera.update();
         //update the gun and crosshair
         this.game.gun.move(this.xMap,this.yMap);
-        
 
         this.updateBoundingBox();
 

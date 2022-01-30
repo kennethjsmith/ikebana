@@ -14,25 +14,17 @@ class SceneManager {
         this.xMidpoint = null;
         this.yMidpoint = null;
 
-
-
         //this.gameOver = false;
         this.level = "level1";
         this.levelXSize = 75; // # of tiles
         this.levelYSize = 41;
+        this.game.numXTiles = this.levelXSize;
+        this.game.numYTiles = this.levelYSize;
 
         this.startXPlayer = (this.levelXSize*5*16)/2;
         this.startYPlayer = (this.levelYSize*5*16)/2;
 
         this.loadLevel(this.level);
-
-        
-        // this.mario = new Mario(this.game, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH);
-
-        //this.loadLevel(this.level);//levelOne, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH, false, true);
-
-        // NOTE: PLEASE USE THE FOLLOWING LINE TO TEST.
-        // this.loadLevel(levelTwo, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH, false, true);
     };
 
     loadLevel(level) {
@@ -54,7 +46,6 @@ class SceneManager {
 
         // build level map
         this.game.level = new LevelGenerator(this.game, this.levelXSize, this.levelYSize);
-
     }
 
     clearEntities() {
@@ -99,8 +90,6 @@ class SceneManager {
         // }
     }
 
-
-   
     draw(ctx) {
         this.animation.drawFrame(this.game.clockTick, ctx, 0, 0, .5);
     };
