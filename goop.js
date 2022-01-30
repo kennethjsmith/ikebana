@@ -107,8 +107,8 @@ class Goop {
         //ctx.translate(-this.xMap+this.xStart, -this.yMap+this.xStart);//400 is half canvas width,300 height, - half player widthand height
         this.animation.drawFrame(this.game.clockTick, ctx, Math.floor(this.xMap-this.game.camera.x), Math.floor(this.yMap-this.game.camera.y), this.scale);
         //ctx.restore();
-        drawBoundingBox(this.hurtBox, ctx, this.game, "red");
-        drawBoundingBox(this.boundingBox, ctx, this.game, "white");
+        //drawBoundingBox(this.hurtBox, ctx, this.game, "red");
+        //drawBoundingBox(this.boundingBox, ctx, this.game, "white");
     };
 
     updateBoundingBox() {

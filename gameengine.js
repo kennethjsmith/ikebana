@@ -15,6 +15,11 @@ class GameEngine {
         // Entities to be added at the end of each update
         this.entitiesToAdd = [];
 
+        // Everything that will be updated and drawn each frame
+        this.bullets = [];
+        // Entities to be added at the end of each update
+        this.bulletsToAdd = [];
+
         // Information on the input
         this.click = null;
         this.mouseX = 0;
@@ -41,8 +46,8 @@ class GameEngine {
 
     init(ctx) {
         this.ctx = ctx;
+        //what is this? vvv
         this.surfaceWidth = this.ctx.canvas.width;
-        console.log(this.surfaceWidth);
         this.surfaceHeight = this.ctx.canvas.height;
         this.startInput();
         this.timer = new Timer();
@@ -169,7 +174,7 @@ class GameEngine {
                 console.log("CLICK", getXandY(e));
             }
             this.clicked = true;
-            console.log("pressed");
+            //console.log("pressed");
         });
 
         this.ctx.canvas.addEventListener("mouseup", e => {
@@ -177,7 +182,7 @@ class GameEngine {
                 console.log("CLICK", getXandY(e));
             }
             this.clicked = false;
-            console.log("released");
+            //console.log("released");
         });
 
         this.ctx.canvas.addEventListener("wheel", e => {
@@ -207,6 +212,10 @@ class GameEngine {
     addEntity(entity) {
         this.entitiesToAdd.push(entity);
     };
+
+    addBullet(bullet) {
+        this.bulletsToAdd.push(bullet);
+    };
     
 
     draw() {
@@ -219,6 +228,10 @@ class GameEngine {
         for (let i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx, this);
         }
+        // Draw latest things first
+        for (let i = this.bullets.length - 1; i >= 0; i--) {
+            this.bullets[i].draw(this.ctx, this);
+        }
 
         this.crosshair.draw(this.ctx);
     };
@@ -228,12 +241,22 @@ class GameEngine {
         // Update Entities
         this.entities.forEach(entity => entity.update(this));
 
+        // Update Bullets
+        this.bullets.forEach(bullet => bullet.update(this));
+
         // Remove dead things
         this.entities = this.entities.filter(entity => !entity.removeFromWorld);
+
+        // Remove dead things
+        this.bullets = this.bullets.filter(bullet => !bullet.removeFromWorld);
 
         // Add new things
         this.entities = this.entities.concat(this.entitiesToAdd);
         this.entitiesToAdd = [];
+
+        // Add new things
+        this.bullets = this.bullets.concat(this.bulletsToAdd);
+        this.bulletsToAdd = [];
     };
 
     loop() {
