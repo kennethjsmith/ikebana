@@ -105,7 +105,7 @@ class Gun {
             this.yMap = y + this.mapOffset;
         }
         //TODO COMMENT THIS UPDATE OUT ITS ONLY 2 MAKE THE GUN SHOOT FAST FOR DEMO
-        this.update();
+//        this.update();
         this.barrelX = (Math.cos(this.rotation) * (this.spriteSize / 2)) + this.xMap + this.spriteSize/2;
         this.barrelY = (Math.sin(this.rotation) * (this.spriteSize / 2)) + this.yMap + this.spriteSize/2;
         if (this.facing == "right") this.barrelX = (Math.cos(this.rotation) * (this.spriteSize / 2)) + this.xMap + this.spriteSize/2+20;
