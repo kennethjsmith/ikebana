@@ -26,9 +26,12 @@ class Goop {
         this.velocity = { x: 0, y: 0 };
 
         this.animations = new Map;
+
+        // list of tiles to draw on top of Goop
+        this.tilesToDrawOnTop = [];
+
         this.loadAnimations();
         this.updateBoundingBox();
-
         this.animation = this.animations.get("right").get("vibing").get("unarmed");
         //Animator constructor(spritesheet, xStart, yStart, width, height, frameCount, frameDuration) {
 
@@ -51,6 +54,7 @@ class Goop {
         this.animations.get("right").get("vibing").set("unarmed", new Animator(this.spritesheet, 936, 0, 39, 43, 8, .15));
     };
 
+
     update() {
         const WALK = 6;
         const DIAGONAL = 4.24; // 4 -> 2.8 based on WALK speed: 4^2 = 2(a^2); where a = x = y
@@ -69,10 +73,51 @@ class Goop {
             if (this.game.down) this.velocity.y += WALK;
         }
 
+        // check for wall collisions
         // update the positions
         this.xMap += this.velocity.x;
         this.yMap += this.velocity.y;
+        this.updateBoundingBox();
 
+        // a list of tiles to draw on top of Gloop
+       this.tilesToDrawOnTop = [];
+
+        let collisionOccurred = false;
+        this.game.spriteGrid.forEach( row => {
+            row.forEach( tile => {
+                let type = tile.type;
+               if (type == "wall" && this.boundingBox.collide(tile.BB)) {
+                    this.xMap -= this.velocity.x;
+                    this.yMap -= this.velocity.y;
+                    this.updateBoundingBox();
+                    collisionOccurred = true;
+               } else if (type == "south_wall") {
+                    if (this.boundingBox.collide(tile.BB.lower)) {
+                        this.xMap -= this.velocity.x;
+                        this.yMap -= this.velocity.y;
+                        this.updateBoundingBox();
+                        collisionOccurred = true;
+                    }
+
+                    if (this.boundingBox.collide(tile.BB.upper)) {
+                        this.tilesToDrawOnTop.push(tile);
+                    }         
+               }
+            });
+        });
+
+        if (!collisionOccurred) {
+            this.game.camera.x += this.velocity.x;
+            this.game.camera.y += this.velocity.y;
+            this.game.crosshair.update();
+            this.game.camera.update();
+            //update the gun and crosshair
+            this.game.gun.move(this.xMap,this.yMap);
+        }
+
+
+
+        // NOTE: this might need to be moved inside of the above !collisionOccurred block as well
         // update the states
         if (this.velocity.x > 0) {
             this.facing = "right";
@@ -88,16 +133,6 @@ class Goop {
             
         }
 
-
-        this.game.camera.x += this.velocity.x;
-        this.game.camera.y += this.velocity.y;
-        this.game.crosshair.update();
-        this.game.camera.update();
-        //update the gun and crosshair
-        this.game.gun.move(this.xMap,this.yMap);
-
-        this.updateBoundingBox();
-
         // update the animation
         this.animation = this.animations.get(this.facing).get(this.state).get(this.armed);
     };
@@ -109,6 +144,18 @@ class Goop {
         //ctx.restore();
         //drawBoundingBox(this.hurtBox, ctx, this.game, "red");
         //drawBoundingBox(this.boundingBox, ctx, this.game, "white");
+
+        if (this.tilesToDrawOnTop.length > 0) {
+            this.tilesToDrawOnTop.forEach( tile => {
+                let image = tile.image;
+                let col = tile.col;
+                let row = tile.row;
+                let tileSize = this.game.level.tileSize;
+                let scale = this.game.level.scale;
+                image.drawFrame(this.game.clockTick, ctx, Math.floor((col * tileSize) - (this.game.camera.x)), Math.floor((row * tileSize) - (this.game.camera.y)), scale); 
+            });
+        }
+       
     };
 
     updateBoundingBox() {
