@@ -1231,21 +1231,20 @@ class LevelGenerator {
                 square.drawFrame(this.game.clockTick, ctx, Math.floor((col * this.tileSize) - (this.game.camera.x)), Math.floor((row * this.tileSize) - (this.game.camera.y)), this.scale); 
                 
                 
-                // drawing the bounding boxes
-                if (this.spriteGrid[row][col].BB) {
-                    if (this.spriteGrid[row][col].type == "wall") {
-                        let bb = this.spriteGrid[row][col].BB;
-                        ctx.strokeStyle = 'red';
-                        ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
+                // UNCOMMENT TO DRAW THE BOUNDING BOXES FOR WALLS 
+                // if (this.spriteGrid[row][col].BB) {
+                //     if (this.spriteGrid[row][col].type == "wall") {
+                //         let bb = this.spriteGrid[row][col].BB;
+                //         ctx.strokeStyle = 'red';
+                //         ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
                
-                    } else {
-                        let bb = this.spriteGrid[row][col].BB.lower
-                        ctx.strokeStyle = 'red';
-                        ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
+                //     } else {
+                //         let bb = this.spriteGrid[row][col].BB.lower
+                //         ctx.strokeStyle = 'red';
+                //         ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
                
-                    }
-                }
-                // *16 because each tile is 16 x 16 pixels
+                //     }
+                // }
             }
         }
     };
