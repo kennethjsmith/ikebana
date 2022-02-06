@@ -52,7 +52,7 @@ class Gun {
         //console.log("barrel y:" + this.barrelY);
     //     // add alpha angle to rotation to aim gun barrel directly at cursor
         
-        //this.rotation -= Math.atan2(Math.hypot((this.game.mouseX - this.xMap),(this.game.mouseY - this.yMap)),10);
+        //this.rotation += Math.atan2(this.game.mouseX - (this.xMap+15+this.spriteSize/2),5);
 
     //     // update the animation
     //     //console.log(this.facing + this.rotation);
@@ -105,7 +105,7 @@ class Gun {
             this.yMap = y + this.mapOffset;
         }
         //TODO COMMENT THIS UPDATE OUT ITS ONLY 2 MAKE THE GUN SHOOT FAST FOR DEMO
-        this.update();
+        //this.update();
         this.barrelX = (Math.cos(this.rotation) * (this.spriteSize / 2)) + this.xMap + this.spriteSize/2;
         this.barrelY = (Math.sin(this.rotation) * (this.spriteSize / 2)) + this.yMap + this.spriteSize/2;
         if (this.facing == "right") this.barrelX = (Math.cos(this.rotation) * (this.spriteSize / 2)) + this.xMap + this.spriteSize/2+20;
