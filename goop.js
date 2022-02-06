@@ -130,10 +130,14 @@ class Goop {
         // update the positions
         this.xMap += this.velocity.x;
         this.yMap += this.velocity.y;
+        this.game.crosshair.xMap += this.velocity.x;
+        this.game.crosshair.yMap += this.velocity.y;
+
         this.updateBoundingBox();
 
-        this.game.crosshair.update();
+        
         this.game.camera.update();
+        this.game.crosshair.update();
         this.game.gun.move(this.xMap,this.yMap);
 
         // NOTE: this might need to be moved inside of the above !collisionOccurred block as well

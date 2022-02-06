@@ -1,7 +1,7 @@
 class Bullet {
     constructor(game, x, y) {
         this.game = game;
-        this.speed = 20;
+        this.speed = 30;
         this.range = 100; //how many updates, ie this bullet will travel speed*range
         this.removeFromWorld = false;
         
