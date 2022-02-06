@@ -32,7 +32,6 @@ class Goop {
 
         this.loadAnimations();
         this.updateBoundingBox();
-
         this.animation = this.animations.get("right").get("vibing").get("unarmed");
         //Animator constructor(spritesheet, xStart, yStart, width, height, frameCount, frameDuration) {
 
@@ -54,6 +53,7 @@ class Goop {
         this.animations.get("right").get("walking").set("unarmed", new Animator(this.spritesheet, 312, 0, 39, 43, 8, .1));
         this.animations.get("right").get("vibing").set("unarmed", new Animator(this.spritesheet, 936, 0, 39, 43, 8, .15));
     };
+
 
     update() {
         const WALK = 6;
@@ -103,8 +103,6 @@ class Goop {
                         this.tilesToDrawOnTop.push(tile);
                     }         
                }
-
-
             });
         });
 
@@ -148,16 +146,12 @@ class Goop {
         //drawBoundingBox(this.boundingBox, ctx, this.game, "white");
 
         if (this.tilesToDrawOnTop.length > 0) {
-            //console.log(this.tilesToDrawOnTop);
             this.tilesToDrawOnTop.forEach( tile => {
-                console.log(tile);
                 let image = tile.image;
                 let col = tile.col;
                 let row = tile.row;
                 let tileSize = this.game.level.tileSize;
                 let scale = this.game.level.scale;
-                console.log(this.game.spriteGrid)
-                //console.log("col: " + col + ", row: " + row + " tileSize: " + tileSize + ", scale: " + scale);
                 image.drawFrame(this.game.clockTick, ctx, Math.floor((col * tileSize) - (this.game.camera.x)), Math.floor((row * tileSize) - (this.game.camera.y)), scale); 
             });
         }

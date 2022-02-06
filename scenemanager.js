@@ -29,6 +29,10 @@ class SceneManager {
 
     loadLevel(level) {
 
+        // build level map
+        this.game.level = new LevelGenerator(this.game, this.levelXSize, this.levelYSize);
+        this.randomLocation();
+
         // add crosshair
         this.game.crosshair= new Crosshair(this.game);
 
@@ -44,14 +48,57 @@ class SceneManager {
         this.x = this.game.goop.xMap - this.xMidpoint;
         this.y = this.game.goop.yMap - this.yMidpoint;
 
-        // build level map
-        this.game.level = new LevelGenerator(this.game, this.levelXSize, this.levelYSize);
+
     }
 
     clearEntities() {
         this.game.entities.forEach(function (entity) {
             entity.removeFromWorld = true;
         });
+    };
+
+    // used to find a random start location for goop
+    randomLocation() {
+        var choice = floor(Math.random() * 2);
+
+        // start at the top
+        if (choice < 1) {
+            for (let row = 1; row < this.levelYSize - 3; row++) {
+                for (let col = 1; col < this.levelXSize - 3; col++) {
+                    if (this.acceptableSpawnLocation(row, col)) {
+                        this.startXPlayer = col * 5 * 16;
+                        this.startYPlayer = row * 5 * 16;
+                        break;
+                    }
+                }
+            }
+        // start at the bottom
+        } else {
+            for (let row = this.levelYSize - 3; row > 0; row--) {
+                for (let col = this.levelXSize - 3; col > 0; col--) {
+                    if (this.acceptableSpawnLocation(row, col)) {
+                        this.startXPlayer = col * 5 * 16;
+                        this.startYPlayer = row * 5 * 16;
+                        break;
+                    }
+                }
+            }
+        }
+    };
+
+    // returns true if the location is a 3x3 grid of floorspace
+    acceptableSpawnLocation(row, col) {
+        if (this.game.spriteGrid[row][col].type == "floor"
+            && this.game.spriteGrid[row+1][col].type == "floor"
+            && this.game.spriteGrid[row+2][col].type == "floor"
+            && this.game.spriteGrid[row][col+1].type == "floor"
+            && this.game.spriteGrid[row+1][col+1].type == "floor"
+            && this.game.spriteGrid[row+2][col+1].type == "floor"
+            && this.game.spriteGrid[row][col+2].type == "floor"
+            && this.game.spriteGrid[row+1][col+2].type == "floor"
+            && this.game.spriteGrid[row+2][col+2].type == "floor")
+            return true;
+        return false;
     };
 
     update() {
