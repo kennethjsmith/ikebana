@@ -74,48 +74,71 @@ class Goop {
         }
 
         // check for wall collisions
-        // update the positions
-        this.xMap += this.velocity.x;
-        this.yMap += this.velocity.y;
-        this.updateBoundingBox();
+        
 
         // a list of tiles to draw on top of Gloop
-       this.tilesToDrawOnTop = [];
+        this.tilesToDrawOnTop = [];
+
 
         let collisionOccurred = false;
         this.game.spriteGrid.forEach( row => {
             row.forEach( tile => {
                 let type = tile.type;
-               if (type == "wall" && this.boundingBox.collide(tile.BB)) {
-                    this.xMap -= this.velocity.x;
-                    this.yMap -= this.velocity.y;
-                    this.updateBoundingBox();
-                    collisionOccurred = true;
-               } else if (type == "south_wall") {
-                    if (this.boundingBox.collide(tile.BB.lower)) {
-                        this.xMap -= this.velocity.x;
-                        this.yMap -= this.velocity.y;
-                        this.updateBoundingBox();
-                        collisionOccurred = true;
-                    }
-
-                    if (this.boundingBox.collide(tile.BB.upper)) {
-                        this.tilesToDrawOnTop.push(tile);
-                    }         
-               }
+                if (type == "north_wall" && this.boundingBox.getXProjectedBB(this.velocity.x).collide(tile.BB)) this.velocity.x = 0;
+                if (type == "north_wall" && this.boundingBox.getYProjectedBB(this.velocity.y).collide(tile.BB)) this.velocity.y = 0;
+                if (type == "wall" && this.boundingBox.getXProjectedBB(this.velocity.x).collide(tile.BB)) this.velocity.x = 0;
+                if (type == "wall" && this.boundingBox.getYProjectedBB(this.velocity.y).collide(tile.BB)) this.velocity.y = 0;
+                if (type == "south_wall" && this.boundingBox.getXProjectedBB(this.velocity.x).collide(tile.BB.lower)) this.velocity.x = 0;
+                if (type == "south_wall" && this.boundingBox.getYProjectedBB(this.velocity.y).collide(tile.BB.lower)) this.velocity.y = 0;
+                // add tiles to draw on top
+                //if (type == "wall" && this.boundingBox.getYProjectedWideBB(this.velocity.y).collide(tile.BB.upper)) this.tilesToDrawOnTop.push(tile); // this will always redraw the tile
+                if (type == "south_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB.upper)) this.tilesToDrawOnTop.push(tile); // this will always redraw the tile
+                if (type == "wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB)) this.tilesToDrawOnTop.push(tile); // this will always redraw the tile
+                if (type == "north_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB) && this.boundingBox.top < tile.BB.bottom) this.tilesToDrawOnTop.push(tile);
             });
         });
+        // let collisionOccurred = false;
+        // this.game.spriteGrid.forEach( row => {
+        //     row.forEach( tile => {
+        //         let type = tile.type;
+        //         if (type == "wall" && this.boundingBox.collide(tile.BB)) {
+        //             console.log("here");
+        //             this.xMap -= this.velocity.x;
+        //             this.yMap -= this.velocity.y;
+        //             this.updateBoundingBox();
+        //             collisionOccurred = true;
+        //        } else if (type == "south_wall") {
+        //             if (this.boundingBox.collide(tile.BB.lower)) {
+        //                 this.xMap -= this.velocity.x;
+        //                 this.yMap -= this.velocity.y;
+        //                 this.updateBoundingBox();
+        //                 collisionOccurred = true;
+        //             }
 
-        if (!collisionOccurred) {
-            this.game.camera.x += this.velocity.x;
-            this.game.camera.y += this.velocity.y;
-            this.game.crosshair.update();
-            this.game.camera.update();
-            //update the gun and crosshair
-            this.game.gun.move(this.xMap,this.yMap);
-        }
+        //             if (this.boundingBox.collide(tile.BB.upper)) {
+        //                 this.tilesToDrawOnTop.push(tile);
+        //             }         
+        //        }
+        //     });
+        // });
 
+        // if (!collisionOccurred) {
+        //     this.game.camera.x += this.velocity.x;
+        //     this.game.camera.y += this.velocity.y; 
+        // }
 
+        // update the positions
+        this.xMap += this.velocity.x;
+        this.yMap += this.velocity.y;
+        this.game.crosshair.xMap += this.velocity.x;
+        this.game.crosshair.yMap += this.velocity.y;
+
+        this.updateBoundingBox();
+
+        
+        this.game.camera.update();
+        this.game.crosshair.update();
+        this.game.gun.move(this.xMap,this.yMap);
 
         // NOTE: this might need to be moved inside of the above !collisionOccurred block as well
         // update the states
@@ -145,21 +168,12 @@ class Goop {
         //drawBoundingBox(this.hurtBox, ctx, this.game, "red");
         //drawBoundingBox(this.boundingBox, ctx, this.game, "white");
 
-        if (this.tilesToDrawOnTop.length > 0) {
-            this.tilesToDrawOnTop.forEach( tile => {
-                let image = tile.image;
-                let col = tile.col;
-                let row = tile.row;
-                let tileSize = this.game.level.tileSize;
-                let scale = this.game.level.scale;
-                image.drawFrame(this.game.clockTick, ctx, Math.floor((col * tileSize) - (this.game.camera.x)), Math.floor((row * tileSize) - (this.game.camera.y)), scale); 
-            });
-        }
+        
        
     };
 
     updateBoundingBox() {
         this.hurtBox = new BoundingBox(this.xMap, this.yMap, this.spriteWidth, this.spriteHeight);
-        this.boundingBox = new BoundingBox(this.xMap, this.yMap + 2*(this.spriteHeight/3), this.spriteWidth, this.spriteHeight/3);
+        this.boundingBox = new BoundingBox(this.xMap+5, this.yMap + 2*(this.spriteHeight/3), this.spriteWidth-10, this.spriteHeight/3);//+5 x, -10 width for narrower box
     };
 };

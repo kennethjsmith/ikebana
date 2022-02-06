@@ -1,8 +1,8 @@
 class Bullet {
     constructor(game, x, y) {
         this.game = game;
-        this.speed = 20;
-        this.range = 50; //how many updates, ie this bullet will travel speed*range
+        this.speed = 30;
+        this.range = 100; //how many updates, ie this bullet will travel speed*range
         this.removeFromWorld = false;
         
 
@@ -63,8 +63,8 @@ class Bullet {
         //ctx.translate(this.xCanvas, this.yCanvas);
         //this.game.ctx.fillRect(this.xMap-this.game.camera.x,this.yMap-this.game.camera.y,1,1);
 
-        if (this.range == 50) this.animations.drawFrame(this.game.clockTick, ctx, this.xFlash - this.game.camera.x - ((this.SIZE*this.FLASHSCALE)/2), this.yFlash - this.game.camera.y - ((this.SIZE*this.FLASHSCALE)/2), this.FLASHSCALE);
-        if (this.range < 45) this.animations.drawFrame(this.game.clockTick, ctx, this.xMap - this.game.camera.x - this.spriteWidth/2, this.yMap - this.game.camera.y - this.spriteWidth/2, this.SCALE);
+        if (this.range == 100) this.animations.drawFrame(this.game.clockTick, ctx, this.xFlash - this.game.camera.x - ((this.SIZE*this.FLASHSCALE)/2), this.yFlash - this.game.camera.y - ((this.SIZE*this.FLASHSCALE)/2), this.FLASHSCALE);
+        if (this.range < 95) this.animations.drawFrame(this.game.clockTick, ctx, this.xMap - this.game.camera.x - this.spriteWidth/2, this.yMap - this.game.camera.y - this.spriteWidth/2, this.SCALE);
         ctx.restore();
     };
 };

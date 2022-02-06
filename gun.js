@@ -52,7 +52,7 @@ class Gun {
         //console.log("barrel y:" + this.barrelY);
     //     // add alpha angle to rotation to aim gun barrel directly at cursor
         
-        //this.rotation -= Math.atan2(Math.hypot((this.game.mouseX - this.xMap),(this.game.mouseY - this.yMap)),10);
+        //this.rotation += Math.atan2(this.game.mouseX - (this.xMap+15+this.spriteSize/2),5);
 
     //     // update the animation
     //     //console.log(this.facing + this.rotation);
@@ -105,7 +105,8 @@ class Gun {
             this.yMap = y + this.mapOffset;
         }
         //TODO COMMENT THIS UPDATE OUT ITS ONLY 2 MAKE THE GUN SHOOT FAST FOR DEMO
-//        this.update();
+        //this.update();
+
         this.barrelX = (Math.cos(this.rotation) * (this.spriteSize / 2)) + this.xMap + this.spriteSize/2;
         this.barrelY = (Math.sin(this.rotation) * (this.spriteSize / 2)) + this.yMap + this.spriteSize/2;
         if (this.facing == "right") this.barrelX = (Math.cos(this.rotation) * (this.spriteSize / 2)) + this.xMap + this.spriteSize/2+20;
@@ -171,7 +172,18 @@ class Gun {
             }
         }
         //console.log(this.xMap + "," + this.yMap);
-        ctx.drawImage(offscreenCanvas, this.xMap-this.game.camera.x, this.yMap-this.game.camera.y);        
+        ctx.drawImage(offscreenCanvas, this.xMap-this.game.camera.x, this.yMap-this.game.camera.y); 
+        
+        if (this.game.goop.tilesToDrawOnTop.length > 0) {
+            this.game.goop.tilesToDrawOnTop.forEach( tile => {
+                let image = tile.image;
+                let col = tile.col;
+                let row = tile.row;
+                let tileSize = this.game.level.tileSize;
+                let scale = this.game.level.scale;
+                image.drawFrame(this.game.clockTick, ctx, Math.floor((col * tileSize) - (this.game.camera.x)), Math.floor((row * tileSize) - (this.game.camera.y)), scale); 
+            });
+        }
         //this.game.ctx.fillRect(this.xMap-this.game.camera.x,this.yMap-this.game.camera.y,1,1);
         //this.game.ctx.fillRect(this.barrelX-this.game.camera.x,this.barrelY-this.game.camera.y,1,1);
         // this.bullets.forEach(bullet => {
