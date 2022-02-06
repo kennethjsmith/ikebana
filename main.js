@@ -15,8 +15,14 @@ ASSET_MANAGER.queueDownload("./sprites/guns.png");
 ASSET_MANAGER.queueDownload("./sprites/HUD_mockup.png");
 ASSET_MANAGER.queueDownload("./sprites/level1.png");
 ASSET_MANAGER.queueDownload("./sprites/level2.png");
+ASSET_MANAGER.queueDownload("./sprites/title.png");
+
+ASSET_MANAGER.queueDownload("./sfx/chiffon.mp3");
+
 
 ASSET_MANAGER.downloadAll(() => {
+	ASSET_MANAGER.autoRepeat("./sfx/chiffon.mp3");
+
 	const canvas = document.getElementById("gameWorld");
 	const ctx = canvas.getContext("2d");
 	ctx.imageSmoothingEnabled = false;
@@ -28,5 +34,6 @@ ASSET_MANAGER.downloadAll(() => {
 	//gameEngine.addEntity(new HorrorSlime(gameEngine,2800,2800));
 	//gameEngine.addEntity(new Slime(gameEngine,3000,3000));
 	//gameEngine.addEntity(new Flower(gameEngine,2900,2900));
+	//new SceneManager(gameEngine)
 	gameEngine.start();
 });

@@ -172,7 +172,18 @@ class Gun {
             }
         }
         //console.log(this.xMap + "," + this.yMap);
-        ctx.drawImage(offscreenCanvas, this.xMap-this.game.camera.x, this.yMap-this.game.camera.y);        
+        ctx.drawImage(offscreenCanvas, this.xMap-this.game.camera.x, this.yMap-this.game.camera.y); 
+        
+        if (this.game.goop.tilesToDrawOnTop.length > 0) {
+            this.game.goop.tilesToDrawOnTop.forEach( tile => {
+                let image = tile.image;
+                let col = tile.col;
+                let row = tile.row;
+                let tileSize = this.game.level.tileSize;
+                let scale = this.game.level.scale;
+                image.drawFrame(this.game.clockTick, ctx, Math.floor((col * tileSize) - (this.game.camera.x)), Math.floor((row * tileSize) - (this.game.camera.y)), scale); 
+            });
+        }
         //this.game.ctx.fillRect(this.xMap-this.game.camera.x,this.yMap-this.game.camera.y,1,1);
         //this.game.ctx.fillRect(this.barrelX-this.game.camera.x,this.barrelY-this.game.camera.y,1,1);
         // this.bullets.forEach(bullet => {

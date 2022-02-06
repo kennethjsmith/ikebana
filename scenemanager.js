@@ -6,7 +6,8 @@ class SceneManager {
         this.y = null;
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/HUD_mockup.png");
         this.animation = new Animator(this.spritesheet, 0, 0, 1483, 198, 1, 1);
-
+        
+        this.hud = new Hud(this.game);
         this.health = 3;
         this.ammo = { bullet: 255, energy: 55};
         this.flowers = 0;
@@ -16,6 +17,7 @@ class SceneManager {
 
         //this.gameOver = false;
         this.level = "level1";
+        this.titleScreen = true;
         this.levelXSize = 75; // # of tiles
         this.levelYSize = 41;
         this.game.numXTiles = this.levelXSize;
@@ -24,31 +26,39 @@ class SceneManager {
         this.startXPlayer = (this.levelXSize*5*16)/2;
         this.startYPlayer = (this.levelYSize*5*16)/2;
 
-        this.loadLevel(this.level);
+        this.loadLevel(this.level, this.titleScreen);
     };
 
-    loadLevel(level) {
+    updateAudio() {
+		var mute = document.getElementById("mute").checked;
+		var volume = document.getElementById("volume").value;
+		
+		ASSET_MANAGER.muteAudio(mute);
+		ASSET_MANAGER.adjustVolume(volume);
+	};
 
-        // build level map
-        this.game.level = new LevelGenerator(this.game, this.levelXSize, this.levelYSize);
-        this.randomLocation();
+    loadLevel(level, title) {
 
-        // add crosshair
-        this.game.crosshair= new Crosshair(this.game);
+       // if(!title){
+            // build level map
+            this.game.level = new LevelGenerator(this.game, this.levelXSize, this.levelYSize);
+            this.randomLocation();
 
-        // add gun
-        this.game.addEntity(new Gun("uzi",this.game)); // 5 is level scaler and 16 is the sprite width/height for level tiles
-        
-        // add goop
-        this.game.addEntity(new Goop(this.game)); // 5 is level scaler and 16 is the sprite width/height for level tiles
+            // add gun
+            this.game.addEntity(new Gun("uzi",this.game)); // 5 is level scaler and 16 is the sprite width/height for level tiles
+            
+            // add goop
+            this.game.addEntity(new Goop(this.game)); // 5 is level scaler and 16 is the sprite width/height for level tiles
 
-        this.xMidpoint = this.game.ctx.canvas.width/2 - (this.game.goop.spriteWidth/2);
-        this.yMidpoint = this.game.ctx.canvas.height/2 - (this.game.goop.spriteHeight/2);
+            this.xMidpoint = this.game.ctx.canvas.width/2 - (this.game.goop.spriteWidth/2);
+            this.yMidpoint = this.game.ctx.canvas.height/2 - (this.game.goop.spriteHeight/2);
 
-        this.x = this.game.goop.xMap - this.xMidpoint;
-        this.y = this.game.goop.yMap - this.yMidpoint;
+            this.x = this.game.goop.xMap - this.xMidpoint;
+            this.y = this.game.goop.yMap - this.yMidpoint;
 
-
+            ASSET_MANAGER.pauseBackgroundMusic();
+            //ASSET_MANAGER.playAsset("dummy-path");
+        //}
     }
 
     clearEntities() {
@@ -102,6 +112,14 @@ class SceneManager {
     };
 
     update() {
+        //console.log("here");
+        // if (this.title && this.game.click) {
+		// 	if (this.game.click.x > 415 && this.game.click.x < 565 && this.game.click.y > 660 && this.game.click.y < 710) {
+		// 		this.title = false;
+		// 		this.loadLevel(levelOne, false);
+		// 	}
+		// }
+
         let radius = 200;
         let xDistance = ((this.game.crosshair.xMap + this.game.crosshair.spriteSize/2) - (this.game.goop.xMap + this.game.goop.spriteWidth/2));
         let yDistance = ((this.game.crosshair.yMap + this.game.crosshair.spriteSize/2) - (this.game.goop.yMap + this.game.goop.spriteHeight/2));
@@ -135,9 +153,20 @@ class SceneManager {
         //     Obj.position.x = norm.x*Radius + Parent.position.x;
         //     Obj.position.y = norm.y*Radius + Parent.position.y;
         // }
+        this.updateAudio();
     }
 
     draw(ctx) {
-        this.animation.drawFrame(this.game.clockTick, ctx, 0, 0, .5);
+        if (this.title) {
+			//ctx.drawImage(this.titleBackground, 0, 0, 620, 349, 0, 0, 1024, 768);
+			ctx.fillStyle = "Black";
+			ctx.fillText("Ikebana", 200, 200);
+			
+			//ctx.fillRect(300, 660, 150, 50);
+			ctx.fillStyle = this.game.mouse && this.game.mouse.x > 415 && this.game.mouse.x < 565 && this.game.mouse.y > 660 && this.game.mouse.y < 710 ? "White" : "Black";
+			ctx.fillText("PLAY", 425, 700);
+		}
+
+        //this.animation.drawFrame(this.game.clockTick, ctx, 0, 0, .5);
     };
 }

@@ -46,6 +46,7 @@ class GameEngine {
 
     init(ctx) {
         this.ctx = ctx;
+        this.crosshair= new Crosshair(this);
         //what is this? vvv
         this.surfaceWidth = this.ctx.canvas.width;
         this.surfaceHeight = this.ctx.canvas.height;
@@ -174,6 +175,7 @@ class GameEngine {
                 console.log("CLICK", getXandY(e));
             }
             this.clicked = true;
+            ASSET_MANAGER.playAsset("dummy-path");
             //console.log("pressed");
         });
 
@@ -221,18 +223,22 @@ class GameEngine {
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        // if (this.camera.titleScreen)this.camera.draw(this.ctx);
+        // else{
+            this.level.draw(this.ctx);
 
-        this.level.draw(this.ctx);
+            // Draw latest things first
+            for (let i = this.entities.length - 1; i >= 0; i--) {
+                this.entities[i].draw(this.ctx, this);
+            }
+            // Draw latest things first
+            for (let i = this.bullets.length - 1; i >= 0; i--) {
+                this.bullets[i].draw(this.ctx, this);
+            }
 
-        // Draw latest things first
-        for (let i = this.entities.length - 1; i >= 0; i--) {
-            this.entities[i].draw(this.ctx, this);
-        }
-        // Draw latest things first
-        for (let i = this.bullets.length - 1; i >= 0; i--) {
-            this.bullets[i].draw(this.ctx, this);
-        }
-
+            this.camera.hud.draw(this.ctx);
+            
+        //}
         this.crosshair.draw(this.ctx);
     };
 

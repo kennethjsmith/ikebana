@@ -347,7 +347,7 @@ class LevelGenerator {
                     } else if (this.isSECornerNWInvertedCorner(row, col, nwOfCurr, westOfCurr, northOfCurr, southOfCurr, swOfCurr, seOfCurr)) {
                         this.spriteGrid[row][col] = 
                         {   
-                            type: "south_wall",
+                            type: "wall",
                             BB: null, 
                             image:  this.levelAssets.get("wall").get("wallTop").get("seCornerNWInvertedCorner"),
                             row: row,
@@ -357,7 +357,7 @@ class LevelGenerator {
                     } else if (this.isSWCornerNEInvertedCorner(row, col, northOfCurr, southOfCurr, eastOfCurr, swOfCurr, seOfCurr, neOfCurr)) {
                         this.spriteGrid[row][col] = 
                         { 
-                            type: "south_wall",
+                            type: "wall",
                             BB: null, 
                             image: this.levelAssets.get("wall").get("wallTop").get("swCornerNEInvertedCorner"),
                             row: row,
@@ -377,7 +377,7 @@ class LevelGenerator {
                     } else if (this.isSECornerNECorner(row, col, westOfCurr, southOfCurr, swOfCurr, northOfCurr, eastOfCurr, neOfCurr, seOfCurr, nwOfCurr)){
                         this.spriteGrid[row][col] = 
                         { 
-                            type: "south_wall",
+                            type: "wall",
                             BB: null, 
                             image: this.levelAssets.get("wall").get("wallTop").get("seCornerNECorner"),
                             row: row,
@@ -387,7 +387,7 @@ class LevelGenerator {
                     } else if (this.isSWCornerNWCorner(row, col, westOfCurr, southOfCurr, swOfCurr, northOfCurr, eastOfCurr, neOfCurr, seOfCurr, nwOfCurr)) {
                         this.spriteGrid[row][col] = 
                         { 
-                            type: "south_wall",
+                            type: "wall",
                             BB: null, 
                             image: this.levelAssets.get("wall").get("wallTop").get("swCornerNWCorner"),
                             row: row,
@@ -407,7 +407,7 @@ class LevelGenerator {
                     } else if (this.isNWallSECorner(row, col, northOfCurr, nwOfCurr, westOfCurr, southOfCurr, swOfCurr)) {
                         this.spriteGrid[row][col] = 
                         { 
-                            type: "south_wall",
+                            type: "wall",
                             BB: null, 
                             image: this.levelAssets.get("wall").get("wallTop").get("nWallSECorner"),
                             row: row,
@@ -467,7 +467,7 @@ class LevelGenerator {
                     } else if (this.isNWallSWCorner(row, col, northOfCurr, eastOfCurr, southOfCurr, westOfCurr, neOfCurr)) {
                         this.spriteGrid[row][col] = 
                         { 
-                            type: "south_wall",
+                            type: "wall",
                             BB: null, 
                             image: this.levelAssets.get("wall").get("wallTop").get("nWallSWCorner"),
                             row: row,
@@ -557,7 +557,7 @@ class LevelGenerator {
                     } else if (this.isSWCornerTop(northOfCurr, eastOfCurr, neOfCurr)) {
                         this.spriteGrid[row][col] = 
                         { 
-                            type: "south_wall",
+                            type: "wall",
                             BB: null, 
                             image: this.levelAssets.get("wall").get("corner").get("sw"),
                             row: row,
@@ -567,7 +567,7 @@ class LevelGenerator {
                     } else if (this.isSECornerTop(westOfCurr, northOfCurr, nwOfCurr)) {
                         this.spriteGrid[row][col] = 
                         { 
-                            type: "south_wall",
+                            type: "wall",
                             BB: null, 
                             image: this.levelAssets.get("wall").get("corner").get("se"),
                             row: row,
@@ -587,7 +587,7 @@ class LevelGenerator {
                     } else if (this.isNWCorner(northOfCurr, eastOfCurr, seOfCurr, southOfCurr)) {
                         this.spriteGrid[row][col] = 
                         { 
-                            type: "wall",
+                            type: "north_wall",
                             BB: null, 
                             image: this.levelAssets.get("wall").get("nWall").get("nwCorner"),
                             row: row,
@@ -597,7 +597,7 @@ class LevelGenerator {
                     } else if (this.isNECorner(northOfCurr, westOfCurr, swOfCurr, southOfCurr)) {
                         this.spriteGrid[row][col] = 
                         { 
-                            type: "wall",
+                            type: "north_wall",
                             BB: null, 
                             image: this.levelAssets.get("wall").get("nWall").get("neCorner"),
                             row: row,
@@ -607,7 +607,7 @@ class LevelGenerator {
                     } else if (southOfCurr == "floor") {
                         this.spriteGrid[row][col] = 
                         { 
-                            type: "wall",
+                            type: "north_wall",
                             BB: null, 
                             image: this.randomNorthWall(),
                             row: row,
@@ -628,7 +628,7 @@ class LevelGenerator {
                             && this.spriteGrid[row - 1][col].image != this.levelAssets.get("ground").get("filler")) {
                             this.spriteGrid[row][col] = 
                             { 
-                                type: "wall",
+                                type: "north_wall",
                                 BB: null, 
                                 image: this.randomNorthWall(),
                                 row: row,
@@ -1204,7 +1204,7 @@ class LevelGenerator {
         for (var row = 0; row < this.height; row++) {
             for (var col = 0; col < this.width; col++) {
                 let curr = this.spriteGrid[row][col];
-                if (curr.type == "wall") {
+                if (curr.type == "wall" || curr.type == "north_wall" ) {
                     curr.BB = new BoundingBox(Math.floor(col * this.tileSize), 
                     Math.floor(row * this.tileSize), 
                     this.tileSize, this.tileSize);
@@ -1212,11 +1212,11 @@ class LevelGenerator {
                     curr.BB = {
                         upper: new BoundingBox(Math.floor(col * this.tileSize), 
                             Math.floor(row * this.tileSize), 
-                            this.tileSize, Math.floor(this.tileSize / 2)),
+                            this.tileSize, 5*Math.floor(this.tileSize / 6)),
 
                         lower: new BoundingBox(Math.floor(col * this.tileSize), 
-                            Math.floor(row * this.tileSize + this.tileSize / 2), 
-                            this.tileSize, Math.floor(this.tileSize / 2))
+                            Math.floor(row * this.tileSize + 5*Math.floor(this.tileSize / 6)), 
+                            this.tileSize, Math.floor(this.tileSize / 6))
                     };
                 }
             }
@@ -1232,19 +1232,19 @@ class LevelGenerator {
                 
                 
                 // drawing the bounding boxes
-                if (this.spriteGrid[row][col].BB) {
-                    if (this.spriteGrid[row][col].type == "wall") {
-                        let bb = this.spriteGrid[row][col].BB;
-                        ctx.strokeStyle = 'red';
-                        ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
+                // if (this.spriteGrid[row][col].BB) {
+                //     if (this.spriteGrid[row][col].type == "wall" || this.spriteGrid[row][col].type == "north_wall" ) {
+                //         let bb = this.spriteGrid[row][col].BB;
+                //         ctx.strokeStyle = 'red';
+                //         ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
                
-                    } else {
-                        let bb = this.spriteGrid[row][col].BB.lower
-                        ctx.strokeStyle = 'red';
-                        ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
+                //     } else {
+                //         let bb = this.spriteGrid[row][col].BB.lower
+                //         ctx.strokeStyle = 'red';
+                //         ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
                
-                    }
-                }
+                //     }
+                // }
                 // *16 because each tile is 16 x 16 pixels
             }
         }
