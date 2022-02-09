@@ -14,7 +14,7 @@ class Gun {
         this.rotation = 0;
         this.alpha = 0;
 
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/uzi.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/laser.png");
         this.SIZE = 38; // num of pixels wide
         this.SCALE = 3;
         this.spriteSize = this.SIZE * this.SCALE;
@@ -161,5 +161,16 @@ class Gun {
         }
         // draw the fetched or newly created image
         ctx.drawImage(offscreenCanvas, this.xMap-this.game.camera.x, this.yMap-this.game.camera.y); 
+
+        if (this.game.goop.tilesToDrawOnTop.length > 0) {
+            this.game.goop.tilesToDrawOnTop.forEach( tile => {
+                let image = tile.image;
+                let col = tile.col;
+                let row = tile.row;
+                let tileSize = this.game.level.tileSize;
+                let scale = this.game.level.scale;
+                image.drawFrame(this.game.clockTick, ctx, Math.floor((col * tileSize) - (this.game.camera.x)), Math.floor((row * tileSize) - (this.game.camera.y)), scale); 
+            });
+        }
     };
 };
