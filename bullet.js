@@ -57,11 +57,8 @@ class Bullet {
         //console.log("bullet x:"+ this.xMap+"bullet y:"+ this.yMap);
         
         ctx.save();
-        //ctx.translate(this.xCanvas, this.yCanvas);
         this.game.ctx.fillRect(this.xMap-this.game.camera.x,this.yMap-this.game.camera.y,1,1);
-
-        //if (this.range == 100) this.animations.drawFrame(this.game.clockTick, ctx, this.xFlash - this.game.camera.x - ((this.SIZE*this.FLASHSCALE)/2), this.yFlash - this.game.camera.y - ((this.SIZE*this.FLASHSCALE)/2), this.FLASHSCALE);
-        //if (this.range < 95) this.animations.drawFrame(this.game.clockTick, ctx, this.xMap - this.game.camera.x - this.spriteWidth/2, this.yMap - this.game.camera.y - this.spriteWidth/2, this.SCALE);
+        this.animations.drawFrame(this.game.clockTick, ctx, this.xMap - this.game.camera.x - this.spriteWidth/2, this.yMap - this.game.camera.y - this.spriteWidth/2, this.SCALE);
         ctx.restore();
     };
 };

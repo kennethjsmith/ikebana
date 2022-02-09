@@ -3,7 +3,7 @@ class LevelGenerator {
     constructor(game, width, height) {
         this.game = game;
 
-        this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/level1.png");
+        this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/level1test.png");
         this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/level2.png");
         if (this.game.camera.level == "level1") this.spritesheet = this.level1SpriteSheet;
         else this.spritesheet = this.level2SpriteSheet;
