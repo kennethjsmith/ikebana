@@ -23,8 +23,9 @@ class SceneManager {
         this.game.numXTiles = this.levelXSize;
         this.game.numYTiles = this.levelYSize;
 
-        this.startXPlayer = (this.levelXSize*5*16)/2;
-        this.startYPlayer = (this.levelYSize*5*16)/2;
+        this.startXPlayer = null;
+        this.startYPlayer = null;
+        this.goopsQuadrant = null;
 
         this.loadLevel(this.level, this.titleScreen);
     };
@@ -40,9 +41,12 @@ class SceneManager {
     loadLevel(level, title) {
 
        // if(!title){
-            // build level map
+            // build level map and spawn start location for goop
             this.game.level = new LevelGenerator(this.game, this.levelXSize, this.levelYSize);
-            this.randomLocation();
+            let goopStartLocation = this.randomEdgeLocation();
+            this.startXPlayer = goopStartLocation.x;
+            this.startYPlayer = goopStartLocation.y;
+            this.calculateGoopsStartQuadrant();
 
             // add gun
             this.game.addEntity(new Gun("uzi",this.game)); // 5 is level scaler and 16 is the sprite width/height for level tiles
@@ -56,6 +60,8 @@ class SceneManager {
             this.x = this.game.goop.xMap - this.xMidpoint;
             this.y = this.game.goop.yMap - this.yMidpoint;
 
+            this.addEnemies();
+
             ASSET_MANAGER.pauseBackgroundMusic();
             //ASSET_MANAGER.playAsset("dummy-path");
         //}
@@ -67,8 +73,21 @@ class SceneManager {
         });
     };
 
+    addEnemies() {
+        let numSlimes = 10;
+        //this.enemyStartLocation = [];
+        for (let i = 0; i < numSlimes; i++) {        
+            let enemyLocation = this.randomLocation();
+            //enemyStartLocation.push(enemyLocation);
+
+            this.game.addEntity(new Slime(this.game, enemyLocation.x, enemyLocation.y));
+            console.log("enemy location. x: " + enemyLocation.x + ", y: " + enemyLocation.y);
+        }
+
+    }
+
     // used to find a random start location for goop
-    randomLocation() {
+    randomEdgeLocation() {
         var choice = floor(Math.random() * 2);
 
         // start at the top
@@ -76,29 +95,39 @@ class SceneManager {
             for (let row = 1; row < this.levelYSize - 3; row++) {
                 for (let col = 1; col < this.levelXSize - 3; col++) {
                     if (this.acceptableSpawnLocation(row, col)) {
-                        this.startXPlayer = col * 5 * 16;
-                        this.startYPlayer = row * 5 * 16;
-                        break;
+                        return { x: col * 5 * 16, y: row * 5 * 16 };
                     }
                 }
             }
         // start at the bottom
         } else {
-            for (let row = this.levelYSize - 3; row > 0; row--) {
-                for (let col = this.levelXSize - 3; col > 0; col--) {
+            for (let row = this.levelYSize - 3; row > 3; row--) {
+                for (let col = this.levelXSize - 3; col > 3; col--) {
                     if (this.acceptableSpawnLocation(row, col)) {
-                        this.startXPlayer = col * 5 * 16;
-                        this.startYPlayer = row * 5 * 16;
-                        break;
+                        return { x: col * 5 * 16, y: row * 5 * 16 };
                     }
                 }
             }
         }
     };
 
+    // used to find a random start location for enemies
+    randomLocation() {
+        var row = floor(Math.random() * 41);
+        var col = floor(Math.random() * 75);
+        while (!this.acceptableSpawnLocation(row, col)) {
+            row = floor(Math.random() * 41);
+            col = floor(Math.random() * 75);
+        }
+        return { x: col * 5 * 16, y: row * 5 * 16 };        
+    }
+
     // returns true if the location is a 3x3 grid of floorspace
     acceptableSpawnLocation(row, col) {
-        if (this.game.spriteGrid[row][col].type == "floor"
+
+        // if we are spawning goops start location
+        if (this.startXPlayer == null && this.startYPlayer == null
+            && this.game.spriteGrid[row][col].type == "floor"
             && this.game.spriteGrid[row+1][col].type == "floor"
             && this.game.spriteGrid[row+2][col].type == "floor"
             && this.game.spriteGrid[row][col+1].type == "floor"
@@ -106,10 +135,51 @@ class SceneManager {
             && this.game.spriteGrid[row+2][col+1].type == "floor"
             && this.game.spriteGrid[row][col+2].type == "floor"
             && this.game.spriteGrid[row+1][col+2].type == "floor"
-            && this.game.spriteGrid[row+2][col+2].type == "floor")
-            return true;
+            && this.game.spriteGrid[row+2][col+2].type == "floor") {
+                return true;
+
+        // else if we are spawning an enemy start location
+        // enemies cannot spawn in the same quadrant as goop
+        } else if (this.startXPlayer != null && this.startYPlayer != null
+            && this.game.spriteGrid[row][col].type == "floor"
+            && !this.inGoopsQuadrant(row, col)
+            //&& !this.enemyStartLocation.includes({ x: col, y: row })
+            ) 
+                return true;
+        
         return false;
     };
+
+    // returns true if the row and col are within goops quadrant
+    inGoopsQuadrant(row, col) {
+
+        switch(this.goopsQuadrant) {
+            case "SE":
+                if (row > this.levelYSize / 2 && col > this.levelXSize / 2 ) return true;
+                else return false;
+                
+            case "NE":
+                if (row < this.levelYSize / 2 && col > this.levelXSize / 2) return true;
+                else return false;
+
+            case "SW":
+                if (row > this.levelYSize / 2 && col < this.levelXSize / 2) return true;
+                else return false;
+
+            default: // NW
+                if (row < this.levelYSize / 2 && col < this.levelXSize / 2) return true;
+                else return false;
+        }
+    };
+
+    calculateGoopsStartQuadrant() {
+        if (this.startXPlayer > this.levelXSize * 5 * 16 / 2) {
+            if (this.startYPlayer > this.levelYSize * 5 * 16 / 2) this.goopsQuadrant = "SE";
+            else this.goopsQuadrant = "NE";
+        } else if (this.startYPlayer > this.levelYSize * 5 * 16 / 2) this.goopsQuadrant = "SW";
+        else this.goopsQuadrant = "NW";
+
+    }
 
     update() {
         //console.log("here");
