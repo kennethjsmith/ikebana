@@ -227,11 +227,15 @@ class GameEngine {
         // else{
             this.level.draw(this.ctx);
 
-            // Draw latest things first
+            // Draw latest entities first
             for (let i = this.entities.length - 1; i >= 0; i--) {
                 this.entities[i].draw(this.ctx, this);
             }
-            // Draw latest things first
+
+            // draw goops gun
+            this.goop.gun.draw(this.ctx);
+
+            // Draw latest bullets first
             for (let i = this.bullets.length - 1; i >= 0; i--) {
                 this.bullets[i].draw(this.ctx, this);
             }

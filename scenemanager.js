@@ -17,7 +17,10 @@ class SceneManager {
 
         //this.gameOver = false;
         this.level = "level1";
+        
         this.titleScreen = true;
+
+
         this.levelXSize = 75; // # of tiles
         this.levelYSize = 41;
         this.game.numXTiles = this.levelXSize;
@@ -45,10 +48,12 @@ class SceneManager {
             this.randomLocation();
 
             // add gun
-            this.game.addEntity(new Gun("uzi",this.game)); // 5 is level scaler and 16 is the sprite width/height for level tiles
+            //this.game.addEntity(new Gun("uzi",this.game)); // 5 is level scaler and 16 is the sprite width/height for level tiles
             
             // add goop
             this.game.addEntity(new Goop(this.game)); // 5 is level scaler and 16 is the sprite width/height for level tiles
+
+            this.game.goop.gun = new Gun("uzi", this.game);
 
             this.xMidpoint = this.game.ctx.canvas.width/2 - (this.game.goop.spriteWidth/2);
             this.yMidpoint = this.game.ctx.canvas.height/2 - (this.game.goop.spriteHeight/2);
@@ -120,11 +125,9 @@ class SceneManager {
 		// 	}
 		// }
 
-        let radius = 200;
+        
         let xDistance = ((this.game.crosshair.xMap + this.game.crosshair.spriteSize/2) - (this.game.goop.xMap + this.game.goop.spriteWidth/2));
         let yDistance = ((this.game.crosshair.yMap + this.game.crosshair.spriteSize/2) - (this.game.goop.yMap + this.game.goop.spriteHeight/2));
-        let totalDistance = Math.sqrt((xDistance*xDistance) + (yDistance*yDistance));
-
         
         //TODO: make this radius bound work for camera
         // if(totalDistance > radius){

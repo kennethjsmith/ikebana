@@ -1,5 +1,5 @@
 class Bullet {
-    constructor(game, x, y) {
+    constructor(game) {
         this.game = game;
         this.speed = 30;
         this.range = 100; //how many updates, ie this bullet will travel speed*range
@@ -9,14 +9,9 @@ class Bullet {
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/bullet.png");
         this.SIZE = 12; // find better way to get this pizel width
         this.SCALE = 2;
-        this.FLASHSCALE = 5;
-
-        // adjust x and y so bullets start at gun, WHY is this not the proper x and y passed from constructor in gun????
-        this.xFlash = x;
-        this.yFlash = y;
         
-        this.xMap = this.game.gun.xMap + (this.game.gun.spriteSize/2);
-        this.yMap = this.game.gun.yMap + (this.game.gun.spriteSize/2);
+        this.xMap = this.game.gun.barrelTipXMap;
+        this.yMap = this.game.gun.barrelTipYMap;
         //TODO: trajectory would be better if calculated in gun and passed in
         // in a perfect worlt the trajectory would be the slope of the barrel and the barrel would be rotated to always point directly at the crosshair
         this.xDistance = this.game.crosshair.xMidpoint-(this.game.gun.xMap+(this.game.gun.spriteSize/2));
@@ -24,11 +19,13 @@ class Bullet {
        
         this.diagonal = Math.sqrt((this.xDistance*this.xDistance) + (this.yDistance*this.yDistance));
         
-        this.xTrajectory = (this.xDistance/this.diagonal);
-        this.yTrajectory = (this.yDistance/this.diagonal);
+        this.xTrajectory = (this.game.gun.barrelTipXMap - this.game.gun.barrelMidXMap);
+        this.yTrajectory = (this.game.gun.barrelTipYMap - this.game.gun.barrelMidYMap);
+
+
         
-        this.xVelocity = this.speed*this.xTrajectory;
-        this.yVelocity = this.speed*this.yTrajectory;
+        this.xVelocity = this.xTrajectory;
+        this.yVelocity = this.yTrajectory;
         
         this.game.ctx.fillRect(this.xMap,this.yMap,1,1);
 
@@ -61,10 +58,10 @@ class Bullet {
         
         ctx.save();
         //ctx.translate(this.xCanvas, this.yCanvas);
-        //this.game.ctx.fillRect(this.xMap-this.game.camera.x,this.yMap-this.game.camera.y,1,1);
+        this.game.ctx.fillRect(this.xMap-this.game.camera.x,this.yMap-this.game.camera.y,1,1);
 
-        if (this.range == 100) this.animations.drawFrame(this.game.clockTick, ctx, this.xFlash - this.game.camera.x - ((this.SIZE*this.FLASHSCALE)/2), this.yFlash - this.game.camera.y - ((this.SIZE*this.FLASHSCALE)/2), this.FLASHSCALE);
-        if (this.range < 95) this.animations.drawFrame(this.game.clockTick, ctx, this.xMap - this.game.camera.x - this.spriteWidth/2, this.yMap - this.game.camera.y - this.spriteWidth/2, this.SCALE);
+        //if (this.range == 100) this.animations.drawFrame(this.game.clockTick, ctx, this.xFlash - this.game.camera.x - ((this.SIZE*this.FLASHSCALE)/2), this.yFlash - this.game.camera.y - ((this.SIZE*this.FLASHSCALE)/2), this.FLASHSCALE);
+        //if (this.range < 95) this.animations.drawFrame(this.game.clockTick, ctx, this.xMap - this.game.camera.x - this.spriteWidth/2, this.yMap - this.game.camera.y - this.spriteWidth/2, this.SCALE);
         ctx.restore();
     };
 };
