@@ -7,9 +7,9 @@ class Goop {
         this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/goop.png");
         this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/goop2.png");
 
-        this.scale = 3;
-        this.spriteWidth = 39 * this.scale;
-        this.spriteHeight = 43 * this.scale;
+        this.SCALE = 3;
+        this.spriteWidth = 39 * this.SCALE;
+        this.spriteHeight = 43 * this.SCALE;
 
         if (this.game.camera.level == "level1") this.spritesheet = this.level1SpriteSheet;
         else this.spritesheet = this.level2SpriteSheet;
@@ -56,8 +56,8 @@ class Goop {
 
 
     update() {
-        const WALK = 6;
-        const DIAGONAL = 4.24; // 4 -> 2.8 based on WALK speed: 4^2 = 2(a^2); where a = x = y
+        const WALK = 7;
+        const DIAGONAL = 4.95; // 4 -> 2.8 based on WALK speed: 4^2 = 2(a^2); where a = x = y
         this.velocity.x = 0;
         this.velocity.y = 0;
 
@@ -139,7 +139,7 @@ class Goop {
         
         this.game.camera.update();
         this.game.crosshair.update();
-        this.game.gun.move(this.xMap,this.yMap);
+        this.gun.update();
 
         // NOTE: this might need to be moved inside of the above !collisionOccurred block as well
         // update the states
@@ -164,7 +164,7 @@ class Goop {
     draw(ctx) {
         //ctx.save();
         //ctx.translate(-this.xMap+this.xStart, -this.yMap+this.xStart);//400 is half canvas width,300 height, - half player widthand height
-        this.animation.drawFrame(this.game.clockTick, ctx, Math.floor(this.xMap-this.game.camera.x), Math.floor(this.yMap-this.game.camera.y), this.scale);
+        this.animation.drawFrame(this.game.clockTick, ctx, Math.floor(this.xMap-this.game.camera.x), Math.floor(this.yMap-this.game.camera.y), this.SCALE);
         //ctx.restore();
         //drawBoundingBox(this.hurtBox, ctx, this.game, "red");
         //drawBoundingBox(this.boundingBox, ctx, this.game, "white");
