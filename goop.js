@@ -92,6 +92,7 @@ class Goop {
                 if (type == "south_wall" && this.boundingBox.getYProjectedBB(this.velocity.y).collide(tile.BB.lower)) this.velocity.y = 0;
                 // add tiles to draw on top
                 //if (type == "wall" && this.boundingBox.getYProjectedWideBB(this.velocity.y).collide(tile.BB.upper)) this.tilesToDrawOnTop.push(tile); // this will always redraw the tile
+                
                 if (type == "south_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB.upper)) this.tilesToDrawOnTop.push(tile); // this will always redraw the tile
                 if (type == "wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB)) this.tilesToDrawOnTop.push(tile); // this will always redraw the tile
                 if (type == "north_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB) && this.boundingBox.top < tile.BB.bottom) this.tilesToDrawOnTop.push(tile);
