@@ -55,8 +55,8 @@ class Goop {
 
 
     update() {
-        const WALK = 15;
-        const DIAGONAL = 10;
+        const WALK = 7;
+        const DIAGONAL = 4.95;
        // const WALK = 7;
        // const DIAGONAL = 4.95; // 4 -> 2.8 based on WALK speed: 4^2 = 2(a^2); where a = x = y
         this.velocity.x = 0;

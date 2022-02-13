@@ -4,7 +4,7 @@ class Gun {
         this.game = game;
         this.game.gun = this;
 
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/uzi.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/bubble_gun.png");
         this.SIZE = 38; // num of pixels wide
         this.SCALE = 2;
         this.spriteSize = this.SIZE * this.SCALE;
@@ -20,7 +20,7 @@ class Gun {
         this.barrelTipYOffset = 16 * this.SCALE;
 
 
-        // this is the necesary offset from player location to put grip in players hand
+        // this is the necesary offset from player location to put grips in players hand
        
 
         this.xMapOffset = (this.game.goop.handOffset.x - this.gripXOffset);
@@ -55,6 +55,7 @@ class Gun {
         this.sprites = new Map;
         this.sprites.set("uzi", new Map);
         this.sprites.set("laser", new Map);
+        this.sprites.set("bubble-gun", new Map);
 
         this.guncooldown = 20;
         this.uzicooldown = 0;                   
