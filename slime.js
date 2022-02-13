@@ -18,7 +18,7 @@ class Slime {
 
         this.xMap = x;
         this.yMap = y;
-        this.speed = 1;
+        this.speed = 3;
         this.velocity = { x: this.randomDirection(), y: this.randomDirection() }
         while (this.velocity.x == 0 && this.velocity.y == 0) {
             this.velocity = { x: this.randomDirection(), y: this.randomDirection() };
@@ -38,7 +38,7 @@ class Slime {
             case 0:
                 return -this.speed;
             case 1:
-                return 0;
+                return this.speed;
             case 2: 
                 return this.speed;
         }
@@ -77,25 +77,25 @@ class Slime {
 
                 if (type == "wall" || type == "north_wall") {
                     if (xProjectedBB.collide(tile.BB) && (!yProjectedBB.collide(tile.BB))) {
-                            this.velocity.x = 0;
+                            this.velocity.x = -this.velocity.x;
                             this.velocity.y = this.randomDirection();
                     } else if ((!xProjectedBB.collide(tile.BB)) && (yProjectedBB.collide(tile.BB))) {
-                            this.velocity.y = 0;
+                            this.velocity.y = -this.velocity.y;
                             this.velocity.x = this.randomDirection();
                     } else if (xProjectedBB.collide(tile.BB) && yProjectedBB.collide(tile.BB)) {
-                        this.velocity.x = 0;
-                        this.velocity.y = 0;
+                        this.velocity.x = -this.velocity.x;
+                        this.velocity.y = -this.velocity.y;
                     }
                 } else if (type == "south_wall") {
                     if (xProjectedBB.collide(tile.BB.lower) && !(yProjectedBB.collide(tile.BB.lower))) {
-                            this.velocity.x = 0;
+                            this.velocity.x = -this.velocity.x;
                             this.velocity.y = this.randomDirection();
                     } else if (!(xProjectedBB.collide(tile.BB.lower)) && (yProjectedBB.collide(tile.BB.lower))) {
-                            this.velocity.y = 0;
+                            this.velocity.y = -this.velocity.y;
                             this.velocity.x = this.randomDirection();
                     } else if (xProjectedBB.collide(tile.BB.lower) && yProjectedBB.collide(tile.BB.lower)) {
-                        this.velocity.x = 0;
-                        this.velocity.y = 0;
+                        this.velocity.x = -this.velocity.x;
+                        this.velocity.y = -this.velocity.y;
                     }
                 }
                     
