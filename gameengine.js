@@ -281,6 +281,8 @@ class GameEngine {
         // Add new things
         this.bullets = this.bullets.concat(this.bulletsToAdd);
         this.bulletsToAdd = [];
+        
+        this.crosshair.update();
     };
 
     loop() {
