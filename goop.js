@@ -28,9 +28,6 @@ class Goop {
 
         this.animations = new Map;
 
-        // list of tiles to draw on top of Goop
-        this.tilesToDrawOnTop = [];
-
         this.loadAnimations();
         this.updateBoundingBox();
         this.animation = this.animations.get("right").get("vibing").get("unarmed");
@@ -78,12 +75,6 @@ class Goop {
         }
 
         // check for wall collisions
-        
-
-        // a list of tiles to draw on top of Gloop
-        this.tilesToDrawOnTop = [];
-
-
         let collisionOccurred = false;
         this.game.spriteGrid.forEach( row => {
             row.forEach( tile => {
@@ -95,9 +86,9 @@ class Goop {
                 if (type == "south_wall" && this.boundingBox.getXProjectedBB(this.velocity.x).collide(tile.BB.lower)) this.velocity.x = 0;
                 if (type == "south_wall" && this.boundingBox.getYProjectedBB(this.velocity.y).collide(tile.BB.lower)) this.velocity.y = 0;
                 // add tiles to draw on top                
-                if (type == "south_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB.upper)) this.tilesToDrawOnTop.push(tile); // this will always redraw the tile
-                if (type == "wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB)) this.tilesToDrawOnTop.push(tile); // this will always redraw the tile
-                if (type == "north_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB) && this.boundingBox.top < tile.BB.bottom) this.tilesToDrawOnTop.push(tile);
+                if (type == "south_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB.upper)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
+                if (type == "wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
+                if (type == "north_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB) && this.boundingBox.top < tile.BB.bottom) this.game.tilesToDrawOnTop.push(tile);
             });
         });
        

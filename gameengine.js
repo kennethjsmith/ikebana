@@ -20,6 +20,8 @@ class GameEngine {
         // Entities to be added at the end of each update
         this.bulletsToAdd = [];
 
+        this.tilesToDrawOnTop = [];
+
         // Information on the input
         this.click = null;
         this.mouseX = 0;
@@ -240,14 +242,26 @@ class GameEngine {
                 this.bullets[i].draw(this.ctx, this);
             }
 
+
+            // draw south wall tiles on top of necessary entities
+            if (this.tilesToDrawOnTop.length > 0) {
+                this.tilesToDrawOnTop.forEach( tile => {
+                    let image = tile.image;
+                    let col = tile.col;
+                    let row = tile.row;
+                    let tileSize = this.level.tileSize;
+                    let scale = this.level.scale;
+                    image.drawFrame(this.clockTick, this.ctx, Math.floor((col * tileSize) - (this.camera.x)), Math.floor((row * tileSize) - (this.camera.y)), scale); 
+                });
+            }
+
             this.camera.hud.draw(this.ctx);
-            
         //}
         this.crosshair.draw(this.ctx);
     };
 
     update() {
-
+        this.tilesToDrawOnTop = [];
         // Update Entities
         this.entities.forEach(entity => entity.update(this));
         //this.crosshair.update();

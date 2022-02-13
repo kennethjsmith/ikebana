@@ -33,9 +33,6 @@ class Gun {
         this.rotation = 0;
         this.alpha = 0;
 
-        
-
-        
 
         // radius/distance between 3 critical points
         // TODO: this calculation would look better if we didnt have to unscale every property
@@ -139,7 +136,6 @@ class Gun {
 
     draw(ctx) {
         let offscreenCanvas = null;
-        let offscreenCanvas2 = null;
         let degrees = Math.floor(this.rotation * (180/Math.PI));
         //console.log(degrees);
         
@@ -170,15 +166,5 @@ class Gun {
         // draw the fetched or newly created image
         ctx.drawImage(offscreenCanvas, this.xMap-this.game.camera.x, this.yMap-this.game.camera.y); 
 
-        if (this.game.goop.tilesToDrawOnTop.length > 0) {
-            this.game.goop.tilesToDrawOnTop.forEach( tile => {
-                let image = tile.image;
-                let col = tile.col;
-                let row = tile.row;
-                let tileSize = this.game.level.tileSize;
-                let scale = this.game.level.scale;
-                image.drawFrame(this.game.clockTick, ctx, Math.floor((col * tileSize) - (this.game.camera.x)), Math.floor((row * tileSize) - (this.game.camera.y)), scale); 
-            });
-        }
     };
 };

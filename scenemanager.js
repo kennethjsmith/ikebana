@@ -14,6 +14,7 @@ class SceneManager {
 
         this.xMidpoint = null;
         this.yMidpoint = null;
+        this.MAXRADIUS = 250;
 
         //this.gameOver = false;
         this.level = "level1";
@@ -196,9 +197,31 @@ class SceneManager {
 		// }
 
         
-        let xDistance = ((this.game.crosshair.xMap + this.game.crosshair.spriteSize/2) - (this.game.goop.xMap + this.game.goop.spriteWidth/2));
-        let yDistance = ((this.game.crosshair.yMap + this.game.crosshair.spriteSize/2) - (this.game.goop.yMap + this.game.goop.spriteHeight/2));
+
+        let xDistance = ((this.game.crosshair.xMidpoint) - (this.game.goop.xMap + this.game.goop.spriteWidth/2));
+        let yDistance = ((this.game.crosshair.yMidpoint) - (this.game.goop.yMap + this.game.goop.spriteHeight/2));
+        let totalDistance = Math.hypot(xDistance,yDistance);
+        if(totalDistance < this.MAXRADIUS){
+            this.x = this.game.goop.xMap - this.xMidpoint + (xDistance/2);
+            this.y = this.game.goop.yMap - this.yMidpoint + (yDistance/2);
+        }
+        else {
+            //get max camera movement
+            // first, get imaginary point on line
+            let ratio = (this.MAXRADIUS/totalDistance);
+            //console.log(ratio);
+            let imaginaryX = ((1 - ratio) * this.game.goop.xMap + ratio * this.game.crosshair.xMidpoint);
+            let imaginaryY = ((1 - ratio) * this.game.goop.yMap + ratio * this.game.crosshair.yMidpoint);
+            //console.log("hair(x,y):("+this.game.crosshair.xMidpoint+", "+this.game.crosshair.yMidpoint+")");
+            //console.log("(x,y):("+imaginaryX+", "+imaginaryY+")");
+
+            let imaginaryXDistance = (imaginaryX - (this.game.goop.xMap + this.game.goop.spriteWidth/2));
+            let imaginaryYDistance = (imaginaryY - (this.game.goop.yMap + this.game.goop.spriteHeight/2));
+            this.x = this.game.goop.xMap - this.xMidpoint + (imaginaryXDistance/2);
+            this.y = this.game.goop.yMap - this.yMidpoint + (imaginaryYDistance/2);
+        }
         
+
         //TODO: make this radius bound work for camera
         // if(totalDistance > radius){
         //     console.log("here");
@@ -206,8 +229,8 @@ class SceneManager {
         //     this.y = this.game.goop.yMap - this.yMidpoint + ((yDistance/totalDistance)*radius);
         // }
         // else if (totalDistance <= radius){
-            this.x = this.game.goop.xMap - this.xMidpoint + (xDistance/2);
-            this.y = this.game.goop.yMap - this.yMidpoint + (yDistance/2);
+            //this.x = this.game.goop.xMap - this.xMidpoint + (xDistance/2);
+           // this.y = this.game.goop.yMap - this.yMidpoint + (yDistance/2);
         // }
    
 

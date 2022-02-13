@@ -29,6 +29,6 @@ class Hud {
     };
 
     draw(ctx) {
-        this.animation.drawFrame(this.game.clockTick, ctx, 0, 0, .5);
+        this.animation.drawFrame(this.game.clockTick, ctx, 0, 0, .4);
     };
 };

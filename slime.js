@@ -112,11 +112,11 @@ class Slime {
                         this.velocity.y = -this.velocity.y;
                     }
                 }
-                    
-                    // add tiles to draw on top
-                   // if (type == "south_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB.upper)) this.tilesToDrawOnTop.push(tile); // this will always redraw the tile
-                   // if (type == "wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB)) this.tilesToDrawOnTop.push(tile); // this will always redraw the tile
-                   // if (type == "north_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB) && this.boundingBox.top < tile.BB.bottom) this.tilesToDrawOnTop.push(tile);
+                  
+                //add tiles to draw on top
+                 if (type == "south_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB.upper)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
+                 if (type == "wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
+                 if (type == "north_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB) && this.boundingBox.top < tile.BB.bottom) this.game.tilesToDrawOnTop.push(tile);
                 
             });
         });
