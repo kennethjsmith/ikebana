@@ -65,7 +65,21 @@ class Slime {
         const WALK = this.speed;
         const DIAGONAL = Math.sqrt(Math.pow(this.speed, 2) / 2); //  based on WALK speed: 1^2 = 2(a^2); where a = x = y
 
-        // a list of tiles to draw on top of slime
+       
+
+        // collisions with other entities
+        this.game.entities.forEach(entity => {
+            if (entity instanceof Slime && entity != this) {
+                if (this.boundingBox.getXProjectedBB(this.velocity.x).collide(entity.boundingBox)) {
+                    this.velocity.x = -this.velocity.x;
+                    this.velocity.y = this.randomDirection();
+                } else if (this.boundingBox.getYProjectedBB(this.velocity.y).collide(entity.boundingBox)) {
+                    this.velocity.y = -this.velocity.y;
+                    this.velocity.x = this.randomDirection();
+                } 
+            }
+        });
+         // a list of tiles to draw on top of slime
         //this.tilesToDrawOnTop = [];
 
         // handle wall collissions
@@ -107,19 +121,7 @@ class Slime {
             });
         });
 
-        // // collisions with other entities
-        // this.game.entities.forEach(entity => {
-        //     if (entity instanceof Slime) {
-        //         if (this.boundingBox.getXProjectedBB(this.velocity.x).collide(entity.boundingBox)) {
-        //             this.velocity.x = this.velocity.x * -WALK;
-        //             this.velocity.y = this.randomDirection();
-        //         } else if (this.boundingBox.getYProjectedBB(this.velocity.y).collide(entity.boundingBox)) {
-        //             this.velocity.y = this.velocity.y * -WALK;
-        //             this.velocity.x = this.randomDirection();
-        //         } 
-        //     }
-        // });
-        
+
         
         // update velocity if they are moving diagnolly
         if (this.velocity.x != 0 && this.velocity.y != 0) {
