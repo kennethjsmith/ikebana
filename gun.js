@@ -133,7 +133,7 @@ class Gun {
         let offscreenCanvas = null;
         let offscreenCanvas2 = null;
         let degrees = Math.floor(this.rotation * (180/Math.PI));
-        console.log(degrees);
+        //console.log(degrees);
         
         // if the gun image is already cached, then fetch it
         if (this.sprites.get(this.type).has(degrees)) {

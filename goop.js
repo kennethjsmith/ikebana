@@ -55,9 +55,12 @@ class Goop {
     };
 
 
+
     update() {
-        const WALK = 7;
-        const DIAGONAL = 4.95; // 4 -> 2.8 based on WALK speed: 4^2 = 2(a^2); where a = x = y
+        const WALK = 15;
+        const DIAGONAL = 10;
+       // const WALK = 7;
+       // const DIAGONAL = 4.95; // 4 -> 2.8 based on WALK speed: 4^2 = 2(a^2); where a = x = y
         this.velocity.x = 0;
         this.velocity.y = 0;
 
@@ -90,43 +93,13 @@ class Goop {
                 if (type == "wall" && this.boundingBox.getYProjectedBB(this.velocity.y).collide(tile.BB)) this.velocity.y = 0;
                 if (type == "south_wall" && this.boundingBox.getXProjectedBB(this.velocity.x).collide(tile.BB.lower)) this.velocity.x = 0;
                 if (type == "south_wall" && this.boundingBox.getYProjectedBB(this.velocity.y).collide(tile.BB.lower)) this.velocity.y = 0;
-                // add tiles to draw on top
-                //if (type == "wall" && this.boundingBox.getYProjectedWideBB(this.velocity.y).collide(tile.BB.upper)) this.tilesToDrawOnTop.push(tile); // this will always redraw the tile
-                
+                // add tiles to draw on top                
                 if (type == "south_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB.upper)) this.tilesToDrawOnTop.push(tile); // this will always redraw the tile
                 if (type == "wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB)) this.tilesToDrawOnTop.push(tile); // this will always redraw the tile
                 if (type == "north_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB) && this.boundingBox.top < tile.BB.bottom) this.tilesToDrawOnTop.push(tile);
             });
         });
-        // let collisionOccurred = false;
-        // this.game.spriteGrid.forEach( row => {
-        //     row.forEach( tile => {
-        //         let type = tile.type;
-        //         if (type == "wall" && this.boundingBox.collide(tile.BB)) {
-        //             console.log("here");
-        //             this.xMap -= this.velocity.x;
-        //             this.yMap -= this.velocity.y;
-        //             this.updateBoundingBox();
-        //             collisionOccurred = true;
-        //        } else if (type == "south_wall") {
-        //             if (this.boundingBox.collide(tile.BB.lower)) {
-        //                 this.xMap -= this.velocity.x;
-        //                 this.yMap -= this.velocity.y;
-        //                 this.updateBoundingBox();
-        //                 collisionOccurred = true;
-        //             }
-
-        //             if (this.boundingBox.collide(tile.BB.upper)) {
-        //                 this.tilesToDrawOnTop.push(tile);
-        //             }         
-        //        }
-        //     });
-        // });
-
-        // if (!collisionOccurred) {
-        //     this.game.camera.x += this.velocity.x;
-        //     this.game.camera.y += this.velocity.y; 
-        // }
+       
 
         // update the positions
         this.xMap += this.velocity.x;

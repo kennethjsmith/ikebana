@@ -1232,22 +1232,20 @@ class LevelGenerator {
                 
                 
                 // UNCOMMENT TO DRAW THE BOUNDING BOXES FOR WALLS 
-                // if (this.spriteGrid[row][col].BB) {
-                //     if (this.spriteGrid[row][col].type == "wall") {
-                // drawing the bounding boxes
-                // if (this.spriteGrid[row][col].BB) {
-                //     if (this.spriteGrid[row][col].type == "wall" || this.spriteGrid[row][col].type == "north_wall" ) {
-                //         let bb = this.spriteGrid[row][col].BB;
-                //         ctx.strokeStyle = 'red';
-                //         ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
+                //drawing the bounding boxes
+                if (this.spriteGrid[row][col].BB) {
+                    if (this.spriteGrid[row][col].type == "wall" || this.spriteGrid[row][col].type == "north_wall" ) {
+                        let bb = this.spriteGrid[row][col].BB;
+                        ctx.strokeStyle = 'red';
+                        ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
                
-                //     } else {
-                //         let bb = this.spriteGrid[row][col].BB.lower
-                //         ctx.strokeStyle = 'red';
-                //         ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
+                    } else {
+                        let bb = this.spriteGrid[row][col].BB.lower
+                        ctx.strokeStyle = 'red';
+                        ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
                
-                //     }
-                // }
+                    }
+                }
                 // *16 because each tile is 16 x 16 pixels
             }
         }
