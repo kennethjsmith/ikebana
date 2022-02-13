@@ -15,7 +15,7 @@ ASSET_MANAGER.queueDownload("./sprites/test_gun.png");
 ASSET_MANAGER.queueDownload("./sprites/uzi.png");
 ASSET_MANAGER.queueDownload("./sprites/laser.png");
 ASSET_MANAGER.queueDownload("./sprites/HUD_mockup.png");
-ASSET_MANAGER.queueDownload("./sprites/level1test.png");
+ASSET_MANAGER.queueDownload("./sprites/level1.png");
 ASSET_MANAGER.queueDownload("./sprites/level2.png");
 ASSET_MANAGER.queueDownload("./sprites/title.png");
 

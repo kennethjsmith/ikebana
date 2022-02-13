@@ -7,7 +7,7 @@ class Goop {
         this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/goop.png");
         this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/goop2.png");
 
-        this.SCALE = 3;
+        this.SCALE = 2;
         this.spriteWidth = 39 * this.SCALE;
         this.spriteHeight = 43 * this.SCALE;
 
@@ -22,6 +22,7 @@ class Goop {
 
         this.xMap = this.game.camera.startXPlayer;
         this.yMap = this.game.camera.startYPlayer;
+        this.handOffset = { x: 32*this.SCALE, y: 27*this.SCALE };
 
         this.velocity = { x: 0, y: 0 };
 

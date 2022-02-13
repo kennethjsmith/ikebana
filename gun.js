@@ -4,30 +4,38 @@ class Gun {
         this.game = game;
         this.game.gun = this;
 
-        // this is the necesary offset from player location to put grip in players hand
-        // these values are calculated as distance to goops hand (x:32,y:27) minus gripOffsets, times SCALE
-        this.yMapOffset = 24;
-        this.xMapOffset = 39;
-        this.xMap = this.game.camera.startXPlayer + this.xMapOffset;
-        this.yMap = this.game.camera.startYPlayer + this.yMapOffset;
-
-        this.rotation = 0;
-        this.alpha = 0;
-
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/laser.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/uzi.png");
         this.SIZE = 38; // num of pixels wide
-        this.SCALE = 3;
+        this.SCALE = 2;
         this.spriteSize = this.SIZE * this.SCALE;
 
         // offsets from corner of sprite image
-        this.gripXOffset = 19 * this.SCALE;
-        this.gripYOffset = 19 * this.SCALE;
+        this.gripXOffset = this.spriteSize/2;
+        this.gripYOffset = this.spriteSize/2;
 
         this.barrelMidXOffset = 19 * this.SCALE;
         this.barrelMidYOffset = 16 * this.SCALE;
 
         this.barrelTipXOffset = 34 * this.SCALE;
         this.barrelTipYOffset = 16 * this.SCALE;
+
+
+        // this is the necesary offset from player location to put grip in players hand
+       
+
+        this.xMapOffset = (this.game.goop.handOffset.x - this.gripXOffset);
+        this.yMapOffset = (this.game.goop.handOffset.y - this.gripYOffset);
+
+        
+        this.xMap = this.game.camera.startXPlayer + this.xMapOffset;
+        this.yMap = this.game.camera.startYPlayer + this.yMapOffset;
+
+        this.rotation = 0;
+        this.alpha = 0;
+
+        
+
+        
 
         // radius/distance between 3 critical points
         // TODO: this calculation would look better if we didnt have to unscale every property
