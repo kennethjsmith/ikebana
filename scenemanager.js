@@ -4,10 +4,7 @@ class SceneManager {
         this.game.camera = this;
         this.x = null;
         this.y = null;
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/HUD_mockup.png");
-        this.animation = new Animator(this.spritesheet, 0, 0, 1483, 198, 1, 1);
         
-        this.hud = new Hud(this.game);
         this.health = 3;
         this.ammo = { bullet: 255, energy: 55};
         this.flowers = 0;
@@ -18,8 +15,14 @@ class SceneManager {
 
         //this.gameOver = false;
         this.level = "level1";
-        
-        this.titleScreen = true;
+        this.levelLabel = new Map;
+        this.levelLabel.set("level1", "Level 1");
+        this.levelLabel.set("level2", "Level 2");
+        this.levelLabel.set("level3", "Level 3");
+
+        this.titleScreen = true; // should this be this.title
+        this.pause = false;
+        this.play = true;
 
 
         this.levelXSize = 75; // # of tiles
@@ -32,6 +35,8 @@ class SceneManager {
         this.goopsQuadrant = null;
 
         this.loadLevel(this.level, this.titleScreen);
+        this.hud = new Hud(this.game);
+
     };
 
     updateAudio() {
@@ -47,7 +52,6 @@ class SceneManager {
        // if(!title){
             // build level map and spawn start location for goop
             this.game.level = new LevelGenerator(this.game, this.levelXSize, this.levelYSize);
-            console.log("size: " + this.game.level.tileSize);
             let goopStartLocation = this.randomEdgeLocation();
             this.startXPlayer = goopStartLocation.x;
             this.startYPlayer = goopStartLocation.y;
@@ -146,7 +150,6 @@ class SceneManager {
         } else if (this.startXPlayer != null && this.startYPlayer != null
             && this.game.spriteGrid[row][col].type == "floor"
             && !this.inGoopsQuadrant(row, col)
-            //&& !this.enemyStartLocation.includes({ x: col, y: row })
             ) 
                 return true;
         
@@ -258,7 +261,7 @@ class SceneManager {
 			//ctx.fillRect(300, 660, 150, 50);
 			ctx.fillStyle = this.game.mouse && this.game.mouse.x > 415 && this.game.mouse.x < 565 && this.game.mouse.y > 660 && this.game.mouse.y < 710 ? "White" : "Black";
 			ctx.fillText("PLAY", 425, 700);
-		}
+		} 
 
         //this.animation.drawFrame(this.game.clockTick, ctx, 0, 0, .5);
     };

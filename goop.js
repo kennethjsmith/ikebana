@@ -25,6 +25,8 @@ class Goop {
         this.facing = "right"; // left or right
         this.state = "vibing"; // walking or vibin
         this.armed = "unarmed"; // armed or uarmed
+        this.dead = false;
+        this.hurt = false;
 
         this.velocity = { x: 0, y: 0 };
 
