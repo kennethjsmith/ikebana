@@ -18,8 +18,9 @@ class LevelGenerator {
         
         this.height = height; // each increment of height is 16 pixels
         this.width = width; // each increment of width is 16 pixels
+        this.tilePixelSize = 16;
         this.scale = 5;
-        this.tileSize = this.scale * 16;
+        this.tileSize = this.scale * this.tilePixelSize;
 
         this.setup();
         this.createFloors();

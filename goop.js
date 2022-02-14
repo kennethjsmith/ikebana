@@ -8,8 +8,14 @@ class Goop {
         this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/goop2.png");
 
         this.SCALE = 2;
+        this.xMap = this.game.camera.startXPlayer;
+        this.yMap = this.game.camera.startYPlayer;
+        this.handOffset = { x: 32*this.SCALE, y: 27*this.SCALE };
         this.spriteWidth = 39 * this.SCALE;
         this.spriteHeight = 43 * this.SCALE;
+        this.heightOffset = this.spriteHeight / 2;
+        this.widthOffset = this.spriteWidth / 2;
+        this.midpoint = {x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
 
         if (this.game.camera.level == "level1") this.spritesheet = this.level1SpriteSheet;
         else this.spritesheet = this.level2SpriteSheet;
@@ -20,9 +26,7 @@ class Goop {
         this.state = "vibing"; // walking or vibin
         this.armed = "unarmed"; // armed or uarmed
 
-        this.xMap = this.game.camera.startXPlayer;
-        this.yMap = this.game.camera.startYPlayer;
-        this.handOffset = { x: 32*this.SCALE, y: 27*this.SCALE };
+
 
         this.velocity = { x: 0, y: 0 };
 
@@ -124,6 +128,8 @@ class Goop {
 
         // update the animation
         this.animation = this.animations.get(this.facing).get(this.state).get(this.armed);
+        this.midpoint = {x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
+
     };
 
     draw(ctx) {
@@ -134,6 +140,9 @@ class Goop {
         //drawBoundingBox(this.hurtBox, ctx, this.game, "red");
         //drawBoundingBox(this.boundingBox, ctx, this.game, "white");
 
+        ctx.strokeStyle = 'red';
+        ctx.strokeRect(Math.floor(this.midpoint.x - this.game.camera.x), Math.floor(this.midpoint.y - this.game.camera.y), 2, 2);
+       
         
        
     };

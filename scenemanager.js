@@ -47,6 +47,7 @@ class SceneManager {
        // if(!title){
             // build level map and spawn start location for goop
             this.game.level = new LevelGenerator(this.game, this.levelXSize, this.levelYSize);
+            console.log("size: " + this.game.level.tileSize);
             let goopStartLocation = this.randomEdgeLocation();
             this.startXPlayer = goopStartLocation.x;
             this.startYPlayer = goopStartLocation.y;
@@ -80,14 +81,10 @@ class SceneManager {
     };
 
     addEnemies() {
-        let numSlimes = 10;
-        //this.enemyStartLocation = [];
+        let numSlimes = 20;
         for (let i = 0; i < numSlimes; i++) {        
             let enemyLocation = this.randomLocation();
-            //enemyStartLocation.push(enemyLocation);
-
             this.game.addEntity(new Slime(this.game, enemyLocation.x, enemyLocation.y));
-            console.log("enemy location. x: " + enemyLocation.x + ", y: " + enemyLocation.y);
         }
 
     }
@@ -101,7 +98,7 @@ class SceneManager {
             for (let row = 1; row < this.levelYSize - 3; row++) {
                 for (let col = 1; col < this.levelXSize - 3; col++) {
                     if (this.acceptableSpawnLocation(row, col)) {
-                        return { x: col * 5 * 16, y: row * 5 * 16 };
+                        return { x: col * this.game.level.tileSize, y: row * this.game.level.tileSize };
                     }
                 }
             }
@@ -110,7 +107,7 @@ class SceneManager {
             for (let row = this.levelYSize - 3; row > 3; row--) {
                 for (let col = this.levelXSize - 3; col > 3; col--) {
                     if (this.acceptableSpawnLocation(row, col)) {
-                        return { x: col * 5 * 16, y: row * 5 * 16 };
+                        return { x: col * this.game.level.tileSize, y: row * this.game.level.tileSize };
                     }
                 }
             }
@@ -125,7 +122,7 @@ class SceneManager {
             row = floor(Math.random() * 41);
             col = floor(Math.random() * 75);
         }
-        return { x: col * 5 * 16, y: row * 5 * 16 };        
+        return { x: col * this.game.level.tileSize, y: row * this.game.level.tileSize };        
     }
 
     // returns true if the location is a 3x3 grid of floorspace
@@ -179,10 +176,10 @@ class SceneManager {
     };
 
     calculateGoopsStartQuadrant() {
-        if (this.startXPlayer > this.levelXSize * 5 * 16 / 2) {
-            if (this.startYPlayer > this.levelYSize * 5 * 16 / 2) this.goopsQuadrant = "SE";
+        if (this.startXPlayer > this.levelXSize * this.game.level.tileSize / 2) {
+            if (this.startYPlayer > this.levelYSize * this.game.level.tileSize / 2) this.goopsQuadrant = "SE";
             else this.goopsQuadrant = "NE";
-        } else if (this.startYPlayer > this.levelYSize * 5 * 16 / 2) this.goopsQuadrant = "SW";
+        } else if (this.startYPlayer > this.levelYSize * this.game.level.tileSize / 2) this.goopsQuadrant = "SW";
         else this.goopsQuadrant = "NW";
 
     }
