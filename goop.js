@@ -26,8 +26,6 @@ class Goop {
         this.state = "vibing"; // walking or vibin
         this.armed = "unarmed"; // armed or uarmed
 
-
-
         this.velocity = { x: 0, y: 0 };
 
         this.animations = new Map;

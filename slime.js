@@ -15,7 +15,7 @@ class Slime {
         this.facing = "right"; // left or right
         this.state = "walking"; // walking or vibin
         this.attacking = false;
-        this.attackTimeout = 25;
+        this.attackTimeout = 15;
         this.attackCounter = 0;
         this.spriteHeight = 16 * this.scale;
         this.spriteWidth = 16 * this.scale;
@@ -45,7 +45,7 @@ class Slime {
             case 0:
                 return -this.speed;
             case 1:
-                return 0; // previously this was 0. it was causing issues. 
+                return 0; 
             case 2: 
                 return this.speed;
         }
@@ -73,48 +73,38 @@ class Slime {
         const DIAGONAL = Math.sqrt(Math.pow(this.speed, 2) / 2); //  based on WALK speed: 1^2 = 2(a^2); where a = x = y
         let velocityUpdated = false;
 
-        // IMPROVEMENTS: 
-        // (2) make it so the slime stops when it reaches any part of goop
         // if there were no collisions and goop is within our radius, chase Goop
-        if (!this.attacking || this.attackCounter == this.attackTimeout) {
-
+        if (!this.attacking || this.attackCounter >= this.attackTimeout) {
             this.attacking = true;
             this.attackCounter = 0;
             let distance = Math.floor(Math.sqrt( 
                 Math.pow((this.midpoint.x - this.game.goop.midpoint.x), 2) 
                 + Math.pow((this.midpoint.y - this.game.goop.midpoint.y), 2) ));
             if (distance <= this.radius) {
-                let choice = floor(Math.random() * 3); // randomly choose to move left/right or up/down towards Goop
-                if (choice == 0) { // move vertically
-                    if (this.game.goop.yMap < this.yMap ) { // if goop is N of this slime
-                        this.velocity.y = -WALK;
-                        this.velocity.x = 0;
-                    } else { // else they are S of this slime
-                        this.velocity.y = WALK;
-                        this.velocity.x = 0;
-                    }
-                } else if (choice == 1) { // move horizontally
-                    if (this.game.goop.xMap < this.xMap ) { // if goop is W of this slime
-                        this.velocity.x = -WALK;
-                        this.velocity.y = 0;
-                    } else { // otherwise they are E of this slime
-                        this.velocity.x = WALK;
-                        this.velocity.y = 0;
-                    }
-                } else if (choice == 2) { // move vertically
-                    if (this.game.goop.xMap < this.xMap && this.game.goop.yMap < this.yMap) { // if goop is NW of this slime
-                        this.velocity.x = -WALK;
-                        this.velocity.y = -WALK;
-                    } else if (this.game.goop.xMap > this.xMap && this.game.goop.yMap > this.yMap) { // if goop is SE of this slime
-                        this.velocity.x = WALK;
-                        this.velocity.y = WALK;
-                    } else if (this.game.goop.xMap < this.xMap && this.game.goop.yMap > this.yMap) { // if goop is NE of this slime
-                        this.velocity.x = WALK;
-                        this.velocity.y = -WALK;
-                    } else { // if goop is SW of this slime
-                        this.velocity.x = -WALK;
-                        this.velocity.y = WALK;
-                    }
+                if (this.game.goop.midpoint.x < this.xMap && this.game.goop.midpoint.y < this.yMap) { // if goop is NW of this slime
+                    this.velocity.x = -WALK;
+                    this.velocity.y = -WALK;
+               } else if (this.game.goop.midpoint.x > this.xMap && this.game.goop.midpoint.y > this.yMap) { // if goop is SE of this slime
+                    this.velocity.x = WALK;
+                    this.velocity.y = WALK;
+                } else if (this.game.goop.midpoint.x > this.xMap && this.game.goop.midpoint.y < this.yMap) { // if goop is NE of this slime
+                    this.velocity.x = WALK;
+                    this.velocity.y = -WALK;
+                } else if (this.game.goop.midpoint.x < this.xMap && this.game.goop.midpoint.y > this.yMap) {// if goop is SW of this slime
+                    this.velocity.x = -WALK;
+                    this.velocity.y = WALK;
+                } else if (this.game.goop.midpoint.y < this.yMap ) { // if goop is N of this slime
+                    this.velocity.y = -WALK;
+                    this.velocity.x = 0;
+                } else if  (this.game.goop.midpoint.y > this.yMap ) { // else they are S of this slime
+                    this.velocity.y = WALK;
+                    this.velocity.x = 0;
+                } else if (this.game.goop.midpoint.x < this.xMap ) { // if goop is W of this slime
+                    this.velocity.x = -WALK;
+                    this.velocity.y = 0;
+                } else { // otherwise goop is E of this slime
+                    this.velocity.x = WALK;
+                    this.velocity.y = 0;
                 }
                 velocityUpdated = true;
             } else {
@@ -126,15 +116,18 @@ class Slime {
         // collisions with other entities
         this.game.entities.forEach(entity => {
             if (entity instanceof Slime && entity != this) {
-                if (this.boundingBox.getXProjectedBB(this.velocity.x).collide(entity.boundingBox)) {
-                    this.velocity.x = -this.velocity.x;
-                    this.velocity.y = this.randomDirection();
-                    velocityUpdated = true;
-                } else if (this.boundingBox.getYProjectedBB(this.velocity.y).collide(entity.boundingBox)) {
-                    this.velocity.y = -this.velocity.y;
-                    this.velocity.x = this.randomDirection();
-                    velocityUpdated = true;
-                } 
+                // let xProjectedBB = velocityUpdated ? this.boundingBox : this.boundingBox.getXProjectedBB(this.velocity.x);
+                // let yProjectedBB = velocityUpdated ? this.boundingBox : this.boundingBox.getYProjectedBB(this.velocity.y);
+
+                // if (xProjectedBB.collide(entity.boundingBox)) {
+                //     this.velocity.x = -this.velocity.x;
+                //     this.velocity.y = this.randomDirection();
+                //     velocityUpdated = true;
+                // } else if (yProjectedBB.collide(entity.boundingBox)) {
+                //     this.velocity.y = -this.velocity.y;
+                //     this.velocity.x = this.randomDirection();
+                //     velocityUpdated = true;
+                // } 
             }
         });
 
@@ -190,8 +183,6 @@ class Slime {
         this.xMap += this.velocity.x;
         this.yMap += this.velocity.y;
         this.updateBoundingBox();
-
-       // console.log("after update pos. ymap: " + this.yMap + ", xmap: " + this.xMap);
 
         // update the states
         if (this.velocity.x > 0) {
