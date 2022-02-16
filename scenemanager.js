@@ -4,10 +4,7 @@ class SceneManager {
         this.game.camera = this;
         this.x = null;
         this.y = null;
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/HUD_mockup.png");
-        this.animation = new Animator(this.spritesheet, 0, 0, 1483, 198, 1, 1);
         
-        this.hud = new Hud(this.game);
         this.health = 3;
         this.ammo = { bullet: 255, energy: 55};
         this.flowers = 0;
@@ -18,8 +15,14 @@ class SceneManager {
 
         //this.gameOver = false;
         this.level = "level1";
-        
-        this.titleScreen = true;
+        this.levelLabel = new Map;
+        this.levelLabel.set("level1", "Level 1");
+        this.levelLabel.set("level2", "Level 2");
+        this.levelLabel.set("level3", "Level 3");
+
+        this.titleScreen = true; // should this be this.title
+        this.pause = false;
+        this.play = true;
 
 
         this.levelXSize = 75; // # of tiles
@@ -32,6 +35,8 @@ class SceneManager {
         this.goopsQuadrant = null;
 
         this.loadLevel(this.level, this.titleScreen);
+        this.hud = new Hud(this.game);
+
     };
 
     updateAudio() {
@@ -58,7 +63,7 @@ class SceneManager {
             // add goop
             this.game.addEntity(new Goop(this.game)); // 5 is level scaler and 16 is the sprite width/height for level tiles
 
-            this.game.goop.gun = new Gun("uzi", this.game);
+            this.game.gun = this.game.goop.gun;
 
             this.xMidpoint = this.game.ctx.canvas.width/2 - (this.game.goop.spriteWidth/2);
             this.yMidpoint = this.game.ctx.canvas.height/2 - (this.game.goop.spriteHeight/2);
@@ -80,14 +85,10 @@ class SceneManager {
     };
 
     addEnemies() {
-        let numSlimes = 10;
-        //this.enemyStartLocation = [];
+        let numSlimes = 20;
         for (let i = 0; i < numSlimes; i++) {        
             let enemyLocation = this.randomLocation();
-            //enemyStartLocation.push(enemyLocation);
-
             this.game.addEntity(new Slime(this.game, enemyLocation.x, enemyLocation.y));
-            console.log("enemy location. x: " + enemyLocation.x + ", y: " + enemyLocation.y);
         }
 
     }
@@ -101,7 +102,7 @@ class SceneManager {
             for (let row = 1; row < this.levelYSize - 3; row++) {
                 for (let col = 1; col < this.levelXSize - 3; col++) {
                     if (this.acceptableSpawnLocation(row, col)) {
-                        return { x: col * 5 * 16, y: row * 5 * 16 };
+                        return { x: col * this.game.level.tileSize, y: row * this.game.level.tileSize };
                     }
                 }
             }
@@ -110,7 +111,7 @@ class SceneManager {
             for (let row = this.levelYSize - 3; row > 3; row--) {
                 for (let col = this.levelXSize - 3; col > 3; col--) {
                     if (this.acceptableSpawnLocation(row, col)) {
-                        return { x: col * 5 * 16, y: row * 5 * 16 };
+                        return { x: col * this.game.level.tileSize, y: row * this.game.level.tileSize };
                     }
                 }
             }
@@ -125,7 +126,7 @@ class SceneManager {
             row = floor(Math.random() * 41);
             col = floor(Math.random() * 75);
         }
-        return { x: col * 5 * 16, y: row * 5 * 16 };        
+        return { x: col * this.game.level.tileSize, y: row * this.game.level.tileSize };        
     }
 
     // returns true if the location is a 3x3 grid of floorspace
@@ -149,7 +150,6 @@ class SceneManager {
         } else if (this.startXPlayer != null && this.startYPlayer != null
             && this.game.spriteGrid[row][col].type == "floor"
             && !this.inGoopsQuadrant(row, col)
-            //&& !this.enemyStartLocation.includes({ x: col, y: row })
             ) 
                 return true;
         
@@ -179,10 +179,10 @@ class SceneManager {
     };
 
     calculateGoopsStartQuadrant() {
-        if (this.startXPlayer > this.levelXSize * 5 * 16 / 2) {
-            if (this.startYPlayer > this.levelYSize * 5 * 16 / 2) this.goopsQuadrant = "SE";
+        if (this.startXPlayer > this.levelXSize * this.game.level.tileSize / 2) {
+            if (this.startYPlayer > this.levelYSize * this.game.level.tileSize / 2) this.goopsQuadrant = "SE";
             else this.goopsQuadrant = "NE";
-        } else if (this.startYPlayer > this.levelYSize * 5 * 16 / 2) this.goopsQuadrant = "SW";
+        } else if (this.startYPlayer > this.levelYSize * this.game.level.tileSize / 2) this.goopsQuadrant = "SW";
         else this.goopsQuadrant = "NW";
 
     }
@@ -261,7 +261,7 @@ class SceneManager {
 			//ctx.fillRect(300, 660, 150, 50);
 			ctx.fillStyle = this.game.mouse && this.game.mouse.x > 415 && this.game.mouse.x < 565 && this.game.mouse.y > 660 && this.game.mouse.y < 710 ? "White" : "Black";
 			ctx.fillText("PLAY", 425, 700);
-		}
+		} 
 
         //this.animation.drawFrame(this.game.clockTick, ctx, 0, 0, .5);
     };

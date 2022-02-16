@@ -36,13 +36,15 @@ class GameEngine {
         // THE KILL SWITCH
         this.running = false;
 
+        this.debug = false;
+
         // Options and the Details
         this.options = options || {
             prevent: {
                 contextMenu: true,
                 scrolling: true,
             },
-            debugging: false,
+           // debugging: true,
         };
     };
 
@@ -173,26 +175,26 @@ class GameEngine {
         });
 
         this.ctx.canvas.addEventListener("mousedown", e => {
-            if (this.options.debugging) {
-                console.log("CLICK", getXandY(e));
-            }
+            // if (this.options.debugging) {
+            //     console.log("CLICK", getXandY(e));
+            // }
             this.clicked = true;
             ASSET_MANAGER.playAsset("dummy-path");
             //console.log("pressed");
         });
 
         this.ctx.canvas.addEventListener("mouseup", e => {
-            if (this.options.debugging) {
-                console.log("CLICK", getXandY(e));
-            }
+            // if (this.options.debugging) {
+            //     console.log("CLICK", getXandY(e));
+            // }
             this.clicked = false;
             //console.log("released");
         });
 
         this.ctx.canvas.addEventListener("wheel", e => {
-            if (this.options.debugging) {
-                console.log("WHEEL", getXandY(e), e.wheelDelta);
-            }
+            // if (this.options.debugging) {
+            //     console.log("WHEEL", getXandY(e), e.wheelDelta);
+            // }
             if (this.options.prevent.scrolling) {
                 e.preventDefault(); // Prevent Scrolling
             }
@@ -200,9 +202,9 @@ class GameEngine {
         });
 
         this.ctx.canvas.addEventListener("contextmenu", e => {
-            if (this.options.debugging) {
-                console.log("RIGHT_CLICK", getXandY(e));
-            }
+            // if (this.options.debugging) {
+            //     console.log("RIGHT_CLICK", getXandY(e));
+            // }
             if (this.options.prevent.contextMenu) {
                 e.preventDefault(); // Prevent Context Menu
             }
@@ -281,7 +283,7 @@ class GameEngine {
         // Add new things
         this.bullets = this.bullets.concat(this.bulletsToAdd);
         this.bulletsToAdd = [];
-        
+        this.camera.hud.update();
         this.crosshair.update();
     };
 

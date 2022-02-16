@@ -2,14 +2,18 @@ class Goop {
     constructor(game) { // these starting locations should possibly be based on xMidpoint and yMidpoint of the sprite
         this.game = game;
         this.game.goop = this;
-
-        this.game.goop.gun = this.game.gun;
         this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/goop.png");
         this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/goop2.png");
 
         this.SCALE = 2;
-        this.spriteWidth = 39 * this.SCALE;
-        this.spriteHeight = 43 * this.SCALE;
+        this.xMap = this.game.camera.startXPlayer;
+        this.yMap = this.game.camera.startYPlayer;
+        this.handOffset = { x: 32*this.SCALE, y: 27*this.SCALE };
+        this.spriteWidth = 39 * this.SCALE; // scaled width
+        this.spriteHeight = 43 * this.SCALE; // scaled height
+        this.heightOffset = this.spriteHeight / 2;
+        this.widthOffset = this.spriteWidth / 2;
+        this.midpoint = {x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
 
         if (this.game.camera.level == "level1") this.spritesheet = this.level1SpriteSheet;
         else this.spritesheet = this.level2SpriteSheet;
@@ -20,9 +24,8 @@ class Goop {
         this.state = "vibing"; // walking or vibin
         this.armed = "unarmed"; // armed or uarmed
 
-        this.xMap = this.game.camera.startXPlayer;
-        this.yMap = this.game.camera.startYPlayer;
-        this.handOffset = { x: 32*this.SCALE, y: 27*this.SCALE };
+        this.gun = new Gun("uzi", this.game);
+        this.stats = new PlayerStats(this.game.camera.health, false, 25, 0, false, this.gun.damage)
 
         this.velocity = { x: 0, y: 0 };
 
@@ -41,9 +44,11 @@ class Goop {
 
         this.animations.get("left").set("walking", new Map);
         this.animations.get("left").set("vibing", new Map);
+        this.animations.get("left").set("hurt", new Animator(this.spritesheet, 1248, 0, 39, 42, 2, .1))
 
         this.animations.get("right").set("walking", new Map);
         this.animations.get("right").set("vibing", new Map);
+        this.animations.get("right").set("hurt", new Animator(this.spritesheet, 1326, 0, 39, 42, 2, .1))
 
         this.animations.get("left").get("walking").set("unarmed", new Animator(this.spritesheet, 0, 0, 39, 43, 8, .1));
         this.animations.get("left").get("vibing").set("unarmed", new Animator(this.spritesheet, 624, 0, 39, 43, 8, .15));
@@ -52,8 +57,6 @@ class Goop {
         this.animations.get("right").get("vibing").set("unarmed", new Animator(this.spritesheet, 936, 0, 39, 43, 8, .15));
     };
 
-
-
     update() {
         const WALK = 7;
         const DIAGONAL = 4.95;
@@ -61,6 +64,8 @@ class Goop {
        // const DIAGONAL = 4.95; // 4 -> 2.8 based on WALK speed: 4^2 = 2(a^2); where a = x = y
         this.velocity.x = 0;
         this.velocity.y = 0;
+
+        if (this.stats.hurtTimer >= this.stats.hurtTimeout) this.stats.hurt = false;
 
         // update the velocity
         // evaluates to (left XOR right) AND (up XOR down)
@@ -79,19 +84,62 @@ class Goop {
         this.game.spriteGrid.forEach( row => {
             row.forEach( tile => {
                 let type = tile.type;
-                if (type == "north_wall" && this.boundingBox.getXProjectedBB(this.velocity.x).collide(tile.BB)) this.velocity.x = 0;
-                if (type == "north_wall" && this.boundingBox.getYProjectedBB(this.velocity.y).collide(tile.BB)) this.velocity.y = 0;
-                if (type == "wall" && this.boundingBox.getXProjectedBB(this.velocity.x).collide(tile.BB)) this.velocity.x = 0;
-                if (type == "wall" && this.boundingBox.getYProjectedBB(this.velocity.y).collide(tile.BB)) this.velocity.y = 0;
-                if (type == "south_wall" && this.boundingBox.getXProjectedBB(this.velocity.x).collide(tile.BB.lower)) this.velocity.x = 0;
-                if (type == "south_wall" && this.boundingBox.getYProjectedBB(this.velocity.y).collide(tile.BB.lower)) this.velocity.y = 0;
+                if (type == "north_wall" && this.boundingBox.getXProjectedBB(this.velocity.x).collide(tile.BB)) {
+                    this.velocity.x = 0;
+                    collisionOccurred = true;
+                }
+                if (type == "north_wall" && this.boundingBox.getYProjectedBB(this.velocity.y).collide(tile.BB)) {
+                    this.velocity.y = 0;
+                    collisionOccurred = true;
+                }
+                if (type == "wall" && this.boundingBox.getXProjectedBB(this.velocity.x).collide(tile.BB)) {
+                    this.velocity.x = 0;
+                    collisionOccurred = true;
+                }
+                if (type == "wall" && this.boundingBox.getYProjectedBB(this.velocity.y).collide(tile.BB)) {
+                    this.velocity.y = 0;
+                    collisionOccurred = true;
+                }
+                if (type == "south_wall" && this.boundingBox.getXProjectedBB(this.velocity.x).collide(tile.BB.lower)) {
+                    this.velocity.x = 0;
+                    collisionOccurred = true;
+                }
+                if (type == "south_wall" && this.boundingBox.getYProjectedBB(this.velocity.y).collide(tile.BB.lower)) {
+                    this.velocity.y = 0;
+                    collisionOccurred = true;
+                }
+                
                 // add tiles to draw on top                
                 if (type == "south_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB.upper)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
                 if (type == "wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
                 if (type == "north_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB) && this.boundingBox.top < tile.BB.bottom) this.game.tilesToDrawOnTop.push(tile);
             });
         });
-       
+
+        if (collisionOccurred) this.updateBoundingBox();
+
+        this.game.entities.forEach(entity => {
+
+            if ((!this.stats.hurt || this.stats.hurtTimer >= this.stats.hurtTimeout) && entity instanceof Slime && !entity.stats.dead ) {
+                this.stats.hurtTimer = 0;
+                this.stats.hurt = false;
+                let xProjectedBB = collisionOccurred ? this.hurtBox : this.hurtBox.getXProjectedBB(this.velocity.x);
+                let yProjectedBB = collisionOccurred ? this.hurtBox : this.hurtBox.getYProjectedBB(this.velocity.y);
+
+                if (xProjectedBB.collide(entity.boundingBox)) {
+                    this.game.camera.health-= entity.stats.damageDealt;
+                    collisionOccurred = true;
+                    this.stats.hurt = true;
+                } else if (yProjectedBB.collide(entity.boundingBox)) {
+                    this.game.camera.health-= entity.stats.damageDealt; 
+                    collisionOccurred = true;
+                    this.stats.hurt = true;
+                } 
+                
+            }
+        });
+
+        
 
         // update the positions
         this.xMap += this.velocity.x;
@@ -106,7 +154,6 @@ class Goop {
         this.game.crosshair.update();
         this.gun.update();
 
-        // NOTE: this might need to be moved inside of the above !collisionOccurred block as well
         // update the states
         if (this.velocity.x > 0) {
             this.facing = "right";
@@ -122,8 +169,14 @@ class Goop {
             
         }
 
-        // update the animation
         this.animation = this.animations.get(this.facing).get(this.state).get(this.armed);
+        // update the animation
+        if (this.stats.hurt) {
+            if (this.stats.hurtTimer < this.stats.hurtTimeout / 10) this.animation = this.animations.get(this.facing).get("hurt");
+            this.stats.hurtTimer++;
+        }
+        this.midpoint = {x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
+
     };
 
     draw(ctx) {
@@ -131,11 +184,14 @@ class Goop {
         //ctx.translate(-this.xMap+this.xStart, -this.yMap+this.xStart);//400 is half canvas width,300 height, - half player widthand height
         this.animation.drawFrame(this.game.clockTick, ctx, Math.floor(this.xMap-this.game.camera.x), Math.floor(this.yMap-this.game.camera.y), this.SCALE);
         //ctx.restore();
-        //drawBoundingBox(this.hurtBox, ctx, this.game, "red");
-        //drawBoundingBox(this.boundingBox, ctx, this.game, "white");
-
         
-       
+        if (this.game.debug) {
+            drawBoundingBox(this.hurtBox, ctx, this.game, "red");
+            drawBoundingBox(this.boundingBox, ctx, this.game, "white");
+            ctx.strokeStyle = 'red'; 
+            // draws midpoint
+            ctx.strokeRect(Math.floor(this.midpoint.x - this.game.camera.x), Math.floor(this.midpoint.y - this.game.camera.y), 2, 2);
+        }
     };
 
     updateBoundingBox() {

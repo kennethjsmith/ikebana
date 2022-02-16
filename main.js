@@ -16,7 +16,9 @@ ASSET_MANAGER.queueDownload("./sprites/test_gun.png");
 ASSET_MANAGER.queueDownload("./sprites/bubble_gun.png");
 ASSET_MANAGER.queueDownload("./sprites/uzi.png");
 ASSET_MANAGER.queueDownload("./sprites/laser.png");
-ASSET_MANAGER.queueDownload("./sprites/HUD_mockup.png");
+ASSET_MANAGER.queueDownload("./sprites/hearts.png");
+ASSET_MANAGER.queueDownload("./sprites/symbol_flower.png");
+ASSET_MANAGER.queueDownload("./sprites/numbers.png");
 ASSET_MANAGER.queueDownload("./sprites/level1.png");
 ASSET_MANAGER.queueDownload("./sprites/level2.png");
 ASSET_MANAGER.queueDownload("./sprites/title.png");
@@ -32,12 +34,6 @@ ASSET_MANAGER.downloadAll(() => {
 	ctx.imageSmoothingEnabled = false;
 	
 	gameEngine.init(ctx);
-	//gameEngine.addEntity(new Crosshair(gameEngine));
-	//gameEngine.addEntity(new Gun("gun", gameEngine));
 	gameEngine.addEntity(new SceneManager(gameEngine));
-	//gameEngine.addEntity(new HorrorSlime(gameEngine,2800,2800));
-	//gameEngine.addEntity(new Slime(gameEngine,3000,3000));
-	//gameEngine.addEntity(new Flower(gameEngine,2900,2900));
-	//new SceneManager(gameEngine)
 	gameEngine.start();
 });

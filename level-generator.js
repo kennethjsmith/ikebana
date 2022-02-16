@@ -18,8 +18,9 @@ class LevelGenerator {
         
         this.height = height; // each increment of height is 16 pixels
         this.width = width; // each increment of width is 16 pixels
+        this.tilePixelSize = 16;
         this.scale = 5;
-        this.tileSize = this.scale * 16;
+        this.tileSize = this.scale * this.tilePixelSize;
 
         this.setup();
         this.createFloors();
@@ -1231,22 +1232,22 @@ class LevelGenerator {
                 square.drawFrame(this.game.clockTick, ctx, Math.floor((col * this.tileSize) - (this.game.camera.x)), Math.floor((row * this.tileSize) - (this.game.camera.y)), this.scale); 
                 
                 
-                // UNCOMMENT TO DRAW THE BOUNDING BOXES FOR WALLS 
-                //drawing the bounding boxes
-                if (this.spriteGrid[row][col].BB) {
-                    if (this.spriteGrid[row][col].type == "wall" || this.spriteGrid[row][col].type == "north_wall" ) {
-                        let bb = this.spriteGrid[row][col].BB;
-                        ctx.strokeStyle = 'red';
-                        ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
-               
-                    } else {
-                        let bb = this.spriteGrid[row][col].BB.lower
-                        ctx.strokeStyle = 'red';
-                        ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
-               
+                if (this.game.debug) {                
+                    //drawing the bounding boxes
+                    if (this.spriteGrid[row][col].BB) {
+                        if (this.spriteGrid[row][col].type == "wall" || this.spriteGrid[row][col].type == "north_wall" ) {
+                            let bb = this.spriteGrid[row][col].BB;
+                            ctx.strokeStyle = 'red';
+                            ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
+                
+                        } else {
+                            let bb = this.spriteGrid[row][col].BB.lower
+                            ctx.strokeStyle = 'red';
+                            ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
+                
+                        }
                     }
                 }
-                // *16 because each tile is 16 x 16 pixels
             }
         }
     };
