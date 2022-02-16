@@ -34,12 +34,6 @@ ASSET_MANAGER.downloadAll(() => {
 	ctx.imageSmoothingEnabled = false;
 	
 	gameEngine.init(ctx);
-	//gameEngine.addEntity(new Crosshair(gameEngine));
-	//gameEngine.addEntity(new Gun("gun", gameEngine));
 	gameEngine.addEntity(new SceneManager(gameEngine));
-	//gameEngine.addEntity(new HorrorSlime(gameEngine,2800,2800));
-	//gameEngine.addEntity(new Slime(gameEngine,3000,3000));
-	//gameEngine.addEntity(new Flower(gameEngine,2900,2900));
-	//new SceneManager(gameEngine)
 	gameEngine.start();
 });

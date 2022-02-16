@@ -19,14 +19,10 @@ class Gun {
         this.barrelTipXOffset = 34 * this.SCALE;
         this.barrelTipYOffset = 16 * this.SCALE;
 
-
         // this is the necesary offset from player location to put grips in players hand
-       
-
         this.xMapOffset = (this.game.goop.handOffset.x - this.gripXOffset);
         this.yMapOffset = (this.game.goop.handOffset.y - this.gripYOffset);
 
-        
         this.xMap = this.game.camera.startXPlayer + this.xMapOffset;
         this.yMap = this.game.camera.startYPlayer + this.yMapOffset;
 
@@ -58,7 +54,8 @@ class Gun {
         this.sprites.set("bubble-gun", new Map);
 
         this.guncooldown = 20;
-        this.uzicooldown = 0;                   
+        this.uzicooldown = 0;
+        this.damage = 1; //TODO: make this modular for different types of guns               
 
     };
 

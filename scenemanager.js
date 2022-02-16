@@ -63,7 +63,7 @@ class SceneManager {
             // add goop
             this.game.addEntity(new Goop(this.game)); // 5 is level scaler and 16 is the sprite width/height for level tiles
 
-            this.game.goop.gun = new Gun("uzi", this.game);
+            this.game.gun = this.game.goop.gun;
 
             this.xMidpoint = this.game.ctx.canvas.width/2 - (this.game.goop.spriteWidth/2);
             this.yMidpoint = this.game.ctx.canvas.height/2 - (this.game.goop.spriteHeight/2);
