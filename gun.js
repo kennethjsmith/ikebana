@@ -4,7 +4,12 @@ class Gun {
         this.game = game;
         this.game.gun = this;
 
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/bubble_gun.png");
+        this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/uzi.png");
+        this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/laser.png");
+
+        if (this.game.camera.level == "level1") this.spritesheet = this.level1SpriteSheet;
+        else this.spritesheet = this.level2SpriteSheet;
+
         this.SIZE = 38; // num of pixels wide
         this.SCALE = 2;
         this.spriteSize = this.SIZE * this.SCALE;

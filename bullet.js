@@ -6,7 +6,15 @@ class Bullet {
         this.removeFromWorld = false;
         
 
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/bubble.png");
+        this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/bullet.png");
+        this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/bubble.png");
+
+        if (this.game.camera.level == "level1") {
+            this.spritesheet = this.level1SpriteSheet;
+            this.SPEED = 20;
+        }    
+        else this.spritesheet = this.level2SpriteSheet;
+
         this.SIZE = 12; // find better way to get this pizel width
         this.SCALE = 2;        
         this.xMap = this.game.gun.barrelTipXMap;
