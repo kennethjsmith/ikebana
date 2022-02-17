@@ -14,7 +14,7 @@ class SceneManager {
         this.MAXRADIUS = 250;
 
         //this.gameOver = false;
-        this.level = "level2";
+        this.level = "level1";
         this.levelLabel = new Map;
         this.levelLabel.set("level1", "Level 1");
         this.levelLabel.set("level2", "Level 2");
