@@ -79,7 +79,7 @@ class AssetManager {
     playAsset(path) {
         //this flag is temporary
         if (!this.playing){
-		    let audio = this.cache["./sfx/chiffon.mp3"];//path];
+		    let audio = this.cache["./sfx/cerise.mp3"];//path];
 		    audio.currentTime = 0;
 		    audio.play();
             this.playing = true;

@@ -71,10 +71,6 @@ class Gun {
         this.yMap += this.game.goop.velocity.y;
         this.gripXMap += this.game.goop.velocity.x;
         this.gripYMap += this.game.goop.velocity.y;
-        // this.barrelMidXMap = this.game.goop.velocity.x;
-        // this.barrelMidYMap = this.game.goop.velocity.y;
-        // this.barrelTipXMap = this.game.goop.velocity.x;
-        // this.barrelTipYMap = this.game.goop.velocity.y;
 
         // this distance from grip to center of crosshair is used to calculate angle alpha
         let xDistToCross = this.game.crosshair.xMidpoint - this.gripXMap;
@@ -85,13 +81,9 @@ class Gun {
         if(distToCross > this.smallR) {
             this.rotation = Math.atan2(((this.game.crosshair.yMidpoint) - (this.gripYMap)), ((this.game.crosshair.xMidpoint) - (this.gripXMap)));
             this.alpha = Math.asin(this.smallR/distToCross);
-            //if(this.rotation > -Math.PI/2 || this.rotation < Math.PI/2) this.alpha = Math.asin(this.smallR/distToCross);
-            //else this.alpha = Math.asin(-this.smallR/distToCross);
             this.rotation += this.alpha;
         } 
 
-        // calculate the new barrel offsets and map locaions
-        //if (this.rotation > -Math.PI/2 || this.rotation < Math.PI/2) {
             this.barrelMidXOffsetFromGrip = (this.smallR*Math.sin(this.rotation));
             this.barrelMidYOffsetFromGrip = -(this.smallR*Math.cos(this.rotation));
             this.barrelMidXMap = this.gripXMap + this.barrelMidXOffsetFromGrip;

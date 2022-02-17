@@ -217,8 +217,8 @@ class SceneManager {
 
             let imaginaryXDistance = (imaginaryX - (this.game.goop.xMap + this.game.goop.spriteWidth/2));
             let imaginaryYDistance = (imaginaryY - (this.game.goop.yMap + this.game.goop.spriteHeight/2));
-            this.x = this.game.goop.xMap - this.xMidpoint + (imaginaryXDistance/2);
-            this.y = this.game.goop.yMap - this.yMidpoint + (imaginaryYDistance/2);
+            this.x = Math.floor(this.game.goop.xMap - this.xMidpoint + (imaginaryXDistance/2));
+            this.y = Math.floor(this.game.goop.yMap - this.yMidpoint + (imaginaryYDistance/2));
         }
         
 
