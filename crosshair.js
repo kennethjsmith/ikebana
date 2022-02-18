@@ -32,6 +32,7 @@ class Crosshair {
 
         this.xMidpoint = this.xMap + this.spriteSize/2;
         this.yMidpoint = this.yMap + this.spriteSize/2;
+        print(this.xMap + ", " + this.yMap);
     };
 
 

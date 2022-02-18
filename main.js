@@ -23,6 +23,7 @@ ASSET_MANAGER.queueDownload("./sprites/level1.png");
 ASSET_MANAGER.queueDownload("./sprites/level2.png");
 ASSET_MANAGER.queueDownload("./sprites/title.png");
 ASSET_MANAGER.queueDownload("./sprites/placeholder_title.png");
+ASSET_MANAGER.queueDownload("./sprites/tint_screen.png");
 
 
 ASSET_MANAGER.queueDownload("./sfx/cerise.mp3");

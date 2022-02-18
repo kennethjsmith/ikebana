@@ -27,7 +27,11 @@ class GameEngine {
         this.clickedLocation = { x: null, y: null }
         this.mouseX = 0;
         this.mouseY = 0;
+        this.x = 0; // these are used to track actual mouse position
+        this.y = 0;
+
         this.wheel = null;
+        this.camera = {x: 0, y: 0};
 
         this.left = false;
         this.right = false;
@@ -71,24 +75,33 @@ class GameEngine {
     };
 
     startInput() {
-        const getXandY = e => ({
-            x: e.clientX - this.ctx.canvas.getBoundingClientRect().left,
-            y: e.clientY - this.ctx.canvas.getBoundingClientRect().top
-        });
+
+
+        //mouse position in canvas
+        function getMousePos(canvas, e) {
+            var rect = canvas.getBoundingClientRect();
+            self.x = e.clientX - rect.left,//400 width of canvas. 300 height
+            self.y = e.clientY - rect.top
+        }
 
         var self = this;
 
         // on click, lock input
         this.ctx.canvas.onclick = () => {
+            
             if (!self.locked) {
+                
                 this.ctx.canvas.requestPointerLock({
                     unadjustedMovement: true,
-                });
-                this.mouseX = this.ctx.canvas.width / 2;
-                this.mouseY = this.ctx.canvas.height / 2;                
+                });               
                 self.locked = true;
+                self.mouseX = this.x + this.camera.x - (this.crosshair.spriteSize/2);
+                self.mouseY = this.y + this.camera.y - (this.crosshair.spriteSize/2);
             }
-            this.clickedLocation = { x: this.mouseX, y: this.mouseY };
+            
+            this.crosshair.update();
+            this.camera.update();
+            //this.clickedLocation = { x: this.mouseX, y: this.mouseY };
         };
 
         // handle locked cursor movement
@@ -99,6 +112,7 @@ class GameEngine {
             if (document.pointerLockElement === self.ctx.canvas || document.mozPointerLockElement === self.ctx.canvas) {
                 document.addEventListener("mousemove", updatePosition, false);
                 self.locked = true;
+
             } else {
                 document.removeEventListener("mousemove", updatePosition, false);
                 self.locked = false;
@@ -153,23 +167,10 @@ class GameEngine {
             }
         }, false);
 
-        //mouse position in canvas
-        function getMousePos(canvas, e) {
-            var rect = canvas.getBoundingClientRect();
-            return {
-              x: e.clientX - rect.left,//400 width of canvas. 300 height
-              y: e.clientY - rect.top
-            };
-          }
-
         this.ctx.canvas.addEventListener("mousemove", e => {
-            if (this.options.debugging) {
-                console.log("MOUSE_MOVE", getXandY(e));
-            }
-            // var pos = getMousePos(this.ctx.canvas, e, this.goop);
-            // this.mouseX = pos.x;
-            // this.mouseY = pos.y;
+            getMousePos(this.ctx.canvas, e);
             if(this.locked){
+                
                 updatePosition(e);
                 this.crosshair.update(); //update here since not in entities list, update after movement too so that camera updates
             }
@@ -177,6 +178,7 @@ class GameEngine {
 
         this.ctx.canvas.addEventListener("mousedown", e => {
             this.clicked = true;
+            getMousePos(this.ctx.canvas, e);
             ASSET_MANAGER.playAsset("dummy-path");
         });
 
@@ -195,11 +197,11 @@ class GameEngine {
             if (this.options.prevent.contextMenu) {
                 e.preventDefault(); // Prevent Context Menu
             }
-            this.rightclick = getXandY(e);
+            //this.rightclick = getXandY(e);
         });
 
-        this.mouseX = this.ctx.canvas.width / 2;
-        this.mouseY = this.ctx.canvas.height / 2;
+        this.mouseX = this.ctx.canvas.width/2 - this.crosshair.spriteSize/2;
+        this.mouseY = this.ctx.canvas.height/2 - this.crosshair.spriteSize/2; 
     };
 
     addEntity(entity) {
@@ -246,7 +248,7 @@ class GameEngine {
             }
     
         }
-        this.camera.hud.draw(this.ctx);
+        if(!this.title) this.camera.hud.draw(this.ctx);
         this.crosshair.draw(this.ctx);
     };
 
