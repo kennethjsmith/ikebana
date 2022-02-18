@@ -84,27 +84,16 @@ class Gun {
             this.rotation += this.alpha;
         } 
 
-            this.barrelMidXOffsetFromGrip = (this.smallR*Math.sin(this.rotation));
-            this.barrelMidYOffsetFromGrip = -(this.smallR*Math.cos(this.rotation));
-            this.barrelMidXMap = this.gripXMap + this.barrelMidXOffsetFromGrip;
-            this.barrelMidYMap = this.gripYMap + this.barrelMidYOffsetFromGrip;
+        this.barrelMidXOffsetFromGrip = (this.smallR*Math.sin(this.rotation));
+        this.barrelMidYOffsetFromGrip = -(this.smallR*Math.cos(this.rotation));
+        this.barrelMidXMap = this.gripXMap + this.barrelMidXOffsetFromGrip;
+        this.barrelMidYMap = this.gripYMap + this.barrelMidYOffsetFromGrip;
 
-            this.barrelTipXOffsetFromGrip = (this.bigR*Math.cos(this.rotation)) + this.barrelMidXOffsetFromGrip;
-            this.barrelTipYOffsetFromGrip = (this.bigR*Math.sin(this.rotation)) + this.barrelMidYOffsetFromGrip;
-            this.barrelTipXMap = this.gripXMap + this.barrelTipXOffsetFromGrip;
-            this.barrelTipYMap = this.gripYMap + this.barrelTipYOffsetFromGrip;
-        // } 
-        // else {
-        //     this.barrelMidXOffsetFromGrip = (-this.smallR*Math.sin(this.rotation));
-        //     this.barrelMidYOffsetFromGrip = -(-this.smallR*Math.cos(this.rotation));
-        //     this.barrelMidXMap = this.gripXMap + this.barrelMidXOffsetFromGrip;
-        //     this.barrelMidYMap = this.gripYMap + this.barrelMidYOffsetFromGrip;
-
-        //     this.barrelTipXOffsetFromGrip = (this.bigR*Math.cos(this.rotation)) + this.barrelMidXOffsetFromGrip;
-        //     this.barrelTipYOffsetFromGrip = (this.bigR*Math.sin(this.rotation)) + this.barrelMidYOffsetFromGrip;
-        //     this.barrelTipXMap = this.gripXMap + this.barrelTipXOffsetFromGrip;
-        //     this.barrelTipYMap = this.gripYMap + this.barrelTipYOffsetFromGrip;
-        // }
+        this.barrelTipXOffsetFromGrip = (this.bigR*Math.cos(this.rotation)) + this.barrelMidXOffsetFromGrip;
+        this.barrelTipYOffsetFromGrip = (this.bigR*Math.sin(this.rotation)) + this.barrelMidYOffsetFromGrip;
+        this.barrelTipXMap = this.gripXMap + this.barrelTipXOffsetFromGrip;
+        this.barrelTipYMap = this.gripYMap + this.barrelTipYOffsetFromGrip;
+    
        
         // add bullets if clicked, else simply decrement cooldown counter
         if (this.game.clicked) {
