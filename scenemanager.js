@@ -6,7 +6,6 @@ class SceneManager {
         this.y = null;
 
         this.titleSprite = ASSET_MANAGER.getAsset("./sprites/placeholder_title.png");
-
         
         this.health = 3;
         this.ammo = { bullet: 255, energy: 55};
@@ -23,14 +22,16 @@ class SceneManager {
         this.levelStats.set("level2", new LevelStats("Level 2", 30, 0));
         this.levelStats.set("level3", new LevelStats("Level 3", 40, 0));
 
-        this.title = true; // should this be this.title
+        this.title = true; 
         this.pause = false;
         this.play = false;
-        this.nextLevel = false;
+        this.nextLevel = false; // use something like this to move to the next levels?
+        this.win = false;
+        this.lose = false;
 
 
         this.levelXSize = 75; // # of tiles
-        this.levelYSize = 41;
+        this.levelYSize = 41; // # of tiles
         this.game.numXTiles = this.levelXSize;
         this.game.numYTiles = this.levelYSize;
 
@@ -40,7 +41,6 @@ class SceneManager {
 
         this.hud = new Hud(this.game);
         this.loadLevel(this.level, this.title);
-
     };
 
     updateAudio() {
@@ -51,10 +51,12 @@ class SceneManager {
 		ASSET_MANAGER.adjustVolume(volume);
 	};
 
-    loadLevel(level, title) {
+    loadLevel() {
 
-       if(!title){
+       if(!this.title){
            this.clearEntities();
+            console.log("level: " + this.level)
+
             // build level map and spawn start location for goop
             this.game.level = new LevelGenerator(this.game, this.levelXSize, this.levelYSize);
             let goopStartLocation = this.randomEdgeLocation();
@@ -203,10 +205,31 @@ class SceneManager {
 			}
 		} else if (this.pause) { // do nothing right now
 
+        } else if (this.health <= 0) {
+            this.play = false;
+            this.lose = true;
+            this.levelStats.get(this.level).deadEnemyCount = 0;
+
+            if(this.game.clicked) {
+			    if (this.game.clickedLocation.x >= 250 && this.game.clickedLocation.x <= 400 && this.game.clickedLocation.y <= 300 && this.game.clickedLocation.y >= 250) {
+                    this.play = true;
+                    this.lose = false;
+                    this.health = 3;
+                    this.level = "level1";
+				    this.loadLevel(this.level, false);
+                }
+			}            
         } else if (this.play) { 
             if (this.levelStats.get(this.level).deadEnemyCount >= this.levelStats.get(this.level).totalEnemies) {
-                this.level = "level2";
-                this.loadLevel(this.level, false);
+                this.levelStats.get(this.level).deadEnemyCount = 0;
+
+                if (this.level == "level1") {
+                    this.level = "level2";
+                    this.loadLevel(this.level, false);
+                } else if (this.level == "level2") {
+                    this.win = true;
+                }
+                
             } else {
 
                 let xDistance = ((this.game.crosshair.xMidpoint) - (this.game.goop.xMap + this.game.goop.spriteWidth/2));
@@ -237,16 +260,25 @@ class SceneManager {
         if (this.title) {
 
             ctx.drawImage(this.titleSprite, 0, 0, ctx.canvas.width, ctx.canvas.height);
-
-			//ctx.drawImage(this.titleBackground, 0, 0, 620, 349, 0, 0, 1024, 768);
-			ctx.fillStyle = "White";
-			// ctx.fillText("Ikebana", 200, 200);
-			
+            ctx.fillStyle = ((this.game.mouseX >= 250 && this.game.mouseX <= 400 && this.game.mouseY >= 250 && this.game.mouseY <= 300) ? "White" : "Black");
 			ctx.fillRect(250, 250, 150, 50);
-			ctx.fillStyle = this.game.mouse && this.game.mouse.x >= 250 && this.game.mouse.x <= 400 && this.game.mouse.y >= 250 && this.game.mouse.y <= 300 ? "White" : "Black";
+			ctx.fillStyle = "Pink";
 			ctx.fillText("PLAY", 260, 260);
+
 		} else if (this.pause) {
             // draw pause screen
+        } else if (this.lose) {
+            ctx.drawImage(this.titleSprite, 0, 0, ctx.canvas.width, ctx.canvas.height);
+
+            ctx.fillStyle = "Black";
+            ctx.fillText("u ded :(", 260, 150)
+
+            ctx.fillStyle = ((this.game.mouseX >= 250 && this.game.mouseX <= 400 && this.game.mouseY >= 250 && this.game.mouseY <= 300) ? "White" : "Black");
+			ctx.fillRect(250, 250, 150, 50);
+            ctx.fillStyle = "Pink";
+            ctx.fillText("PLAY AGAIN", 260, 260);
+
+
         }
         //this.animation.drawFrame(this.game.clockTick, ctx, 0, 0, .5);
     };

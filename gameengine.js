@@ -214,7 +214,7 @@ class GameEngine {
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-        if (this.camera.title) {
+        if (this.camera.title || this.camera.pause || this.camera.lose || this.camera.win) {
             this.camera.draw(this.ctx);
         } else if (!this.camera.title) {
             this.level.draw(this.ctx);

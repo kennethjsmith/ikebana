@@ -1,7 +1,6 @@
 class Flower {
     constructor(game, x, y) {
         this.game = game;
-        console.log("NEW FLOWER ADDED");
 
         this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/flower.png");
         this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/flower2.png");
