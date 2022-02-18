@@ -66,8 +66,14 @@ class Bullet {
                 } else if (type == "south_wall" && this.boundingBox.collide(tile.BB.lower)) {
                     this.removeFromWorld = true;
                 }
+                // add tiles to draw on top                
+                if (type == "south_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB.upper)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
+                if (type == "wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
+                if (type == "north_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB) && this.boundingBox.top < tile.BB.bottom) this.game.tilesToDrawOnTop.push(tile);
             });
         });
+
+        
 
         // check collisions with entities
         this.game.entities.forEach(entity => {
