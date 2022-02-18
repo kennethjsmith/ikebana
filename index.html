@@ -4,6 +4,25 @@
 <head>
     <meta charset="utf-8">
     <title>Ikebana</title>
+    <style>
+        body {
+              font-family: 'Kouryuu', serif;
+              font-size: 24px;
+          }
+          @font-face {
+              font-family: 'Kouryuu';
+              src: url("./font/Kouryuu.otf");
+          }
+          canvas {
+              /* position: absolute; */
+              padding-left: 0;
+              padding-right: 0;
+              margin-left: auto;
+              margin-right: auto;
+              display: block;
+              font-size: 20px;
+          }  
+      </style>
         
     <script type="text/javascript" src="./assetmanager.js"></script>
     <script type="text/javascript" src="./timer.js"></script>
@@ -29,7 +48,7 @@
 </head>
 <body>
     <div style= "text-align: center">
-        <canvas id="gameWorld" width="675" height="675" style="background: #25392e; border: 1px solid black" tabindex ="0" autofocus></canvas>
+        <canvas id="gameWorld" width="675" height="675" style="background: #ffffff; border: 1px solid black" tabindex ="0" autofocus></canvas>
     </div>
     <div style= "text-align: center">
     	<br />
