@@ -24,6 +24,7 @@ class GameEngine {
 
         // Information on the input
         this.click = null;
+        this.clickedLocation = { x: null, y: null }
         this.mouseX = 0;
         this.mouseY = 0;
         this.wheel = null;
@@ -84,9 +85,10 @@ class GameEngine {
                     unadjustedMovement: true,
                 });
                 this.mouseX = this.ctx.canvas.width / 2;
-                this.mouseY = this.ctx.canvas.height / 2;
+                this.mouseY = this.ctx.canvas.height / 2;                
                 self.locked = true;
             }
+            this.clickedLocation = { x: this.mouseX, y: this.mouseY };
         };
 
         // handle locked cursor movement
@@ -151,7 +153,6 @@ class GameEngine {
             }
         }, false);
 
-        this;
         //mouse position in canvas
         function getMousePos(canvas, e) {
             var rect = canvas.getBoundingClientRect();
@@ -175,26 +176,15 @@ class GameEngine {
         });
 
         this.ctx.canvas.addEventListener("mousedown", e => {
-            // if (this.options.debugging) {
-            //     console.log("CLICK", getXandY(e));
-            // }
             this.clicked = true;
             ASSET_MANAGER.playAsset("dummy-path");
-            //console.log("pressed");
         });
 
         this.ctx.canvas.addEventListener("mouseup", e => {
-            // if (this.options.debugging) {
-            //     console.log("CLICK", getXandY(e));
-            // }
             this.clicked = false;
-            //console.log("released");
         });
 
         this.ctx.canvas.addEventListener("wheel", e => {
-            // if (this.options.debugging) {
-            //     console.log("WHEEL", getXandY(e), e.wheelDelta);
-            // }
             if (this.options.prevent.scrolling) {
                 e.preventDefault(); // Prevent Scrolling
             }
@@ -202,9 +192,6 @@ class GameEngine {
         });
 
         this.ctx.canvas.addEventListener("contextmenu", e => {
-            // if (this.options.debugging) {
-            //     console.log("RIGHT_CLICK", getXandY(e));
-            // }
             if (this.options.prevent.contextMenu) {
                 e.preventDefault(); // Prevent Context Menu
             }
@@ -227,8 +214,9 @@ class GameEngine {
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-        // if (this.camera.titleScreen)this.camera.draw(this.ctx);
-        // else{
+        if (this.camera.title) {
+            this.camera.draw(this.ctx);
+        } else if (!this.camera.title) {
             this.level.draw(this.ctx);
 
             // Draw latest entities first
@@ -244,7 +232,6 @@ class GameEngine {
                 this.bullets[i].draw(this.ctx, this);
             }
 
-
             // draw south wall tiles on top of necessary entities
             if (this.tilesToDrawOnTop.length > 0) {
                 this.tilesToDrawOnTop.forEach( tile => {
@@ -257,8 +244,9 @@ class GameEngine {
                 });
             }
 
-            this.camera.hud.draw(this.ctx);
-        //}
+            
+        }
+        this.camera.hud.draw(this.ctx);
         this.crosshair.draw(this.ctx);
     };
 

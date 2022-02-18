@@ -4,6 +4,9 @@ class SceneManager {
         this.game.camera = this;
         this.x = null;
         this.y = null;
+
+        this.titleSprite = ASSET_MANAGER.getAsset("./sprites/placeholder_title.png");
+
         
         this.health = 3;
         this.ammo = { bullet: 255, energy: 55};
@@ -15,14 +18,15 @@ class SceneManager {
 
         //this.gameOver = false;
         this.level = "level1";
-        this.levelLabel = new Map;
-        this.levelLabel.set("level1", "Level 1");
-        this.levelLabel.set("level2", "Level 2");
-        this.levelLabel.set("level3", "Level 3");
+        this.levelStats = new Map;
+        this.levelStats.set("level1", new LevelStats("Level 1", 5, 0));
+        this.levelStats.set("level2", new LevelStats("Level 2", 30, 0));
+        this.levelStats.set("level3", new LevelStats("Level 3", 40, 0));
 
-        this.titleScreen = true; // should this be this.title
+        this.title = true; // should this be this.title
         this.pause = false;
-        this.play = true;
+        this.play = false;
+        this.nextLevel = false;
 
 
         this.levelXSize = 75; // # of tiles
@@ -34,8 +38,8 @@ class SceneManager {
         this.startYPlayer = null;
         this.goopsQuadrant = null;
 
-        this.loadLevel(this.level, this.titleScreen);
         this.hud = new Hud(this.game);
+        this.loadLevel(this.level, this.title);
 
     };
 
@@ -49,7 +53,8 @@ class SceneManager {
 
     loadLevel(level, title) {
 
-       // if(!title){
+       if(!title){
+           this.clearEntities();
             // build level map and spawn start location for goop
             this.game.level = new LevelGenerator(this.game, this.levelXSize, this.levelYSize);
             let goopStartLocation = this.randomEdgeLocation();
@@ -61,7 +66,7 @@ class SceneManager {
             //this.game.addEntity(new Gun("uzi",this.game)); // 5 is level scaler and 16 is the sprite width/height for level tiles
             
             // add goop
-            this.game.addEntity(new Goop(this.game)); // 5 is level scaler and 16 is the sprite width/height for level tiles
+            this.game.addEntity(new Goop(this.game));
 
             this.game.gun = this.game.goop.gun;
 
@@ -71,11 +76,11 @@ class SceneManager {
             this.x = this.game.goop.xMap - this.xMidpoint;
             this.y = this.game.goop.yMap - this.yMidpoint;
 
-            this.addEnemies();
+           this.addEnemies(this.levelStats.get(this.level).totalEnemies);
 
-            ASSET_MANAGER.pauseBackgroundMusic();
+            //ASSET_MANAGER.pauseBackgroundMusic();
             //ASSET_MANAGER.playAsset("dummy-path");
-        //}
+        }
     }
 
     clearEntities() {
@@ -84,8 +89,8 @@ class SceneManager {
         });
     };
 
-    addEnemies() {
-        let numSlimes = 20;
+    addEnemies(numEnemies) {
+        let numSlimes = numEnemies;
         for (let i = 0; i < numSlimes; i++) {        
             let enemyLocation = this.randomLocation();
             this.game.addEntity(new Slime(this.game, enemyLocation.x, enemyLocation.y));
@@ -188,81 +193,61 @@ class SceneManager {
     }
 
     update() {
-        //console.log("here");
-        // if (this.title && this.game.click) {
-		// 	if (this.game.click.x > 415 && this.game.click.x < 565 && this.game.click.y > 660 && this.game.click.y < 710) {
-		// 		this.title = false;
-		// 		this.loadLevel(levelOne, false);
-		// 	}
-		// }
+        if (this.title) {
+            if(this.game.clicked) {
+			    if (this.game.clickedLocation.x >= 250 && this.game.clickedLocation.x <= 400 && this.game.clickedLocation.y <= 300 && this.game.clickedLocation.y >= 250) {
+                    this.title = false;
+                    this.play = true;
+				    this.loadLevel(this.level, false);
+                }
+			}
+		} else if (this.pause) { // do nothing right now
 
-        
+        } else if (this.play) { 
+            if (this.levelStats.get(this.level).deadEnemyCount >= this.levelStats.get(this.level).totalEnemies) {
+                this.level = "level2";
+                this.loadLevel(this.level, false);
+            } else {
 
-        let xDistance = ((this.game.crosshair.xMidpoint) - (this.game.goop.xMap + this.game.goop.spriteWidth/2));
-        let yDistance = ((this.game.crosshair.yMidpoint) - (this.game.goop.yMap + this.game.goop.spriteHeight/2));
-        let totalDistance = Math.hypot(xDistance,yDistance);
-        if(totalDistance < this.MAXRADIUS){
-            this.x = this.game.goop.xMap - this.xMidpoint + (xDistance/2);
-            this.y = this.game.goop.yMap - this.yMidpoint + (yDistance/2);
+                let xDistance = ((this.game.crosshair.xMidpoint) - (this.game.goop.xMap + this.game.goop.spriteWidth/2));
+                let yDistance = ((this.game.crosshair.yMidpoint) - (this.game.goop.yMap + this.game.goop.spriteHeight/2));
+                let totalDistance = Math.hypot(xDistance,yDistance);
+                
+                if(totalDistance < this.MAXRADIUS){
+                    this.x = this.game.goop.xMap - this.xMidpoint + (xDistance/2);
+                    this.y = this.game.goop.yMap - this.yMidpoint + (yDistance/2);
+                } else { //get max camera movement
+
+                    // first, get imaginary point on line
+                    let ratio = (this.MAXRADIUS/totalDistance);
+                    let imaginaryX = ((1 - ratio) * this.game.goop.xMap + ratio * this.game.crosshair.xMidpoint);
+                    let imaginaryY = ((1 - ratio) * this.game.goop.yMap + ratio * this.game.crosshair.yMidpoint);
+
+                    let imaginaryXDistance = (imaginaryX - (this.game.goop.xMap + this.game.goop.spriteWidth/2));
+                    let imaginaryYDistance = (imaginaryY - (this.game.goop.yMap + this.game.goop.spriteHeight/2));
+                    this.x = Math.floor(this.game.goop.xMap - this.xMidpoint + (imaginaryXDistance/2));
+                    this.y = Math.floor(this.game.goop.yMap - this.yMidpoint + (imaginaryYDistance/2));
+                }
+            }
         }
-        else {
-            //get max camera movement
-            // first, get imaginary point on line
-            let ratio = (this.MAXRADIUS/totalDistance);
-            //console.log(ratio);
-            let imaginaryX = ((1 - ratio) * this.game.goop.xMap + ratio * this.game.crosshair.xMidpoint);
-            let imaginaryY = ((1 - ratio) * this.game.goop.yMap + ratio * this.game.crosshair.yMidpoint);
-            //console.log("hair(x,y):("+this.game.crosshair.xMidpoint+", "+this.game.crosshair.yMidpoint+")");
-            //console.log("(x,y):("+imaginaryX+", "+imaginaryY+")");
-
-            let imaginaryXDistance = (imaginaryX - (this.game.goop.xMap + this.game.goop.spriteWidth/2));
-            let imaginaryYDistance = (imaginaryY - (this.game.goop.yMap + this.game.goop.spriteHeight/2));
-            this.x = Math.floor(this.game.goop.xMap - this.xMidpoint + (imaginaryXDistance/2));
-            this.y = Math.floor(this.game.goop.yMap - this.yMidpoint + (imaginaryYDistance/2));
-        }
-        
-
-        //TODO: make this radius bound work for camera
-        // if(totalDistance > radius){
-        //     console.log("here");
-        //     this.x = this.game.goop.xMap - this.xMidpoint + ((xDistance/totalDistance)*radius);
-        //     this.y = this.game.goop.yMap - this.yMidpoint + ((yDistance/totalDistance)*radius);
-        // }
-        // else if (totalDistance <= radius){
-            //this.x = this.game.goop.xMap - this.xMidpoint + (xDistance/2);
-           // this.y = this.game.goop.yMap - this.yMidpoint + (yDistance/2);
-        // }
-   
-
-        
-        // ScreenMouse = GetComponent.<Camera>().main.ScreenToWorldPoint(Vector3(MousePos1.x, MousePos1.y, Obj.position.z-GetComponent.<Camera>().main.transform.position.z));
-        // MouseOffset = ScreenMouse - Parent.position;
-    
-        // MousePos2 = Camera.main.ScreenToWorldPoint(Vector3(Input.mousePosition.x, Input.mousePosition.y, -transform.position.z));
-        // Obj.position.y = ((this.game.mouseY - Parent.position.y)/2.0)+Parent.position.y;
-        // Obj.position.x = ((this.game.mouseX - Parent.position.x)/2.0)+Parent.position.x;
-        
-        // Dist = Vector2.Distance(Vector2(Obj.position.x, Obj.position.y), Vector2(Parent.position.x, Parent.position.y));
-        
-        // if(Dist > Radius){
-        //     var norm = MouseOffset.normalized;
-        //     Obj.position.x = norm.x*Radius + Parent.position.x;
-        //     Obj.position.y = norm.y*Radius + Parent.position.y;
-        // }
         this.updateAudio();
     }
 
     draw(ctx) {
         if (this.title) {
-			//ctx.drawImage(this.titleBackground, 0, 0, 620, 349, 0, 0, 1024, 768);
-			ctx.fillStyle = "Black";
-			ctx.fillText("Ikebana", 200, 200);
-			
-			//ctx.fillRect(300, 660, 150, 50);
-			ctx.fillStyle = this.game.mouse && this.game.mouse.x > 415 && this.game.mouse.x < 565 && this.game.mouse.y > 660 && this.game.mouse.y < 710 ? "White" : "Black";
-			ctx.fillText("PLAY", 425, 700);
-		} 
 
+            ctx.drawImage(this.titleSprite, 0, 0, ctx.canvas.width, ctx.canvas.height);
+
+			//ctx.drawImage(this.titleBackground, 0, 0, 620, 349, 0, 0, 1024, 768);
+			ctx.fillStyle = "White";
+			// ctx.fillText("Ikebana", 200, 200);
+			
+			ctx.fillRect(250, 250, 150, 50);
+			ctx.fillStyle = this.game.mouse && this.game.mouse.x >= 250 && this.game.mouse.x <= 400 && this.game.mouse.y >= 250 && this.game.mouse.y <= 300 ? "White" : "Black";
+			ctx.fillText("PLAY", 260, 260);
+		} else if (this.pause) {
+            // draw pause screen
+        }
         //this.animation.drawFrame(this.game.clockTick, ctx, 0, 0, .5);
     };
 }

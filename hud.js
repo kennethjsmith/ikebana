@@ -8,7 +8,7 @@ class Hud {
 
         this.sprites = new Map;
         this.loadSprites();
-        this.health = this.sprites.get("heart").get(2);
+        this.health = this.sprites.get("heart").get(3);
         this.flower = this.sprites.get("flower");
         //this.flowerCount =
     };
@@ -42,6 +42,7 @@ class Hud {
     };
 
     update() {
+        
         if (this.game.camera.health <= 0) this.health = this.sprites.get("heart").get(0);
         else this.health = this.sprites.get("heart").get(this.game.camera.health);
         // update the flower count
