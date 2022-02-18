@@ -305,7 +305,6 @@ class SceneManager {
                 && this.game.crosshair.yMidpoint <= 400) 
                 ? '#2c2f5e' : "White");
             ctx.fillRect(250, 350, 150, 50);
-            //ctx.fillStyle = "Pink";
             ctx.fillStyle = ((this.game.crosshair.xMidpoint >= 250
                 && this.game.crosshair.xMidpoint <= 400 
                 && this.game.crosshair.yMidpoint >= 350 
@@ -314,22 +313,25 @@ class SceneManager {
             ctx.font = '25px Kouryuu';
             ctx.fillText("play again", 255, 385);
         } else if (this.win) {
-            ctx.drawImage(this.titleSprite, 0, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.drawImage(this.tintScreen, 0, 0, ctx.canvas.width, ctx.canvas.height);
 
-            ctx.fillStyle = "Black";
-            ctx.fillText("nice.", 260, 150)
+            ctx.fillStyle = "White";
+
+            ctx.fillText("nice!", 260, 200)
 
             ctx.fillStyle = ((this.game.crosshair.xMidpoint >= 250
-                                && this.game.crosshair.xMidpoint <= 400 
-                                && this.game.crosshair.yMidpoint >= 250 
-                                && this.game.crosshair.yMidpoint <= 300) 
-                                ? "White" : "Black");
-			ctx.fillRect(250, 250, 150, 50);
-            ctx.fillStyle = "Pink";
+                && this.game.crosshair.xMidpoint <= 400 
+                && this.game.crosshair.yMidpoint >= 350 
+                && this.game.crosshair.yMidpoint <= 400) 
+                ? '#2c2f5e' : "White");
+            ctx.fillRect(250, 350, 150, 50);
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint >= 250
+                && this.game.crosshair.xMidpoint <= 400 
+                && this.game.crosshair.yMidpoint >= 350 
+                && this.game.crosshair.yMidpoint <= 400) 
+                ? "White" : '#2c2f5e');
             ctx.font = '25px Kouryuu';
-            ctx.fillText("play again", 260, 290);
-
-
+            ctx.fillText("play again", 255, 385);
         } 
     };
 }
