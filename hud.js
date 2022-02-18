@@ -10,7 +10,7 @@ class Hud {
         this.loadSprites();
         this.health = this.sprites.get("heart").get(3);
         this.flower = this.sprites.get("flower");
-        //this.flowerCount =
+        this.flowerCount = 0;
     };
 
     loadSprites() {
@@ -49,9 +49,15 @@ class Hud {
     };
 
     draw(ctx) {
-        if (this.game.camera.play || this.game.camera.pause) {
-            // first try to draw the correct heart
-            this.health.drawFrame(this.game.clockTick, ctx, 0, 0, 0.6);
-        }
+        this.health.drawFrame(this.game.clockTick, ctx, 0, 0, 0.6);
+        this.flower.drawFrame(this.game.clockTick, ctx, 480, 3, 0.27);
+        ctx.fillStyle = "White";
+        ctx.font = '50px Kouryuu';
+        ctx.fillText(": " + this.flowerCount, 550, 55)
+
+        ctx.font = 'bold 50px Kouryuu';
+        ctx.fillStyle = "Black";
+
+        ctx.strokeText(": " + this.flowerCount, 550, 55);
     };
 };

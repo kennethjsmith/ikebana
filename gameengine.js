@@ -216,6 +216,7 @@ class GameEngine {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         if (this.camera.title || this.camera.pause || this.camera.lose || this.camera.win) {
             this.camera.draw(this.ctx);
+        
         } else if (!this.camera.title) {
             this.level.draw(this.ctx);
 
@@ -243,8 +244,7 @@ class GameEngine {
                     image.drawFrame(this.clockTick, this.ctx, Math.floor((col * tileSize) - (this.camera.x)), Math.floor((row * tileSize) - (this.camera.y)), scale); 
                 });
             }
-
-            
+    
         }
         this.camera.hud.draw(this.ctx);
         this.crosshair.draw(this.ctx);
@@ -254,7 +254,6 @@ class GameEngine {
         this.tilesToDrawOnTop = [];
         // Update Entities
         this.entities.forEach(entity => entity.update(this));
-        //this.crosshair.update();
         // Update Bullets
         this.bullets.forEach(bullet => bullet.update(this));
 

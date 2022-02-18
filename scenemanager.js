@@ -15,11 +15,10 @@ class SceneManager {
         this.yMidpoint = null;
         this.MAXRADIUS = 250;
 
-        //this.gameOver = false;
         this.level = "level1";
         this.levelStats = new Map;
         this.levelStats.set("level1", new LevelStats("Level 1", 5, 0));
-        this.levelStats.set("level2", new LevelStats("Level 2", 30, 0));
+        this.levelStats.set("level2", new LevelStats("Level 2", 10, 0));
         this.levelStats.set("level3", new LevelStats("Level 3", 40, 0));
 
         this.title = true; 
@@ -55,7 +54,6 @@ class SceneManager {
 
        if(!this.title){
            this.clearEntities();
-            console.log("level: " + this.level)
 
             // build level map and spawn start location for goop
             this.game.level = new LevelGenerator(this.game, this.levelXSize, this.levelYSize);
@@ -208,12 +206,29 @@ class SceneManager {
         } else if (this.health <= 0) {
             this.play = false;
             this.lose = true;
+            this.x = 0;
+            this.y = 0;
             this.levelStats.get(this.level).deadEnemyCount = 0;
 
             if(this.game.clicked) {
 			    if (this.game.clickedLocation.x >= 250 && this.game.clickedLocation.x <= 400 && this.game.clickedLocation.y <= 300 && this.game.clickedLocation.y >= 250) {
                     this.play = true;
                     this.lose = false;
+                    this.health = 3;
+                    this.level = "level1";
+				    this.loadLevel(this.level, false);
+                }
+			}            
+        } else if (this.win) {
+            this.play = false;
+            this.x = 0;
+            this.y = 0;
+            this.levelStats.get(this.level).deadEnemyCount = 0;
+
+            if(this.game.clicked) {
+			    if (this.game.clickedLocation.x >= 250 && this.game.clickedLocation.x <= 400 && this.game.clickedLocation.y <= 300 && this.game.clickedLocation.y >= 250) {
+                    this.play = true;
+                    this.win = false;
                     this.health = 3;
                     this.level = "level1";
 				    this.loadLevel(this.level, false);
@@ -252,18 +267,22 @@ class SceneManager {
                     this.y = Math.floor(this.game.goop.yMap - this.yMidpoint + (imaginaryYDistance/2));
                 }
             }
-        }
+        } 
         this.updateAudio();
     }
 
     draw(ctx) {
         if (this.title) {
-
             ctx.drawImage(this.titleSprite, 0, 0, ctx.canvas.width, ctx.canvas.height);
-            ctx.fillStyle = ((this.game.mouseX >= 250 && this.game.mouseX <= 400 && this.game.mouseY >= 250 && this.game.mouseY <= 300) ? "White" : "Black");
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint >= 250
+                                && this.game.crosshair.xMidpoint <= 400 
+                                && this.game.crosshair.yMidpoint >= 250 
+                                && this.game.crosshair.yMidpoint <= 300) 
+                                ? "White" : "Black");
 			ctx.fillRect(250, 250, 150, 50);
 			ctx.fillStyle = "Pink";
-			ctx.fillText("PLAY", 260, 260);
+            ctx.font = '30px Kouryuu';
+            ctx.fillText("play", 280, 280)
 
 		} else if (this.pause) {
             // draw pause screen
@@ -271,15 +290,35 @@ class SceneManager {
             ctx.drawImage(this.titleSprite, 0, 0, ctx.canvas.width, ctx.canvas.height);
 
             ctx.fillStyle = "Black";
-            ctx.fillText("u ded :(", 260, 150)
+            ctx.fillText("goops down bad", 230, 150)
 
-            ctx.fillStyle = ((this.game.mouseX >= 250 && this.game.mouseX <= 400 && this.game.mouseY >= 250 && this.game.mouseY <= 300) ? "White" : "Black");
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint >= 250
+                                && this.game.crosshair.xMidpoint <= 400 
+                                && this.game.crosshair.yMidpoint >= 250 
+                                && this.game.crosshair.yMidpoint <= 300) 
+                                ? "White" : "Black");
 			ctx.fillRect(250, 250, 150, 50);
             ctx.fillStyle = "Pink";
-            ctx.fillText("PLAY AGAIN", 260, 260);
+            ctx.font = '25px Kouryuu';
+
+            ctx.fillText("play again", 260, 290);
+        } else if (this.win) {
+            ctx.drawImage(this.titleSprite, 0, 0, ctx.canvas.width, ctx.canvas.height);
+
+            ctx.fillStyle = "Black";
+            ctx.fillText("nice.", 260, 150)
+
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint >= 250
+                                && this.game.crosshair.xMidpoint <= 400 
+                                && this.game.crosshair.yMidpoint >= 250 
+                                && this.game.crosshair.yMidpoint <= 300) 
+                                ? "White" : "Black");
+			ctx.fillRect(250, 250, 150, 50);
+            ctx.fillStyle = "Pink";
+            ctx.font = '25px Kouryuu';
+            ctx.fillText("play again", 260, 290);
 
 
         }
-        //this.animation.drawFrame(this.game.clockTick, ctx, 0, 0, .5);
     };
 }
