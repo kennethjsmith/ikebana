@@ -8,9 +8,6 @@ class LevelGenerator {
         if (this.game.camera.level == "level1") this.spritesheet = this.level1SpriteSheet;
         else this.spritesheet = this.level2SpriteSheet;
         this.spriteGrid = [];
-        
-        
-        
 
         this.levelAssets = new Map;
         this.loadWalls();
@@ -91,15 +88,16 @@ class LevelGenerator {
     createFloors() {
         var numFloors = 0;
         var iteration = 0;
+        var edgeBuffer = 10;
         
         do {
              //avoid the boarder of the grid
              for (let i = 0; i < this.walkers.length; i++) {
                 let currWalker = this.walkers[i];
-                if (currWalker.row <= 2) currWalker.row = 3;
-                if (currWalker.row >= this.height - 4) currWalker.row = this.height - 5;
-                if (currWalker.col <= 2) currWalker.col = 3;
-                if (currWalker.col >= this.width - 4) currWalker.col = this.width - 5;
+                if (currWalker.row <= edgeBuffer) currWalker.row = edgeBuffer + 1;
+                if (currWalker.row >= this.height - edgeBuffer) currWalker.row = this.height - edgeBuffer - 1;
+                if (currWalker.col <= edgeBuffer) currWalker.col = edgeBuffer + 1;
+                if (currWalker.col >= this.width - edgeBuffer) currWalker.col = this.width - edgeBuffer - 1;
                 this.walkers[i] = currWalker;
             }
         

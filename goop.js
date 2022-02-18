@@ -45,10 +45,12 @@ class Goop {
         this.animations.get("left").set("walking", new Map);
         this.animations.get("left").set("vibing", new Map);
         this.animations.get("left").set("hurt", new Animator(this.spritesheet, 1248, 0, 39, 42, 2, .1))
+        this.animations.get("left").set("dead", new Animator(this.spritesheet, 1287, 0, 39, 42, 1, .1))
 
         this.animations.get("right").set("walking", new Map);
         this.animations.get("right").set("vibing", new Map);
         this.animations.get("right").set("hurt", new Animator(this.spritesheet, 1326, 0, 39, 42, 2, .1))
+        this.animations.get("right").set("dead", new Animator(this.spritesheet, 1365, 0, 39, 42, 1, .1))
 
         this.animations.get("left").get("walking").set("unarmed", new Animator(this.spritesheet, 0, 0, 39, 43, 8, .1));
         this.animations.get("left").get("vibing").set("unarmed", new Animator(this.spritesheet, 624, 0, 39, 43, 8, .15));
@@ -172,7 +174,10 @@ class Goop {
         this.animation = this.animations.get(this.facing).get(this.state).get(this.armed);
         // update the animation
         if (this.stats.hurt) {
-            if (this.stats.hurtTimer < this.stats.hurtTimeout / 10) this.animation = this.animations.get(this.facing).get("hurt");
+            if (this.game.camera.health == 0) {
+                this.stats.dead = true;
+                this.animation = this.animations.get(this.facing).get("dead");
+            } else if (this.stats.hurtTimer < this.stats.hurtTimeout / 10) this.animation = this.animations.get(this.facing).get("hurt");
             this.stats.hurtTimer++;
         }
         this.midpoint = {x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
@@ -180,10 +185,7 @@ class Goop {
     };
 
     draw(ctx) {
-        //ctx.save();
-        //ctx.translate(-this.xMap+this.xStart, -this.yMap+this.xStart);//400 is half canvas width,300 height, - half player widthand height
         this.animation.drawFrame(this.game.clockTick, ctx, Math.floor(this.xMap-this.game.camera.x), Math.floor(this.yMap-this.game.camera.y), this.SCALE);
-        //ctx.restore();
         
         if (this.game.debug) {
             drawBoundingBox(this.hurtBox, ctx, this.game, "red");
