@@ -120,7 +120,6 @@ class GameEngine {
                 self.locked = true;
                 self.pointerLockTimer = performance.now();
             } else {
-                console.log("false");
                 document.removeEventListener("mousemove", updatePosition, false);
                 self.locked = false;
                 self.pointerLockTimer = performance.now();
@@ -227,7 +226,6 @@ class GameEngine {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         if (!this.camera.title) {   
             this.level.draw(this.ctx);
-            console.log(this.entities.length);
             // Draw latest entities first
             for (let i = this.entities.length - 1; i >= 0; i--) {
                 this.entities[i].draw(this.ctx, this);

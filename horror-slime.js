@@ -78,7 +78,8 @@ class HorrorSlime {
         if (this.stats.dead) {
             if (this.stats.deadTimer >= this.stats.deadTimeout) {
                 this.removeFromWorld = true;
-                this.game.addEntity(new Slime(this.game, this.xMap, this.yMap));
+                this.game.addEntity(new Slime(this.game, this.boundingBox.x + this.boundingBox.width - 40, this.boundingBox.y)); // 40 is the size of a scaled slime
+                this.game.addEntity(new Slime(this.game, this.boundingBox.x + this.boundingBox.width, this.boundingBox.y));
             }
             else {
                 this.stats.deadTimer++;
@@ -242,16 +243,22 @@ class HorrorSlime {
     };
 
     updateBoundingBox() {
-        this.boundingBox = new BoundingBox(this.xMap, this.yMap, this.spriteWidth, this.spriteHeight - this.shadowHeight);
+        //this.boundingBox = new BoundingBox(this.xMap+1, this.yMap, this.spriteWidth-2, this.spriteHeight - this.shadowHeight);
+        //this.boundingBox = new BoundingBox(this.xMap+5, this.yMap + 2*(this.spriteHeight/3), this.spriteWidth-10, (this.spriteHeight/3)-this.shadowHeight);//+5 x, -10 width for narrower box
+        this.hurtBox = new BoundingBox(this.xMap+1, this.yMap, this.spriteWidth-2, this.spriteHeight - this.shadowHeight);
+        this.boundingBox = new BoundingBox(this.xMap+5, this.yMap + 2*(this.spriteHeight/3), this.spriteWidth-10, (this.spriteHeight/3)-this.shadowHeight);//+5 x, -10 width for narrower box
+    
     };
 
     draw(ctx) {
         this.animation.drawFrame(this.game.clockTick, ctx, Math.floor(this.xMap-this.game.camera.x), Math.floor(this.yMap-this.game.camera.y), this.scale);
         
         if (this.game.debug) {
-            //  Draws bounding box
-            ctx.strokeStyle = 'red';
-            ctx.strokeRect(Math.floor(this.boundingBox.left - this.game.camera.x), Math.floor(this.boundingBox.top - this.game.camera.y), this.spriteWidth, this.spriteHeight - this.shadowHeight);
+            drawBoundingBox(this.hurtBox, ctx, this.game, "red");
+            drawBoundingBox(this.boundingBox, ctx, this.game, "white");
+            ctx.strokeStyle = 'red'; 
+            // draws midpoint
+            ctx.strokeRect(Math.floor(this.midpoint.x - this.game.camera.x), Math.floor(this.midpoint.y - this.game.camera.y), 2, 2);
             // Draws their radius
             ctx.beginPath();
             ctx.arc(Math.floor(this.midpoint.x - this.game.camera.x), Math.floor(this.midpoint.y - this.game.camera.y), this.radius, 0, Math.PI * 2, true);

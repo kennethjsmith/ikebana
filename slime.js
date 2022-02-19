@@ -14,8 +14,8 @@ class Slime {
         // alien's state variables
         this.facing = "right"; // left or right
         this.state = "walking"; // walking or vibin
-        this.spriteHeight = 21 * this.scale; // scaled height
-        this.spriteWidth = 24 * this.scale; // scaled width
+        this.spriteHeight = 16 * this.scale; // scaled height
+        this.spriteWidth = 16 * this.scale; // scaled width
         this.shadowHeight = 2 * this.scale;
         this.heightOffset = this.spriteHeight / 2; // used for finding teh midpoint
         this.widthOffset = this.spriteWidth / 2; // udes for finding the midpoint
@@ -246,16 +246,21 @@ class Slime {
     };
 
     updateBoundingBox() {
-        this.boundingBox = new BoundingBox(this.xMap, this.yMap, this.spriteWidth, this.spriteHeight - this.shadowHeight);
+        //this.boundingBox = new BoundingBox(this.xMap, this.yMap, this.spriteWidth, this.spriteHeight - this.shadowHeight);
+        this.hurtBox = new BoundingBox(this.xMap+1, this.yMap, this.spriteWidth-2, this.spriteHeight - this.shadowHeight);
+        this.boundingBox = new BoundingBox(this.xMap+5, this.yMap + 2*(this.spriteHeight/3), this.spriteWidth-10, (this.spriteHeight/3)-this.shadowHeight);//+5 x, -10 width for narrower box
+    
     };
 
     draw(ctx) {
         this.animation.drawFrame(this.game.clockTick, ctx, Math.floor(this.xMap-this.game.camera.x), Math.floor(this.yMap-this.game.camera.y), this.scale);
         
         if (this.game.debug) {
-            //  Draws bounding box
-            ctx.strokeStyle = 'red';
-            ctx.strokeRect(Math.floor(this.boundingBox.left - this.game.camera.x), Math.floor(this.boundingBox.top - this.game.camera.y), this.spriteWidth, this.spriteHeight - this.shadowHeight);
+            drawBoundingBox(this.hurtBox, ctx, this.game, "red");
+            drawBoundingBox(this.boundingBox, ctx, this.game, "white");
+            ctx.strokeStyle = 'red'; 
+            // draws midpoint
+            ctx.strokeRect(Math.floor(this.midpoint.x - this.game.camera.x), Math.floor(this.midpoint.y - this.game.camera.y), 2, 2);
             // Draws their radius
             ctx.beginPath();
             ctx.arc(Math.floor(this.midpoint.x - this.game.camera.x), Math.floor(this.midpoint.y - this.game.camera.y), this.radius, 0, Math.PI * 2, true);

@@ -53,7 +53,7 @@ class Hud {
         ctx.fillStyle = "White";
         ctx.font = '56px Kouryuu';
         
-        ctx.strokeText(": " + this.game.camera.flowers, 550, 55);
+        ctx.fillText(": " + this.game.camera.flowers, 550, 55);
 
         ctx.font = 'bold 56px Kouryuu';
         ctx.strokeStyle ='#2c2f5e';
