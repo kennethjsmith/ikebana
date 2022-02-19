@@ -18,7 +18,7 @@ class SceneManager {
 
         this.level = "level1";
         this.levelStats = new Map;
-        this.levelStats.set("level1", new LevelStats("Level 1", 5, 0));
+        this.levelStats.set("level1", new LevelStats("Level 1", 10, 0));
         this.levelStats.set("level2", new LevelStats("Level 2", 10, 0));
         this.levelStats.set("level3", new LevelStats("Level 3", 40, 0));
 
@@ -91,10 +91,16 @@ class SceneManager {
     };
 
     addEnemies(numEnemies) {
-        let numSlimes = numEnemies;
+        let numSlimes = floor(numEnemies * 2 / 3);
+        let numHorrorSlimes = numEnemies - numSlimes;
         for (let i = 0; i < numSlimes; i++) {        
             let enemyLocation = this.randomLocation();
             this.game.addEntity(new Slime(this.game, enemyLocation.x, enemyLocation.y));
+        }
+
+        for (let i = 0; i < numHorrorSlimes; i++) {        
+            let enemyLocation = this.randomLocation();
+            this.game.addEntity(new HorrorSlime(this.game, enemyLocation.x, enemyLocation.y));
         }
 
     }
@@ -218,6 +224,7 @@ class SceneManager {
                     this.play = true;
                     this.lose = false;
                     this.health = 3;
+                    this.flowers = 0;
                     this.level = "level1";
 				    this.loadLevel(this.level, false);
                 }
@@ -234,6 +241,7 @@ class SceneManager {
                     this.play = true;
                     this.win = false;
                     this.health = 3;
+                    this.flowers = 0;
                     this.level = "level1";
 				    this.loadLevel(this.level, false);
                 }

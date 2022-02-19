@@ -10,7 +10,6 @@ class Hud {
         this.loadSprites();
         this.health = this.sprites.get("heart").get(3);
         this.flower = this.sprites.get("flower");
-        this.flowerCount = 0;
     };
 
     loadSprites() {
@@ -54,10 +53,10 @@ class Hud {
         ctx.fillStyle = "White";
         ctx.font = '56px Kouryuu';
         
-        ctx.fillText(": " + this.flowerCount, 550, 55)
+        ctx.strokeText(": " + this.game.camera.flowers, 550, 55);
 
         ctx.font = 'bold 56px Kouryuu';
         ctx.strokeStyle ='#2c2f5e';
-        ctx.strokeText(": " + this.flowerCount, 550, 55);
+        ctx.strokeText(": " + this.game.camera.flowers, 550, 55);
     };
 };
