@@ -10,6 +10,8 @@ class HorrorSlime {
         if (this.game.camera.level == "level1") this.spritesheet = this.level1SpriteSheet;
         else this.spritesheet = this.level2SpriteSheet;      
         this.scale = 4;
+
+        this.shootingCooldown = 1;
         
         // alien's state variables
         this.facing = "right"; // left or right
@@ -21,9 +23,9 @@ class HorrorSlime {
         this.heightOffset = this.spriteHeight / 2; // used for finding teh midpoint
         this.widthOffset = this.spriteWidth / 2; // udes for finding the midpoint
         this.midpoint = { x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
-        this.radius = 3 * this.game.level.tileSize + this.widthOffset + this.heightOffset;
+        this.radius = 4 * this.game.level.tileSize + this.widthOffset + this.heightOffset;
 
-        this.stats = new EnemyStats(2, 10, false, 5, 0, false, 50, 0, 1, 50, 0);
+        this.stats = new EnemyStats(3, 10, false, 5, 0, false, 50, 0, 1, 50, 0);
 
         this.velocity = { x: this.randomDirection(), y: this.randomDirection() }
         while (this.velocity.x == 0 && this.velocity.y == 0) {
@@ -75,6 +77,7 @@ class HorrorSlime {
         const DIAGONAL = Math.sqrt(Math.pow(this.stats.speed, 2) / 2); //  based on WALK speed: 1^2 = 2(a^2); where a = x = y
         let velocityUpdated = false;
 
+
         if (this.stats.dead) {
             if (this.stats.deadTimer >= this.stats.deadTimeout) {
                 this.removeFromWorld = true;
@@ -100,18 +103,27 @@ class HorrorSlime {
             }
         } else {
 
-            // if there were no collisions and goop is within our radius, chase Goop
+            // if there were no collisions and goop is within our radius, attempt to shoot + chase Goop
             if (!this.stats.attacking || this.stats.attackCounter >= this.stats.attackTimeout) {
+
                 this.stats.attacking = true;
                 this.stats.attackCounter = 0;
                 let distance = Math.floor(Math.sqrt( 
                     Math.pow((this.midpoint.x - this.game.goop.midpoint.x), 2) 
                     + Math.pow((this.midpoint.y - this.game.goop.midpoint.y), 2) ));
                 if (distance <= this.radius) {
+                    // shoot if able
+
+                    if(this.shootingCooldown == 0){
+                        this.game.addEnemyBullet(new EnemyBullet(this.game, this.midpoint.x, this.midpoint.y));    
+                        this.shootingCooldown = 1;
+                    }
+                    this.shootingCooldown--;  
+
                     if (this.game.goop.midpoint.x < this.xMap && this.game.goop.midpoint.y < this.yMap) { // if goop is NW of this slime
                         this.velocity.x = -WALK;
                         this.velocity.y = -WALK;
-                } else if (this.game.goop.midpoint.x > this.xMap && this.game.goop.midpoint.y > this.yMap) { // if goop is SE of this slime
+                    } else if (this.game.goop.midpoint.x > this.xMap && this.game.goop.midpoint.y > this.yMap) { // if goop is SE of this slime
                         this.velocity.x = WALK;
                         this.velocity.y = WALK;
                     } else if (this.game.goop.midpoint.x > this.xMap && this.game.goop.midpoint.y < this.yMap) { // if goop is NE of this slime
@@ -134,6 +146,7 @@ class HorrorSlime {
                         this.velocity.y = 0;
                     }
                     velocityUpdated = true;
+
                 } else {
                     this.stats.attacking = false;
                     this.stats.attackCounter = 0;
@@ -162,7 +175,7 @@ class HorrorSlime {
 
             if (velocityUpdated) this.updateBoundingBox();
 
-            // handle wall collissions
+            // handle wall collisions
             this.game.spriteGrid.forEach( row => {
                 row.forEach( tile => {
                     let type = tile.type;
@@ -202,7 +215,7 @@ class HorrorSlime {
             });
         }
 
-        // update velocity if they are moving diagnolly
+        // update velocity if they are moving diagonally
         if (this.velocity.x != 0 && this.velocity.y != 0) {
             this.velocity.x = this.velocity.x > 0 ? DIAGONAL : -DIAGONAL;
             this.velocity.y = this.velocity.y > 0 ? DIAGONAL : -DIAGONAL;

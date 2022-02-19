@@ -22,7 +22,7 @@ class Slime {
         this.midpoint = { x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
         this.radius = 3 * this.game.level.tileSize + this.widthOffset + this.heightOffset;
                                 
-        this.stats = new EnemyStats(3, 5, false, 10, 0, false, 50, 0, 0.5, 15, 0); // NOTE: Change speed to 1 or so when not debugging
+        this.stats = new EnemyStats(4, 5, false, 10, 0, false, 50, 0, 0.5, 15, 0); // NOTE: Change speed to 1 or so when not debugging
 
         this.velocity = { x: this.randomDirection(), y: this.randomDirection() }
         while (this.velocity.x == 0 && this.velocity.y == 0) {

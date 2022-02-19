@@ -180,6 +180,14 @@ class Goop {
             } else if (this.stats.hurtTimer < this.stats.hurtTimeout / 10) this.animation = this.animations.get(this.facing).get("hurt");
             this.stats.hurtTimer++;
         }
+        // update the animation
+        // if (this.stats.dead) {
+        //     if (this.game.camera.health == 0) {
+        //         this.stats.dead = true;
+        //         //this.animation = this.animations.get(this.facing).get("dead");
+        //     } else if (this.stats.hurtTimer > 2) this.animation = this.animations.get(this.facing).get("dead");
+        //     this.stats.hurtTimer++;
+        // }
         this.midpoint = {x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
 
     };
@@ -200,4 +208,19 @@ class Goop {
         this.hurtBox = new BoundingBox(this.xMap+1, this.yMap, this.spriteWidth-2, this.spriteHeight - this.shadowHeight);
         this.boundingBox = new BoundingBox(this.xMap+5, this.yMap + 2*(this.spriteHeight/3), this.spriteWidth-10, (this.spriteHeight/3)-this.shadowHeight);//+5 x, -10 width for narrower box
     };
+
+
+    takeDamage(damage) {
+        console.log("ouch");
+        if (!this.stats.dead) {
+            this.stats.hurtTimer = 0;
+            this.stats.health-= damage;
+            this.game.camera.health--;
+            if (this.stats.health == 0) {
+                this.stats.dead = true;
+                //this.animations.get(this.facing).get("dying");
+            }
+            else this.stats.hurt = true;
+        }
+    }
 };

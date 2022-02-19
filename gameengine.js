@@ -20,6 +20,11 @@ class GameEngine {
         // Entities to be added at the end of each update
         this.bulletsToAdd = [];
 
+        // Everything that will be updated and drawn each frame
+        this.enemyBullets = [];
+        // Entities to be added at the end of each update
+        this.enemyBulletsToAdd = [];
+
         this.tilesToDrawOnTop = [];
 
         // Information on the input
@@ -219,6 +224,10 @@ class GameEngine {
     addBullet(bullet) {
         this.bulletsToAdd.push(bullet);
     };
+
+    addEnemyBullet(enemyBullet) {
+        this.enemyBulletsToAdd.push(enemyBullet);
+    };
     
 
     draw() {
@@ -237,6 +246,11 @@ class GameEngine {
             // Draw latest bullets first
             for (let i = this.bullets.length - 1; i >= 0; i--) {
                 this.bullets[i].draw(this.ctx, this);
+            }
+
+            // Draw latest enemy bullets first
+            for (let i = this.enemyBullets.length - 1; i >= 0; i--) {
+                this.enemyBullets[i].draw(this.ctx, this);
             }
 
             // draw south wall tiles on top of necessary entities
@@ -266,12 +280,18 @@ class GameEngine {
         this.entities.forEach(entity => entity.update(this));
         // Update Bullets
         this.bullets.forEach(bullet => bullet.update(this));
+        // Update Enemy Bullets
+        this.enemyBullets.forEach(enemyBullet => enemyBullet.update(this));
+
 
         // Remove dead things
         this.entities = this.entities.filter(entity => !entity.removeFromWorld);
 
         // Remove dead things
         this.bullets = this.bullets.filter(bullet => !bullet.removeFromWorld);
+
+        // Remove dead things
+        this.enemyBullets = this.enemyBullets.filter(enemyBullet => !enemyBullet.removeFromWorld);
 
         // Add new things
         this.entities = this.entities.concat(this.entitiesToAdd);
@@ -280,6 +300,10 @@ class GameEngine {
         // Add new things
         this.bullets = this.bullets.concat(this.bulletsToAdd);
         this.bulletsToAdd = [];
+        
+        this.enemyBullets = this.enemyBullets.concat(this.enemyBulletsToAdd);
+        this.enemyBulletsToAdd = [];
+
         this.camera.hud.update();
         this.crosshair.update();
     };
