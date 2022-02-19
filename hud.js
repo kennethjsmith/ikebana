@@ -51,12 +51,12 @@ class Hud {
         this.health.drawFrame(this.game.clockTick, ctx, 0, 0, 0.6);
         this.flower.drawFrame(this.game.clockTick, ctx, 480, 3, 0.27);
         ctx.fillStyle = "White";
-        ctx.font = '50px Kouryuu';
-        ctx.fillText(": " + this.game.camera.flowers, 550, 55)
+        ctx.font = '56px Kouryuu';
+        
+        ctx.fillText(": " + this.game.camera.flowers, 550, 55);
 
-        ctx.font = 'bold 50px Kouryuu';
-        ctx.fillStyle = "Black";
-
+        ctx.font = 'bold 56px Kouryuu';
+        ctx.strokeStyle ='#2c2f5e';
         ctx.strokeText(": " + this.game.camera.flowers, 550, 55);
     };
 };

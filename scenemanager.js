@@ -6,6 +6,7 @@ class SceneManager {
         this.y = null;
 
         this.titleSprite = ASSET_MANAGER.getAsset("./sprites/placeholder_title.png");
+        this.tintScreen = ASSET_MANAGER.getAsset("./sprites/tint_screen.png");
         
         this.health = 3;
         this.ammo = { bullet: 255, energy: 55};
@@ -204,7 +205,7 @@ class SceneManager {
     update() {
         if (this.title) {
             if(this.game.clicked) {
-			    if (this.game.clickedLocation.x >= 250 && this.game.clickedLocation.x <= 400 && this.game.clickedLocation.y <= 300 && this.game.clickedLocation.y >= 250) {
+			    if (this.game.crosshair.xMidpoint >= 275 && this.game.crosshair.xMidpoint <= 375 && this.game.crosshair.yMidpoint <= 400 && this.game.crosshair.yMidpoint >= 350) {
                     this.title = false;
                     this.play = true;
 				    this.loadLevel(this.level, false);
@@ -215,12 +216,14 @@ class SceneManager {
         } else if (this.health <= 0) {
             this.play = false;
             this.lose = true;
-            this.x = 0;
-            this.y = 0;
+           
             this.levelStats.get(this.level).deadEnemyCount = 0;
 
             if(this.game.clicked) {
-			    if (this.game.clickedLocation.x >= 250 && this.game.clickedLocation.x <= 400 && this.game.clickedLocation.y <= 300 && this.game.clickedLocation.y >= 250) {
+			    if (this.game.crosshair.xMidpoint - this.x  >= 250 && this.game.crosshair.xMidpoint - this.x <= 400 && 
+                    this.game.crosshair.yMidpoint - this.y  <= 400 && this.game.crosshair.yMidpoint - this.y >= 350) {
+                    this.x = 0;
+                    this.y = 0;
                     this.play = true;
                     this.lose = false;
                     this.health = 3;
@@ -231,12 +234,13 @@ class SceneManager {
 			}            
         } else if (this.win) {
             this.play = false;
-            this.x = 0;
-            this.y = 0;
             this.levelStats.get(this.level).deadEnemyCount = 0;
 
             if(this.game.clicked) {
-			    if (this.game.clickedLocation.x >= 250 && this.game.clickedLocation.x <= 400 && this.game.clickedLocation.y <= 300 && this.game.clickedLocation.y >= 250) {
+			    if (this.game.crosshair.xMidpoint - this.x  >= 250 && this.game.crosshair.xMidpoint - this.x <= 400 &&
+                    this.game.crosshair.yMidpoint  - this.y <= 400 && this.game.crosshair.yMidpoint - this.y >= 350) {
+                    this.x = 0;
+                    this.y = 0;
                     this.play = true;
                     this.win = false;
                     this.health = 3;
@@ -285,51 +289,63 @@ class SceneManager {
     draw(ctx) {
         if (this.title) {
             ctx.drawImage(this.titleSprite, 0, 0, ctx.canvas.width, ctx.canvas.height);
-            ctx.fillStyle = ((this.game.crosshair.xMidpoint >= 250
-                                && this.game.crosshair.xMidpoint <= 400 
-                                && this.game.crosshair.yMidpoint >= 250 
-                                && this.game.crosshair.yMidpoint <= 300) 
-                                ? "White" : "Black");
-			ctx.fillRect(250, 250, 150, 50);
-			ctx.fillStyle = "Pink";
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint >= 275
+                                && this.game.crosshair.xMidpoint <= 375 
+                                && this.game.crosshair.yMidpoint >= 350 
+                                && this.game.crosshair.yMidpoint <= 400) 
+                                ? '#2c2f5e' : "White");
+			ctx.fillRect(275, 350, 100, 50);
+			//ctx.fillStyle = "Pink";
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint >= 275
+                && this.game.crosshair.xMidpoint <= 375 
+                && this.game.crosshair.yMidpoint >= 350 
+                && this.game.crosshair.yMidpoint <= 400) 
+                ? "White" : '#2c2f5e');
             ctx.font = '30px Kouryuu';
-            ctx.fillText("play", 280, 280)
+            ctx.fillText("play", 290, 385)
 
 		} else if (this.pause) {
             // draw pause screen
         } else if (this.lose) {
-            ctx.drawImage(this.titleSprite, 0, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.drawImage(this.tintScreen, 0, 0, ctx.canvas.width, ctx.canvas.height);
 
-            ctx.fillStyle = "Black";
-            ctx.fillText("goops down bad", 230, 150)
+            ctx.fillStyle = "White";
 
-            ctx.fillStyle = ((this.game.crosshair.xMidpoint >= 250
-                                && this.game.crosshair.xMidpoint <= 400 
-                                && this.game.crosshair.yMidpoint >= 250 
-                                && this.game.crosshair.yMidpoint <= 300) 
-                                ? "White" : "Black");
-			ctx.fillRect(250, 250, 150, 50);
-            ctx.fillStyle = "Pink";
+            ctx.fillText("goop's down bad", 95, 200)
+
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint - this.x >= 250
+                && this.game.crosshair.xMidpoint - this.x  <= 400 
+                && this.game.crosshair.yMidpoint - this.y  >= 350 
+                && this.game.crosshair.yMidpoint - this.y  <= 400) 
+                ? '#2c2f5e' : "White");
+            ctx.fillRect(250, 350, 150, 50);
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint  - this.x >= 250
+                && this.game.crosshair.xMidpoint  - this.x <= 400 
+                && this.game.crosshair.yMidpoint  - this.y >= 350 
+                && this.game.crosshair.yMidpoint - this.y  <= 400) 
+                ? "White" : '#2c2f5e');
             ctx.font = '25px Kouryuu';
-
-            ctx.fillText("play again", 260, 290);
+            ctx.fillText("play again", 255, 385);
         } else if (this.win) {
-            ctx.drawImage(this.titleSprite, 0, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.drawImage(this.tintScreen, 0, 0, ctx.canvas.width, ctx.canvas.height);
 
-            ctx.fillStyle = "Black";
-            ctx.fillText("nice.", 260, 150)
+            ctx.fillStyle = "White";
 
-            ctx.fillStyle = ((this.game.crosshair.xMidpoint >= 250
-                                && this.game.crosshair.xMidpoint <= 400 
-                                && this.game.crosshair.yMidpoint >= 250 
-                                && this.game.crosshair.yMidpoint <= 300) 
-                                ? "White" : "Black");
-			ctx.fillRect(250, 250, 150, 50);
-            ctx.fillStyle = "Pink";
+            ctx.fillText("nice!", 260, 200)
+
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint + this.x  >= 250
+                && this.game.crosshair.xMidpoint - this.x  <= 400 
+                && this.game.crosshair.yMidpoint - this.y  >= 350 
+                && this.game.crosshair.yMidpoint - this.y <= 400) 
+                ? '#2c2f5e' : "White");
+            ctx.fillRect(250, 350, 150, 50);
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint + this.x  >= 250
+                && this.game.crosshair.xMidpoint - this.x  <= 400 
+                && this.game.crosshair.yMidpoint - this.y  >= 350 
+                && this.game.crosshair.yMidpoint - this.y  <= 400) 
+                ? "White" : '#2c2f5e');
             ctx.font = '25px Kouryuu';
-            ctx.fillText("play again", 260, 290);
-
-
-        }
+            ctx.fillText("play again", 255, 385);
+        } 
     };
 }

@@ -14,6 +14,7 @@ class Goop {
         this.heightOffset = this.spriteHeight / 2;
         this.widthOffset = this.spriteWidth / 2;
         this.midpoint = {x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
+        this.shadowHeight = 5 * this.SCALE;
 
         if (this.game.camera.level == "level1") this.spritesheet = this.level1SpriteSheet;
         else this.spritesheet = this.level2SpriteSheet;
@@ -22,18 +23,16 @@ class Goop {
         
         this.facing = "right"; // left or right
         this.state = "vibing"; // walking or vibin
-        this.armed = "unarmed"; // armed or uarmed
 
         this.gun = new Gun("uzi", this.game);
-        this.stats = new PlayerStats(this.game.camera.health, false, 25, 0, false, this.gun.damage)
-
+        this.stats = new PlayerStats(this.game.camera.health, false, 25, 0, false, 20, 0, this.gun.damage)
         this.velocity = { x: 0, y: 0 };
 
         this.animations = new Map;
 
         this.loadAnimations();
         this.updateBoundingBox();
-        this.animation = this.animations.get("right").get("vibing").get("unarmed");
+        this.animation = this.animations.get("right").get("vibing");
         //Animator constructor(spritesheet, xStart, yStart, width, height, frameCount, frameDuration) {
 
     };
@@ -42,21 +41,19 @@ class Goop {
         this.animations.set("left", new Map);
         this.animations.set("right", new Map);
 
-        this.animations.get("left").set("walking", new Map);
-        this.animations.get("left").set("vibing", new Map);
-        this.animations.get("left").set("hurt", new Animator(this.spritesheet, 1248, 0, 39, 42, 2, .1))
-        this.animations.get("left").set("dead", new Animator(this.spritesheet, 1287, 0, 39, 42, 1, .1))
+        this.animations.get("left").set("walking", new Animator(this.spritesheet, 0, 0, 39, 43, 8, .1));
+        this.animations.get("left").set("vibing", new Animator(this.spritesheet, 624, 0, 39, 43, 8, .15));
+        this.animations.get("left").set("hurt", new Animator(this.spritesheet, 1248, 0, 39, 43, 2, .1));
+        this.animations.get("left").set("dying", new Animator(this.spritesheet, 1404, 0, 39, 43, 2, .1));
+        this.animations.get("left").set("dead", new Animator(this.spritesheet, 1443, 0, 39, 43, 1, .1));
 
-        this.animations.get("right").set("walking", new Map);
-        this.animations.get("right").set("vibing", new Map);
-        this.animations.get("right").set("hurt", new Animator(this.spritesheet, 1326, 0, 39, 42, 2, .1))
-        this.animations.get("right").set("dead", new Animator(this.spritesheet, 1365, 0, 39, 42, 1, .1))
 
-        this.animations.get("left").get("walking").set("unarmed", new Animator(this.spritesheet, 0, 0, 39, 43, 8, .1));
-        this.animations.get("left").get("vibing").set("unarmed", new Animator(this.spritesheet, 624, 0, 39, 43, 8, .15));
+        this.animations.get("right").set("walking", new Animator(this.spritesheet, 312, 0, 39, 43, 8, .1));
+        this.animations.get("right").set("vibing", new Animator(this.spritesheet, 936, 0, 39, 43, 8, .15));
+        this.animations.get("right").set("hurt", new Animator(this.spritesheet, 1326, 0, 39, 43, 2, .1));
+        this.animations.get("right").set("dying", new Animator(this.spritesheet, 1382, 0, 39, 43, 2, .1));
+        this.animations.get("left").set("dead", new Animator(this.spritesheet, 1521, 0, 39, 43, 1, .1));
 
-        this.animations.get("right").get("walking").set("unarmed", new Animator(this.spritesheet, 312, 0, 39, 43, 8, .1));
-        this.animations.get("right").get("vibing").set("unarmed", new Animator(this.spritesheet, 936, 0, 39, 43, 8, .15));
     };
 
     update() {
@@ -174,15 +171,23 @@ class Goop {
             
         }
 
-        this.animation = this.animations.get(this.facing).get(this.state).get(this.armed);
+        this.animation = this.animations.get(this.facing).get(this.state);
         // update the animation
         if (this.stats.hurt) {
             if (this.game.camera.health == 0) {
                 this.stats.dead = true;
-                this.animation = this.animations.get(this.facing).get("dead");
+                //this.animation = this.animations.get(this.facing).get("dead");
             } else if (this.stats.hurtTimer < this.stats.hurtTimeout / 10) this.animation = this.animations.get(this.facing).get("hurt");
             this.stats.hurtTimer++;
         }
+        // update the animation
+        // if (this.stats.dead) {
+        //     if (this.game.camera.health == 0) {
+        //         this.stats.dead = true;
+        //         //this.animation = this.animations.get(this.facing).get("dead");
+        //     } else if (this.stats.hurtTimer > 2) this.animation = this.animations.get(this.facing).get("dead");
+        //     this.stats.hurtTimer++;
+        // }
         this.midpoint = {x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
 
     };
@@ -200,7 +205,22 @@ class Goop {
     };
 
     updateBoundingBox() {
-        this.hurtBox = new BoundingBox(this.xMap, this.yMap, this.spriteWidth, this.spriteHeight);
-        this.boundingBox = new BoundingBox(this.xMap+5, this.yMap + 2*(this.spriteHeight/3), this.spriteWidth-10, this.spriteHeight/3);//+5 x, -10 width for narrower box
+        this.hurtBox = new BoundingBox(this.xMap+1, this.yMap, this.spriteWidth-2, this.spriteHeight - this.shadowHeight);
+        this.boundingBox = new BoundingBox(this.xMap+5, this.yMap + 2*(this.spriteHeight/3), this.spriteWidth-10, (this.spriteHeight/3)-this.shadowHeight);//+5 x, -10 width for narrower box
     };
+
+
+    takeDamage(damage) {
+        console.log("ouch");
+        if (!this.stats.dead) {
+            this.stats.hurtTimer = 0;
+            this.stats.health-= damage;
+            this.game.camera.health--;
+            if (this.stats.health == 0) {
+                this.stats.dead = true;
+                //this.animations.get(this.facing).get("dying");
+            }
+            else this.stats.hurt = true;
+        }
+    }
 };

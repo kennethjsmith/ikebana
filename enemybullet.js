@@ -1,34 +1,42 @@
-class Bullet {
-    constructor(game) {
+class EnemyBullet {
+    constructor(game, x, y) {
         this.game = game;
         this.SPEED = 5; // TODO, we can probably make a "stats" class for bullets, for dif types of guns
-        this.range = 100; //how many updates, ie this bullet will travel speed*range
+        this.range = 200; //how many updates, ie this bullet will travel speed*range
         this.removeFromWorld = false;
         
 
-        this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/bullet.png");
-        this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/bubble.png");
+        this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/enemy_bullet1.png");
+        this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/enemy_bullet2.png");
 
         if (this.game.camera.level == "level1") {
             this.spritesheet = this.level1SpriteSheet;
-            this.SPEED = 20;
         }    
         else this.spritesheet = this.level2SpriteSheet;
 
         this.SIZE = 12; // find better way to get this pizel width
         this.SCALE = 2;        
-        this.xMap = this.game.gun.barrelTipXMap;
-        this.yMap = this.game.gun.barrelTipYMap;
+        this.xMap = x;
+        this.yMap = y;
+        //TODO: trajectory would be better if calculated in gun and passed in
+        // in a perfect worlt the trajectory would be the slope of the barrel and the barrel would be rotated to always point directly at the crosshair
+       
+        this.xDistance = this.xMap - this.game.goop.midpoint.x;
+        this.yDistance = this.yMap - this.game.goop.midpoint.y;
+
+        this.diagonal = Math.sqrt((this.xDistance*this.xDistance) + (this.yDistance*this.yDistance));
         
-        this.xTrajectory = (this.game.gun.barrelTipXMap - this.game.gun.barrelMidXMap)/this.game.gun.bigR;
-        this.yTrajectory = (this.game.gun.barrelTipYMap - this.game.gun.barrelMidYMap)/this.game.gun.bigR;
+        this.xTrajectory = this.xDistance/this.diagonal;
+        this.yTrajectory = this.yDistance/this.diagonal;
+
 
         // normalize the trajectory
-        this.xVelocity = this.xTrajectory * this.SPEED;
-        this.yVelocity = this.yTrajectory * this.SPEED;
-        
+        this.xVelocity = -this.xTrajectory * this.SPEED;
+        this.yVelocity = -this.yTrajectory * this.SPEED;
+        console.log("xvel"+this.xVelocity+",yvel"+this.yVelocity);
+
         // for DEBUG
-        // this.game.ctx.fillRect(this.xMap,this.yMap,1,1);
+        //this.game.ctx.fillRect(this.xMap,this.yMap,1,1);
 
         // adjust x and y to center bullet sprite drawing over trajectory, trajectory*size/2
         this.spriteWidth = this.SIZE * this.SCALE; 
@@ -68,20 +76,12 @@ class Bullet {
 
         
 
-        // check collisions with entities
-        this.game.entities.forEach(entity => {
-            if (entity instanceof Slime || entity instanceof HorrorSlime) {
-                if (entity.hurtBox && this.boundingBox.collide(entity.hurtBox)) {
-                    entity.takeDamage(this.game.gun.damage);
-                    this.removeFromWorld = true;
-                } 
-            // } else if (entity instanceof Flower) {
-            //     if (entity.boundingBox && this.boundingBox.collide(entity.boundingBox)) {
-            //         entity.state = "destroyed";
-            //     }
-            }
-        });
-
+        // check collisions with goop
+        if (this.game.goop.hurtBox && this.boundingBox.collide(this.game.goop.hurtBox)) {
+            console.log("hit");
+            this.game.goop.takeDamage(1);
+            this.removeFromWorld = true;
+        } 
         
 
         this.range--;

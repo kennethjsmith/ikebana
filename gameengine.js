@@ -20,6 +20,11 @@ class GameEngine {
         // Entities to be added at the end of each update
         this.bulletsToAdd = [];
 
+        // Everything that will be updated and drawn each frame
+        this.enemyBullets = [];
+        // Entities to be added at the end of each update
+        this.enemyBulletsToAdd = [];
+
         this.tilesToDrawOnTop = [];
 
         // Information on the input
@@ -27,7 +32,13 @@ class GameEngine {
         this.clickedLocation = { x: null, y: null }
         this.mouseX = 0;
         this.mouseY = 0;
+        this.x = 0; // these are used to track actual mouse position
+        this.y = 0;
+
         this.wheel = null;
+        this.camera = {x: 0, y: 0};
+
+        this.pointerLockTimer = -1300;
 
         this.left = false;
         this.right = false;
@@ -71,24 +82,37 @@ class GameEngine {
     };
 
     startInput() {
-        const getXandY = e => ({
-            x: e.clientX - this.ctx.canvas.getBoundingClientRect().left,
-            y: e.clientY - this.ctx.canvas.getBoundingClientRect().top
-        });
+
+
+        //mouse position in canvas
+        function getMousePos(canvas, e) {
+            var rect = canvas.getBoundingClientRect();
+            self.x = e.clientX - rect.left,//400 width of canvas. 300 height
+            self.y = e.clientY - rect.top
+        }
 
         var self = this;
 
         // on click, lock input
         this.ctx.canvas.onclick = () => {
+            
             if (!self.locked) {
-                this.ctx.canvas.requestPointerLock({
-                    unadjustedMovement: true,
-                });
-                this.mouseX = this.ctx.canvas.width / 2;
-                this.mouseY = this.ctx.canvas.height / 2;                
-                self.locked = true;
+                let timeElapsed = (performance.now() - self.pointerLockTimer);
+                if (self.pointerLockTimer && timeElapsed > 1300){
+                    this.ctx.canvas.requestPointerLock({
+                        unadjustedMovement: true,
+                    });
+                               
+                    self.locked = true;
+                    if (self.camera.title) {
+                        self.mouseX = this.x + this.camera.x - (this.crosshair.spriteSize/2);
+                        self.mouseY = this.y + this.camera.y - (this.crosshair.spriteSize/2);
+                    }
+                }
             }
-            this.clickedLocation = { x: this.mouseX, y: this.mouseY };
+            
+            this.crosshair.update();
+            this.camera.update();
         };
 
         // handle locked cursor movement
@@ -99,10 +123,13 @@ class GameEngine {
             if (document.pointerLockElement === self.ctx.canvas || document.mozPointerLockElement === self.ctx.canvas) {
                 document.addEventListener("mousemove", updatePosition, false);
                 self.locked = true;
+                self.pointerLockTimer = performance.now();
             } else {
                 document.removeEventListener("mousemove", updatePosition, false);
                 self.locked = false;
+                self.pointerLockTimer = performance.now();
             }
+
         }
 
         function updatePosition(e) {
@@ -153,23 +180,10 @@ class GameEngine {
             }
         }, false);
 
-        //mouse position in canvas
-        function getMousePos(canvas, e) {
-            var rect = canvas.getBoundingClientRect();
-            return {
-              x: e.clientX - rect.left,//400 width of canvas. 300 height
-              y: e.clientY - rect.top
-            };
-          }
-
         this.ctx.canvas.addEventListener("mousemove", e => {
-            if (this.options.debugging) {
-                console.log("MOUSE_MOVE", getXandY(e));
-            }
-            // var pos = getMousePos(this.ctx.canvas, e, this.goop);
-            // this.mouseX = pos.x;
-            // this.mouseY = pos.y;
+            getMousePos(this.ctx.canvas, e);
             if(this.locked){
+                
                 updatePosition(e);
                 this.crosshair.update(); //update here since not in entities list, update after movement too so that camera updates
             }
@@ -177,6 +191,7 @@ class GameEngine {
 
         this.ctx.canvas.addEventListener("mousedown", e => {
             this.clicked = true;
+            getMousePos(this.ctx.canvas, e);
             ASSET_MANAGER.playAsset("dummy-path");
         });
 
@@ -195,11 +210,11 @@ class GameEngine {
             if (this.options.prevent.contextMenu) {
                 e.preventDefault(); // Prevent Context Menu
             }
-            this.rightclick = getXandY(e);
+            //this.rightclick = getXandY(e);
         });
 
-        this.mouseX = this.ctx.canvas.width / 2;
-        this.mouseY = this.ctx.canvas.height / 2;
+        this.mouseX = this.ctx.canvas.width/2 - this.crosshair.spriteSize/2;
+        this.mouseY = this.ctx.canvas.height/2 - this.crosshair.spriteSize/2; 
     };
 
     addEntity(entity) {
@@ -209,17 +224,17 @@ class GameEngine {
     addBullet(bullet) {
         this.bulletsToAdd.push(bullet);
     };
+
+    addEnemyBullet(enemyBullet) {
+        this.enemyBulletsToAdd.push(enemyBullet);
+    };
     
 
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-        if (this.camera.title || this.camera.pause || this.camera.lose || this.camera.win) {
-            this.camera.draw(this.ctx);
-        
-        } else if (!this.camera.title) {
+        if (!this.camera.title) {   
             this.level.draw(this.ctx);
-
             // Draw latest entities first
             for (let i = this.entities.length - 1; i >= 0; i--) {
                 this.entities[i].draw(this.ctx, this);
@@ -233,6 +248,11 @@ class GameEngine {
                 this.bullets[i].draw(this.ctx, this);
             }
 
+            // Draw latest enemy bullets first
+            for (let i = this.enemyBullets.length - 1; i >= 0; i--) {
+                this.enemyBullets[i].draw(this.ctx, this);
+            }
+
             // draw south wall tiles on top of necessary entities
             if (this.tilesToDrawOnTop.length > 0) {
                 this.tilesToDrawOnTop.forEach( tile => {
@@ -244,9 +264,13 @@ class GameEngine {
                     image.drawFrame(this.clockTick, this.ctx, Math.floor((col * tileSize) - (this.camera.x)), Math.floor((row * tileSize) - (this.camera.y)), scale); 
                 });
             }
-    
         }
-        this.camera.hud.draw(this.ctx);
+        if (this.camera.title || this.camera.pause || this.camera.lose || this.camera.win) {
+            this.camera.draw(this.ctx);
+            
+        }
+
+        if(!this.title) this.camera.hud.draw(this.ctx);
         this.crosshair.draw(this.ctx);
     };
 
@@ -256,12 +280,18 @@ class GameEngine {
         this.entities.forEach(entity => entity.update(this));
         // Update Bullets
         this.bullets.forEach(bullet => bullet.update(this));
+        // Update Enemy Bullets
+        this.enemyBullets.forEach(enemyBullet => enemyBullet.update(this));
+
 
         // Remove dead things
         this.entities = this.entities.filter(entity => !entity.removeFromWorld);
 
         // Remove dead things
         this.bullets = this.bullets.filter(bullet => !bullet.removeFromWorld);
+
+        // Remove dead things
+        this.enemyBullets = this.enemyBullets.filter(enemyBullet => !enemyBullet.removeFromWorld);
 
         // Add new things
         this.entities = this.entities.concat(this.entitiesToAdd);
@@ -270,6 +300,10 @@ class GameEngine {
         // Add new things
         this.bullets = this.bullets.concat(this.bulletsToAdd);
         this.bulletsToAdd = [];
+        
+        this.enemyBullets = this.enemyBullets.concat(this.enemyBulletsToAdd);
+        this.enemyBulletsToAdd = [];
+
         this.camera.hud.update();
         this.crosshair.update();
     };
