@@ -122,7 +122,10 @@ class Goop {
 
         this.game.entities.forEach(entity => {
 
-            if ((!this.stats.hurt || this.stats.hurtTimer >= this.stats.hurtTimeout) && entity instanceof Slime && !entity.stats.dead ) {
+            if ((!this.stats.hurt || this.stats.hurtTimer >= this.stats.hurtTimeout) 
+                && (entity instanceof Slime || entity instanceof HorrorSlime) 
+                && !entity.stats.dead ) {
+                    
                 this.stats.hurtTimer = 0;
                 this.stats.hurt = false;
                 let xProjectedBB = collisionOccurred ? this.hurtBox : this.hurtBox.getXProjectedBB(this.velocity.x);

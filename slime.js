@@ -14,16 +14,15 @@ class Slime {
         // alien's state variables
         this.facing = "right"; // left or right
         this.state = "walking"; // walking or vibin
-        this.spriteHeight = 16 * this.scale; // scaled height
-        this.spriteWidth = 16 * this.scale; // scaled width
+        this.spriteHeight = 21 * this.scale; // scaled height
+        this.spriteWidth = 24 * this.scale; // scaled width
         this.shadowHeight = 2 * this.scale;
         this.heightOffset = this.spriteHeight / 2; // used for finding teh midpoint
         this.widthOffset = this.spriteWidth / 2; // udes for finding the midpoint
         this.midpoint = { x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
         this.radius = 3 * this.game.level.tileSize + this.widthOffset + this.heightOffset;
-                                //speed, health, hurt, hurtTimeout, hurtTimer, dead, deadTimeout, deadTimer, damageDealt, attackTimeout, attackTimer
-        this.stats = new EnemyStats(3, 5, false, 10, 0, false, 50, 0, 0.5, 15, 0);
-        // NOTE: Change speed to 1 or so when not debugging
+                                
+        this.stats = new EnemyStats(3, 5, false, 10, 0, false, 50, 0, 0.5, 15, 0); // NOTE: Change speed to 1 or so when not debugging
 
         this.velocity = { x: this.randomDirection(), y: this.randomDirection() }
         while (this.velocity.x == 0 && this.velocity.y == 0) {
@@ -31,25 +30,10 @@ class Slime {
         }
         this.updateBoundingBox();
 
-
         this.animations = new Map;
         this.loadAnimations();
         this.animation = this.animations.get("left").get("vibing");
-
     };
-
-    randomDirection() {
-        let choice = floor(Math.random() * 3);
-        switch (choice) {
-            case 0:
-                return -this.stats.speed;
-            case 1:
-                return 0; 
-            case 2: 
-                return this.stats.speed;
-        }
-    };
-
 
     loadAnimations() {
         this.animations.set("left", new Map);
@@ -65,6 +49,18 @@ class Slime {
         this.animations.get("right").set("hurt", new Animator(this.spritesheet, 320, 0, 16, 16, 1, 0.08));
         this.animations.get("right").set("dying", new Animator(this.spritesheet, 160, 16, 16, 16, 10, .12));
 
+    };
+
+    randomDirection() {
+        let choice = floor(Math.random() * 3);
+        switch (choice) {
+            case 0:
+                return -this.stats.speed;
+            case 1:
+                return 0; 
+            case 2: 
+                return this.stats.speed;
+        }
     };
 
     takeDamage(damage) {
@@ -101,6 +97,8 @@ class Slime {
             } else if (this.stats.hurtTimer >= this.stats.hurtTimeout) {
                 this.stats.hurt = false;
                 this.stats.hurtTimer = 0;
+                this.velocity.x = this.randomDirection();
+                this.velocity.y = this.randomDirection();
             }
         } else {
 
@@ -263,7 +261,5 @@ class Slime {
             ctx.arc(Math.floor(this.midpoint.x - this.game.camera.x), Math.floor(this.midpoint.y - this.game.camera.y), this.radius, 0, Math.PI * 2, true);
             ctx.stroke();
         }
-
-
     };
 };
