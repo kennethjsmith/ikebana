@@ -33,6 +33,8 @@ class GameEngine {
         this.wheel = null;
         this.camera = {x: 0, y: 0};
 
+        this.pointerLockTimer = -1300;
+
         this.left = false;
         this.right = false;
         this.up = false;
@@ -90,18 +92,22 @@ class GameEngine {
         this.ctx.canvas.onclick = () => {
             
             if (!self.locked) {
-                
-                this.ctx.canvas.requestPointerLock({
-                    unadjustedMovement: true,
-                });               
-                self.locked = true;
-                self.mouseX = this.x + this.camera.x - (this.crosshair.spriteSize/2);
-                self.mouseY = this.y + this.camera.y - (this.crosshair.spriteSize/2);
+                let timeElapsed = (performance.now() - self.pointerLockTimer);
+                if (self.pointerLockTimer && timeElapsed > 1300){
+                    this.ctx.canvas.requestPointerLock({
+                        unadjustedMovement: true,
+                    });
+                               
+                    self.locked = true;
+                    if (self.camera.title) {
+                        self.mouseX = this.x + this.camera.x - (this.crosshair.spriteSize/2);
+                        self.mouseY = this.y + this.camera.y - (this.crosshair.spriteSize/2);
+                    }
+                }
             }
             
             this.crosshair.update();
             this.camera.update();
-            //this.clickedLocation = { x: this.mouseX, y: this.mouseY };
         };
 
         // handle locked cursor movement
@@ -112,11 +118,14 @@ class GameEngine {
             if (document.pointerLockElement === self.ctx.canvas || document.mozPointerLockElement === self.ctx.canvas) {
                 document.addEventListener("mousemove", updatePosition, false);
                 self.locked = true;
-
+                self.pointerLockTimer = performance.now();
             } else {
+                console.log("false");
                 document.removeEventListener("mousemove", updatePosition, false);
                 self.locked = false;
+                self.pointerLockTimer = performance.now();
             }
+
         }
 
         function updatePosition(e) {
@@ -216,12 +225,9 @@ class GameEngine {
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-        if (this.camera.title || this.camera.pause || this.camera.lose || this.camera.win) {
-            this.camera.draw(this.ctx);
-        
-        } else if (!this.camera.title) {
+        if (!this.camera.title) {   
             this.level.draw(this.ctx);
-
+            console.log(this.entities.length);
             // Draw latest entities first
             for (let i = this.entities.length - 1; i >= 0; i--) {
                 this.entities[i].draw(this.ctx, this);
@@ -246,8 +252,12 @@ class GameEngine {
                     image.drawFrame(this.clockTick, this.ctx, Math.floor((col * tileSize) - (this.camera.x)), Math.floor((row * tileSize) - (this.camera.y)), scale); 
                 });
             }
-    
         }
+        if (this.camera.title || this.camera.pause || this.camera.lose || this.camera.win) {
+            this.camera.draw(this.ctx);
+            
+        }
+
         if(!this.title) this.camera.hud.draw(this.ctx);
         this.crosshair.draw(this.ctx);
     };

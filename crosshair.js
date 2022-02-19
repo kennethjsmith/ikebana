@@ -32,13 +32,13 @@ class Crosshair {
 
         this.xMidpoint = this.xMap + this.spriteSize/2;
         this.yMidpoint = this.yMap + this.spriteSize/2;
-        print(this.xMap + ", " + this.yMap);
+        //console.log(this.xMap + ", " + this.yMap);
     };
 
 
     draw(ctx) {
-        //console.log("cursor x: " + (this.xMap));
-        //console.log("cursor y: " + (this.yMap));
+        // console.log("cursor x: " + (this.xMap));
+        // console.log("cursor y: " + (this.yMap));
         
         this.animations.drawFrame(this.game.clockTick, ctx, this.xMap-this.game.camera.x, this.yMap-this.game.camera.y, this.SCALE); //this had -9 on the x
         //ctx.fillRect(this.xMidpoint-this.game.camera.x,this.yMidpoint-this.game.camera.y,1,1);

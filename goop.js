@@ -24,8 +24,7 @@ class Goop {
         this.state = "vibing"; // walking or vibin
 
         this.gun = new Gun("uzi", this.game);
-        this.stats = new PlayerStats(this.game.camera.health, false, 25, 0, false, this.gun.damage)
-
+        this.stats = new PlayerStats(this.game.camera.health, false, 25, 0, false, 20, 0, this.gun.damage)
         this.velocity = { x: 0, y: 0 };
 
         this.animations = new Map;
@@ -173,7 +172,7 @@ class Goop {
         if (this.stats.hurt) {
             if (this.game.camera.health == 0) {
                 this.stats.dead = true;
-                this.animation = this.animations.get(this.facing).get("dead");
+                //this.animation = this.animations.get(this.facing).get("dead");
             } else if (this.stats.hurtTimer < this.stats.hurtTimeout / 10) this.animation = this.animations.get(this.facing).get("hurt");
             this.stats.hurtTimer++;
         }

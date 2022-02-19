@@ -207,12 +207,14 @@ class SceneManager {
         } else if (this.health <= 0) {
             this.play = false;
             this.lose = true;
-            this.x = 0;
-            this.y = 0;
+           
             this.levelStats.get(this.level).deadEnemyCount = 0;
 
             if(this.game.clicked) {
-			    if (this.game.crosshair.xMidpoint >= 250 && this.game.crosshair.xMidpoint <= 400 && this.game.crosshair.yMidpoint <= 400 && this.game.crosshair.yMidpoint >= 350) {
+			    if (this.game.crosshair.xMidpoint - this.x  >= 250 && this.game.crosshair.xMidpoint - this.x <= 400 && 
+                    this.game.crosshair.yMidpoint - this.y  <= 400 && this.game.crosshair.yMidpoint - this.y >= 350) {
+                    this.x = 0;
+                    this.y = 0;
                     this.play = true;
                     this.lose = false;
                     this.health = 3;
@@ -222,12 +224,13 @@ class SceneManager {
 			}            
         } else if (this.win) {
             this.play = false;
-            this.x = 0;
-            this.y = 0;
             this.levelStats.get(this.level).deadEnemyCount = 0;
 
             if(this.game.clicked) {
-			    if (this.game.crosshair.xMidpoint >= 250 && this.game.crosshair.xMidpoint <= 400 && this.game.crosshair.yMidpoint <= 400 && this.game.crosshair.yMidpoint >= 350) {
+			    if (this.game.crosshair.xMidpoint - this.x  >= 250 && this.game.crosshair.xMidpoint - this.x <= 400 &&
+                    this.game.crosshair.yMidpoint  - this.y <= 400 && this.game.crosshair.yMidpoint - this.y >= 350) {
+                    this.x = 0;
+                    this.y = 0;
                     this.play = true;
                     this.win = false;
                     this.health = 3;
@@ -299,16 +302,16 @@ class SceneManager {
 
             ctx.fillText("goop's down bad", 95, 200)
 
-            ctx.fillStyle = ((this.game.crosshair.xMidpoint >= 250
-                && this.game.crosshair.xMidpoint <= 400 
-                && this.game.crosshair.yMidpoint >= 350 
-                && this.game.crosshair.yMidpoint <= 400) 
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint - this.x >= 250
+                && this.game.crosshair.xMidpoint - this.x  <= 400 
+                && this.game.crosshair.yMidpoint - this.y  >= 350 
+                && this.game.crosshair.yMidpoint - this.y  <= 400) 
                 ? '#2c2f5e' : "White");
             ctx.fillRect(250, 350, 150, 50);
-            ctx.fillStyle = ((this.game.crosshair.xMidpoint >= 250
-                && this.game.crosshair.xMidpoint <= 400 
-                && this.game.crosshair.yMidpoint >= 350 
-                && this.game.crosshair.yMidpoint <= 400) 
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint  - this.x >= 250
+                && this.game.crosshair.xMidpoint  - this.x <= 400 
+                && this.game.crosshair.yMidpoint  - this.y >= 350 
+                && this.game.crosshair.yMidpoint - this.y  <= 400) 
                 ? "White" : '#2c2f5e');
             ctx.font = '25px Kouryuu';
             ctx.fillText("play again", 255, 385);
@@ -319,16 +322,16 @@ class SceneManager {
 
             ctx.fillText("nice!", 260, 200)
 
-            ctx.fillStyle = ((this.game.crosshair.xMidpoint >= 250
-                && this.game.crosshair.xMidpoint <= 400 
-                && this.game.crosshair.yMidpoint >= 350 
-                && this.game.crosshair.yMidpoint <= 400) 
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint + this.x  >= 250
+                && this.game.crosshair.xMidpoint - this.x  <= 400 
+                && this.game.crosshair.yMidpoint - this.y  >= 350 
+                && this.game.crosshair.yMidpoint - this.y <= 400) 
                 ? '#2c2f5e' : "White");
             ctx.fillRect(250, 350, 150, 50);
-            ctx.fillStyle = ((this.game.crosshair.xMidpoint >= 250
-                && this.game.crosshair.xMidpoint <= 400 
-                && this.game.crosshair.yMidpoint >= 350 
-                && this.game.crosshair.yMidpoint <= 400) 
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint + this.x  >= 250
+                && this.game.crosshair.xMidpoint - this.x  <= 400 
+                && this.game.crosshair.yMidpoint - this.y  >= 350 
+                && this.game.crosshair.yMidpoint - this.y  <= 400) 
                 ? "White" : '#2c2f5e');
             ctx.font = '25px Kouryuu';
             ctx.fillText("play again", 255, 385);
