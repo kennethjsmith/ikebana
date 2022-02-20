@@ -33,7 +33,6 @@ class EnemyBullet {
         // normalize the trajectory
         this.xVelocity = -this.xTrajectory * this.SPEED;
         this.yVelocity = -this.yTrajectory * this.SPEED;
-        console.log("xvel"+this.xVelocity+",yvel"+this.yVelocity);
 
         // for DEBUG
         //this.game.ctx.fillRect(this.xMap,this.yMap,1,1);
@@ -78,7 +77,6 @@ class EnemyBullet {
 
         // check collisions with goop
         if (this.game.goop.hurtBox && this.boundingBox.collide(this.game.goop.hurtBox)) {
-            console.log("hit");
             this.game.goop.takeDamage(1);
             this.removeFromWorld = true;
         } 
@@ -95,8 +93,6 @@ class EnemyBullet {
 
 
     draw(ctx) {
-        //console.log("drawing bullet");
-        //console.log("bullet x:"+ this.xMap+"bullet y:"+ this.yMap);
         
         //ctx.save();
         //this.game.ctx.fillRect(this.xMap-this.game.camera.x,this.yMap-this.game.camera.y,1,1);
