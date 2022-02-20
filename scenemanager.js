@@ -237,7 +237,7 @@ class SceneManager {
             this.levelStats.get(this.level).deadEnemyCount = 0;
 
             if(this.game.clicked) {
-			    if (this.game.crosshair.xMidpoint - this.x  >= 250 && this.game.crosshair.xMidpoint - this.x <= 400 &&
+			    if (this.game.crosshair.xMidpoint - this.x  >= 300 && this.game.crosshair.xMidpoint - this.x <= 400 &&
                     this.game.crosshair.yMidpoint  - this.y <= 400 && this.game.crosshair.yMidpoint - this.y >= 350) {
                     this.x = 0;
                     this.y = 0;
