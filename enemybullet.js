@@ -1,7 +1,7 @@
 class EnemyBullet {
     constructor(game, x, y) {
         this.game = game;
-        this.SPEED = 5; // TODO, we can probably make a "stats" class for bullets, for dif types of guns
+        this.SPEED = 270; // TODO, we can probably make a "stats" class for bullets, for dif types of guns
         this.range = 200; //how many updates, ie this bullet will travel speed*range
         this.removeFromWorld = false;
         
@@ -33,7 +33,7 @@ class EnemyBullet {
         // normalize the trajectory
         this.xVelocity = -this.xTrajectory * this.SPEED;
         this.yVelocity = -this.yTrajectory * this.SPEED;
-        console.log("xvel"+this.xVelocity+",yvel"+this.yVelocity);
+//        console.log("xvel"+this.xVelocity+",yvel"+this.yVelocity);
 
         // for DEBUG
         //this.game.ctx.fillRect(this.xMap,this.yMap,1,1);
@@ -54,8 +54,8 @@ class EnemyBullet {
 
     update() {
 
-        this.xMap += this.xVelocity;// * this.game.clockTick);
-        this.yMap += this.yVelocity;// * this.game.clockTick);
+        this.xMap += this.xVelocity * this.game.clockTick;
+        this.yMap += this.yVelocity * this.game.clockTick;
         this.updateBoundingBox();
 
         // check collisions with walls

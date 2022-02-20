@@ -57,8 +57,8 @@ class Goop {
     };
 
     update() {
-        const WALK = 7;
-        const DIAGONAL = 4.95;
+        const WALK = 400;
+        const DIAGONAL = Math.sqrt(Math.pow(WALK, 2) / 2);
        // const WALK = 7;
        // const DIAGONAL = 4.95; // 4 -> 2.8 based on WALK speed: 4^2 = 2(a^2); where a = x = y
         this.velocity.x = 0;
@@ -83,27 +83,27 @@ class Goop {
         this.game.spriteGrid.forEach( row => {
             row.forEach( tile => {
                 let type = tile.type;
-                if (type == "north_wall" && this.boundingBox.getXProjectedBB(this.velocity.x).collide(tile.BB)) {
+                if (type == "north_wall" && this.boundingBox.getXProjectedBB(this.velocity.x * this.game.clockTick).collide(tile.BB)) {
                     this.velocity.x = 0;
                     collisionOccurred = true;
                 }
-                if (type == "north_wall" && this.boundingBox.getYProjectedBB(this.velocity.y).collide(tile.BB)) {
+                if (type == "north_wall" && this.boundingBox.getYProjectedBB(this.velocity.y * this.game.clockTick).collide(tile.BB)) {
                     this.velocity.y = 0;
                     collisionOccurred = true;
                 }
-                if (type == "wall" && this.boundingBox.getXProjectedBB(this.velocity.x).collide(tile.BB)) {
+                if (type == "wall" && this.boundingBox.getXProjectedBB(this.velocity.x * this.game.clockTick).collide(tile.BB)) {
                     this.velocity.x = 0;
                     collisionOccurred = true;
                 }
-                if (type == "wall" && this.boundingBox.getYProjectedBB(this.velocity.y).collide(tile.BB)) {
+                if (type == "wall" && this.boundingBox.getYProjectedBB(this.velocity.y * this.game.clockTick).collide(tile.BB)) {
                     this.velocity.y = 0;
                     collisionOccurred = true;
                 }
-                if (type == "south_wall" && this.boundingBox.getXProjectedBB(this.velocity.x).collide(tile.BB.lower)) {
+                if (type == "south_wall" && this.boundingBox.getXProjectedBB(this.velocity.x * this.game.clockTick).collide(tile.BB.lower)) {
                     this.velocity.x = 0;
                     collisionOccurred = true;
                 }
-                if (type == "south_wall" && this.boundingBox.getYProjectedBB(this.velocity.y).collide(tile.BB.lower)) {
+                if (type == "south_wall" && this.boundingBox.getYProjectedBB(this.velocity.y * this.game.clockTick).collide(tile.BB.lower)) {
                     this.velocity.y = 0;
                     collisionOccurred = true;
                 }
@@ -125,8 +125,8 @@ class Goop {
                     
                 this.stats.hurtTimer = 0;
                 this.stats.hurt = false;
-                let xProjectedBB = collisionOccurred ? this.hurtBox : this.hurtBox.getXProjectedBB(this.velocity.x);
-                let yProjectedBB = collisionOccurred ? this.hurtBox : this.hurtBox.getYProjectedBB(this.velocity.y);
+                let xProjectedBB = collisionOccurred ? this.hurtBox : this.hurtBox.getXProjectedBB(this.velocity.x * this.game.clockTick);
+                let yProjectedBB = collisionOccurred ? this.hurtBox : this.hurtBox.getYProjectedBB(this.velocity.y * this.game.clockTick);
 
                 if (xProjectedBB.collide(entity.boundingBox)) {
                     this.game.camera.health-= entity.stats.damageDealt;
@@ -144,10 +144,10 @@ class Goop {
         
 
         // update the positions
-        this.xMap += this.velocity.x;
-        this.yMap += this.velocity.y;
-        this.game.crosshair.xMap += this.velocity.x;
-        this.game.crosshair.yMap += this.velocity.y;
+        this.xMap += this.velocity.x * this.game.clockTick;
+        this.yMap += this.velocity.y * this.game.clockTick;
+        this.game.crosshair.xMap += this.velocity.x * this.game.clockTick;
+        this.game.crosshair.yMap += this.velocity.y * this.game.clockTick;
 
         this.updateBoundingBox();
 

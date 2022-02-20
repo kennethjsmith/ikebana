@@ -1,7 +1,7 @@
 class Bullet {
     constructor(game) {
         this.game = game;
-        this.SPEED = 5; // TODO, we can probably make a "stats" class for bullets, for dif types of guns
+        this.SPEED = 286; // TODO, we can probably make a "stats" class for bullets, for dif types of guns
         this.range = 100; //how many updates, ie this bullet will travel speed*range
         this.removeFromWorld = false;
         
@@ -11,7 +11,7 @@ class Bullet {
 
         if (this.game.camera.level == "level1") {
             this.spritesheet = this.level1SpriteSheet;
-            this.SPEED = 20;
+            this.SPEED = 1140;
         }    
         else this.spritesheet = this.level2SpriteSheet;
 
@@ -46,8 +46,8 @@ class Bullet {
 
     update() {
 
-        this.xMap += this.xVelocity;// * this.game.clockTick);
-        this.yMap += this.yVelocity;// * this.game.clockTick);
+        this.xMap += this.xVelocity * this.game.clockTick;
+        this.yMap += this.yVelocity * this.game.clockTick;
         this.updateBoundingBox();
 
         // check collisions with walls

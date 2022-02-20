@@ -25,7 +25,7 @@ class HorrorSlime {
         this.midpoint = { x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
         this.radius = 4 * this.game.level.tileSize + this.widthOffset + this.heightOffset;
 
-        this.stats = new EnemyStats(3, 10, false, 5, 0, false, 50, 0, 1, 50, 0);
+        this.stats = new EnemyStats(172, 10, false, 5, 0, false, 50, 0, 1, 50, 0);
 
         this.velocity = { x: this.randomDirection(), y: this.randomDirection() }
         while (this.velocity.x == 0 && this.velocity.y == 0) {
@@ -179,8 +179,8 @@ class HorrorSlime {
             this.game.spriteGrid.forEach( row => {
                 row.forEach( tile => {
                     let type = tile.type;
-                    let xProjectedBB = velocityUpdated ? this.boundingBox : this.boundingBox.getXProjectedBB(this.velocity.x);
-                    let yProjectedBB = velocityUpdated ? this.boundingBox : this.boundingBox.getYProjectedBB(this.velocity.y);
+                    let xProjectedBB = velocityUpdated ? this.boundingBox : this.boundingBox.getXProjectedBB(this.velocity.x * this.game.clockTick);
+                    let yProjectedBB = velocityUpdated ? this.boundingBox : this.boundingBox.getYProjectedBB(this.velocity.y * this.game.clockTick);
 
                     if (type == "wall" || type == "north_wall") {
                         if (xProjectedBB.collide(tile.BB) && (!yProjectedBB.collide(tile.BB))) {
@@ -225,8 +225,8 @@ class HorrorSlime {
         }
 
         // update the positions
-        this.xMap += this.velocity.x;
-        this.yMap += this.velocity.y;
+        this.xMap += this.velocity.x * this.game.clockTick;
+        this.yMap += this.velocity.y * this.game.clockTick;
         this.updateBoundingBox();
 
         // update the states
