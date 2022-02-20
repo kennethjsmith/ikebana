@@ -161,6 +161,9 @@ class SceneManager {
         // enemies cannot spawn in the same quadrant as goop
         } else if (this.startXPlayer != null && this.startYPlayer != null
             && this.game.spriteGrid[row][col].type == "floor"
+            && this.game.spriteGrid[row][col + 1].type == "floor"
+            && this.game.spriteGrid[row + 1][col].type == "floor"
+            && this.game.spriteGrid[row + 1][col + 1].type == "floor"
             && !this.inGoopsQuadrant(row, col)
             ) 
                 return true;
