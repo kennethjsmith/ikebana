@@ -237,7 +237,7 @@ class SceneManager {
             this.levelStats.get(this.level).deadEnemyCount = 0;
 
             if(this.game.clicked) {
-			    if (this.game.crosshair.xMidpoint - this.x  >= 300 && this.game.crosshair.xMidpoint - this.x <= 400 &&
+			    if (this.game.crosshair.xMidpoint - this.x  >= 250 && this.game.crosshair.xMidpoint - this.x <= 400 &&
                     this.game.crosshair.yMidpoint  - this.y <= 400 && this.game.crosshair.yMidpoint - this.y >= 350) {
                     this.x = 0;
                     this.y = 0;
@@ -333,13 +333,13 @@ class SceneManager {
 
             ctx.fillText("nice!", 260, 200)
 
-            ctx.fillStyle = ((this.game.crosshair.xMidpoint + this.x  >= 250
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint - this.x  >= 250
                 && this.game.crosshair.xMidpoint - this.x  <= 400 
                 && this.game.crosshair.yMidpoint - this.y  >= 350 
                 && this.game.crosshair.yMidpoint - this.y <= 400) 
                 ? '#2c2f5e' : "White");
             ctx.fillRect(250, 350, 150, 50);
-            ctx.fillStyle = ((this.game.crosshair.xMidpoint + this.x  >= 250
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint - this.x  >= 250
                 && this.game.crosshair.xMidpoint - this.x  <= 400 
                 && this.game.crosshair.yMidpoint - this.y  >= 350 
                 && this.game.crosshair.yMidpoint - this.y  <= 400) 
