@@ -205,13 +205,12 @@ class Goop {
     };
 
     updateBoundingBox() {
-        this.hurtBox = new BoundingBox(this.xMap+1, this.yMap, this.spriteWidth-2, this.spriteHeight - this.shadowHeight);
+        this.hurtBox = new BoundingBox(this.xMap+10, this.yMap+10, this.spriteWidth-20, this.spriteHeight - this.shadowHeight - 20);
         this.boundingBox = new BoundingBox(this.xMap+5, this.yMap + 2*(this.spriteHeight/3), this.spriteWidth-10, (this.spriteHeight/3)-this.shadowHeight);//+5 x, -10 width for narrower box
     };
 
 
     takeDamage(damage) {
-        console.log("ouch");
         if (!this.stats.dead) {
             this.stats.hurtTimer = 0;
             this.stats.health-= damage;

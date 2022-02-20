@@ -1,7 +1,7 @@
 class EnemyBullet {
     constructor(game, x, y) {
         this.game = game;
-        this.SPEED = 270; // TODO, we can probably make a "stats" class for bullets, for dif types of guns
+        this.SPEED = 460; // TODO, we can probably make a "stats" class for bullets, for dif types of guns
         this.range = 200; //how many updates, ie this bullet will travel speed*range
         this.removeFromWorld = false;
         
@@ -78,7 +78,6 @@ class EnemyBullet {
 
         // check collisions with goop
         if (this.game.goop.hurtBox && this.boundingBox.collide(this.game.goop.hurtBox)) {
-            console.log("hit");
             this.game.goop.takeDamage(1);
             this.removeFromWorld = true;
         } 
@@ -95,8 +94,6 @@ class EnemyBullet {
 
 
     draw(ctx) {
-        //console.log("drawing bullet");
-        //console.log("bullet x:"+ this.xMap+"bullet y:"+ this.yMap);
         
         //ctx.save();
         //this.game.ctx.fillRect(this.xMap-this.game.camera.x,this.yMap-this.game.camera.y,1,1);
