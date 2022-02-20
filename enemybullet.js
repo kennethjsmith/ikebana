@@ -1,7 +1,7 @@
 class EnemyBullet {
     constructor(game, x, y) {
         this.game = game;
-        this.SPEED = 5; // TODO, we can probably make a "stats" class for bullets, for dif types of guns
+        this.SPEED = 8; // TODO, we can probably make a "stats" class for bullets, for dif types of guns
         this.range = 200; //how many updates, ie this bullet will travel speed*range
         this.removeFromWorld = false;
         
