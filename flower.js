@@ -19,7 +19,7 @@ class Flower {
 
         // flower's state variables
         this.state = "growing"; // growing grown, or destroyed
-        this.game.camera.flowers++;
+        if (this.game.camera.play) this.game.camera.flowers++;
 
         this.animations = new Map;
         this.loadAnimations();

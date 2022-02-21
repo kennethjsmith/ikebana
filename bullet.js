@@ -51,7 +51,7 @@ class Bullet {
         this.updateBoundingBox();
 
         // check collisions with walls
-        this.game.spriteGrid.forEach( row => {
+        this.game.tileGrid.forEach( row => {
             row.forEach( tile => {
                 let type = tile.type;
                 if ((type == "wall" || type == "north_wall") && this.boundingBox.collide(tile.BB)){

@@ -4,47 +4,47 @@ class EnemyBullet {
         this.SPEED = 460; // TODO, we can probably make a "stats" class for bullets, for dif types of guns
         this.range = 200; //how many updates, ie this bullet will travel speed*range
         this.removeFromWorld = false;
-        
+
 
         this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/enemy_bullet1.png");
         this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/enemy_bullet2.png");
 
         if (this.game.camera.level == "level1") {
             this.spritesheet = this.level1SpriteSheet;
-        }    
+        }
         else this.spritesheet = this.level2SpriteSheet;
 
         this.SIZE = 12; // find better way to get this pizel width
-        this.SCALE = 2;        
+        this.SCALE = 2;
         this.xMap = x;
         this.yMap = y;
         //TODO: trajectory would be better if calculated in gun and passed in
         // in a perfect worlt the trajectory would be the slope of the barrel and the barrel would be rotated to always point directly at the crosshair
-       
+
         this.xDistance = this.xMap - this.game.goop.midpoint.x;
         this.yDistance = this.yMap - this.game.goop.midpoint.y;
 
-        this.diagonal = Math.sqrt((this.xDistance*this.xDistance) + (this.yDistance*this.yDistance));
-        
-        this.xTrajectory = this.xDistance/this.diagonal;
-        this.yTrajectory = this.yDistance/this.diagonal;
+        this.diagonal = Math.sqrt((this.xDistance * this.xDistance) + (this.yDistance * this.yDistance));
+
+        this.xTrajectory = this.xDistance / this.diagonal;
+        this.yTrajectory = this.yDistance / this.diagonal;
 
 
         // normalize the trajectory
         this.xVelocity = -this.xTrajectory * this.SPEED;
         this.yVelocity = -this.yTrajectory * this.SPEED;
-//        console.log("xvel"+this.xVelocity+",yvel"+this.yVelocity);
+        //        console.log("xvel"+this.xVelocity+",yvel"+this.yVelocity);
 
         // for DEBUG
         //this.game.ctx.fillRect(this.xMap,this.yMap,1,1);
 
         // adjust x and y to center bullet sprite drawing over trajectory, trajectory*size/2
-        this.spriteWidth = this.SIZE * this.SCALE; 
+        this.spriteWidth = this.SIZE * this.SCALE;
 
         this.animations = new Map;
         this.loadAnimations();
         this.updateBoundingBox();
-        
+
         this.animations = this.animations.get("shot");
     };
 
@@ -59,10 +59,10 @@ class EnemyBullet {
         this.updateBoundingBox();
 
         // check collisions with walls
-        this.game.spriteGrid.forEach( row => {
-            row.forEach( tile => {
+        this.game.tileGrid.forEach(row => {
+            row.forEach(tile => {
                 let type = tile.type;
-                if ((type == "wall" || type == "north_wall") && this.boundingBox.collide(tile.BB)){
+                if ((type == "wall" || type == "north_wall") && this.boundingBox.collide(tile.BB)) {
                     this.removeFromWorld = true;
                 } else if (type == "south_wall" && this.boundingBox.collide(tile.BB.lower)) {
                     this.removeFromWorld = true;
@@ -74,18 +74,18 @@ class EnemyBullet {
             });
         });
 
-        
+
 
         // check collisions with goop
         if (this.game.goop.hurtBox && this.boundingBox.collide(this.game.goop.hurtBox)) {
             this.game.goop.takeDamage(1);
             this.removeFromWorld = true;
-        } 
-        
+        }
+
 
         this.range--;
-        if(this.range == 0) this.removeFromWorld = true;
-        
+        if (this.range == 0) this.removeFromWorld = true;
+
     };
 
     updateBoundingBox() {
@@ -94,10 +94,10 @@ class EnemyBullet {
 
 
     draw(ctx) {
-        
+
         //ctx.save();
         //this.game.ctx.fillRect(this.xMap-this.game.camera.x,this.yMap-this.game.camera.y,1,1);
-        this.animations.drawFrame(this.game.clockTick, ctx, this.xMap - this.game.camera.x - this.spriteWidth/2, this.yMap - this.game.camera.y - this.spriteWidth/2, this.SCALE);
+        this.animations.drawFrame(this.game.clockTick, ctx, this.xMap - this.game.camera.x - this.spriteWidth / 2, this.yMap - this.game.camera.y - this.spriteWidth / 2, this.SCALE);
         //ctx.restore();
         if (this.game.debug) {
             ctx.strokeStyle = 'red';

@@ -176,7 +176,7 @@ class HorrorSlime {
             if (velocityUpdated) this.updateBoundingBox();
 
             // handle wall collisions
-            this.game.spriteGrid.forEach( row => {
+            this.game.tileGrid.forEach( row => {
                 row.forEach( tile => {
                     let type = tile.type;
                     let xProjectedBB = velocityUpdated ? this.boundingBox : this.boundingBox.getXProjectedBB(this.velocity.x * this.game.clockTick);

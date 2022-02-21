@@ -25,7 +25,8 @@ class Goop {
         this.state = "vibing"; // walking or vibin
 
         this.gun = new Gun("uzi", this.game);
-        this.stats = new PlayerStats(this.game.camera.health, false, 25, 0, false, 20, 0, this.gun.damage)
+
+        this.stats = new PlayerStats(this.game.camera.health, false, 10, 0, false, 10, 0, this.gun.damage)
         this.velocity = { x: 0, y: 0 };
 
         this.animations = new Map;
@@ -33,8 +34,6 @@ class Goop {
         this.loadAnimations();
         this.updateBoundingBox();
         this.animation = this.animations.get("right").get("vibing");
-        //Animator constructor(spritesheet, xStart, yStart, width, height, frameCount, frameDuration) {
-
     };
 
     loadAnimations() {
@@ -45,22 +44,20 @@ class Goop {
         this.animations.get("left").set("vibing", new Animator(this.spritesheet, 624, 0, 39, 43, 8, .15));
         this.animations.get("left").set("hurt", new Animator(this.spritesheet, 1248, 0, 39, 43, 2, .1));
         this.animations.get("left").set("dying", new Animator(this.spritesheet, 1404, 0, 39, 43, 2, .1));
-        this.animations.get("left").set("dead", new Animator(this.spritesheet, 1443, 0, 39, 43, 1, .1));
+        this.animations.get("left").set("dead", new Animator(this.spritesheet, 1443, 0, 39, 43, 1, 1));
 
 
         this.animations.get("right").set("walking", new Animator(this.spritesheet, 312, 0, 39, 43, 8, .1));
         this.animations.get("right").set("vibing", new Animator(this.spritesheet, 936, 0, 39, 43, 8, .15));
         this.animations.get("right").set("hurt", new Animator(this.spritesheet, 1326, 0, 39, 43, 2, .1));
-        this.animations.get("right").set("dying", new Animator(this.spritesheet, 1382, 0, 39, 43, 2, .1));
-        this.animations.get("left").set("dead", new Animator(this.spritesheet, 1521, 0, 39, 43, 1, .1));
+        this.animations.get("right").set("dying", new Animator(this.spritesheet, 1482, 0, 39, 43, 2, .1));
+        this.animations.get("right").set("dead", new Animator(this.spritesheet, 1521, 0, 38, 43, 1, 1));
 
     };
 
     update() {
         const WALK = 400;
         const DIAGONAL = Math.sqrt(Math.pow(WALK, 2) / 2);
-       // const WALK = 7;
-       // const DIAGONAL = 4.95; // 4 -> 2.8 based on WALK speed: 4^2 = 2(a^2); where a = x = y
         this.velocity.x = 0;
         this.velocity.y = 0;
 
@@ -80,7 +77,7 @@ class Goop {
 
         // check for wall collisions
         let collisionOccurred = false;
-        this.game.spriteGrid.forEach( row => {
+        this.game.tileGrid.forEach( row => {
             row.forEach( tile => {
                 let type = tile.type;
                 if (type == "north_wall" && this.boundingBox.getXProjectedBB(this.velocity.x * this.game.clockTick).collide(tile.BB)) {
@@ -121,7 +118,8 @@ class Goop {
 
             if ((!this.stats.hurt || this.stats.hurtTimer >= this.stats.hurtTimeout) 
                 && (entity instanceof Slime || entity instanceof HorrorSlime) 
-                && !entity.stats.dead ) {
+                && !entity.stats.dead 
+                && this.game.camera.play) {
                     
                 this.stats.hurtTimer = 0;
                 this.stats.hurt = false;
@@ -141,55 +139,56 @@ class Goop {
             }
         });
 
-        
-
-        // update the positions
-        this.xMap += this.velocity.x * this.game.clockTick;
-        this.yMap += this.velocity.y * this.game.clockTick;
-        this.game.crosshair.xMap += this.velocity.x * this.game.clockTick;
-        this.game.crosshair.yMap += this.velocity.y * this.game.clockTick;
-
-        this.updateBoundingBox();
-
-        
-        this.game.camera.update();
-        this.game.crosshair.update();
-        this.gun.update();
-
-        // update the states
-        if (this.velocity.x > 0) {
-            this.facing = "right";
-            this.state = "walking";
-        } else if (this.velocity.x < 0) {
-            this.facing = "left";
-            this.state = "walking";
-        } else if (this.velocity.y != 0) {
-            this.state = "walking";
-        } else if (this.velocity.x == 0 && this.velocity.y == 0) {
-            this.state = "vibing";
-        } else {
             
+        if (!this.game.camera.lose) {
+            // update the positions
+            this.xMap += this.velocity.x * this.game.clockTick;
+            this.yMap += this.velocity.y * this.game.clockTick;
+            this.game.crosshair.xMap += this.velocity.x * this.game.clockTick;
+            this.game.crosshair.yMap += this.velocity.y * this.game.clockTick;
+    
+            this.updateBoundingBox();
+            
+            // update the states
+            if (this.velocity.x > 0) {
+                this.facing = "right";
+                this.state = "walking";
+            } else if (this.velocity.x < 0) {
+                this.facing = "left";
+                this.state = "walking";
+            } else if (this.velocity.y != 0) {
+                this.state = "walking";
+            } else if (this.velocity.x == 0 && this.velocity.y == 0) {
+                this.state = "vibing";
+            } else {
+                
+            }
+
+            this.gun.update();
+
         }
+        this.game.camera.update();
+        this.game.crosshair.update();            
 
         this.animation = this.animations.get(this.facing).get(this.state);
         // update the animation
         if (this.stats.hurt) {
             if (this.game.camera.health == 0) {
                 this.stats.dead = true;
-                //this.animation = this.animations.get(this.facing).get("dead");
-            } else if (this.stats.hurtTimer < this.stats.hurtTimeout / 10) this.animation = this.animations.get(this.facing).get("hurt");
+            } else if (this.stats.hurtTimer < this.stats.hurtTimeout) this.animation = this.animations.get(this.facing).get("hurt");
             this.stats.hurtTimer++;
         }
         // update the animation
-        // if (this.stats.dead) {
-        //     if (this.game.camera.health == 0) {
-        //         this.stats.dead = true;
-        //         //this.animation = this.animations.get(this.facing).get("dead");
-        //     } else if (this.stats.hurtTimer > 2) this.animation = this.animations.get(this.facing).get("dead");
-        //     this.stats.hurtTimer++;
-        // }
+        if (this.stats.dead) {
+            if (this.stats.dyingTimer < this.stats.dyingTimeout) {
+                this.animation = this.animations.get(this.facing).get("dying");
+                this.stats.dyingTimer++;
+            } else {
+                this.animation = this.animations.get(this.facing).get("dead");
+            }
+        }
         this.midpoint = {x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
-
+        
     };
 
     draw(ctx) {
@@ -205,13 +204,13 @@ class Goop {
     };
 
     updateBoundingBox() {
-        this.hurtBox = new BoundingBox(this.xMap+10, this.yMap+10, this.spriteWidth-20, this.spriteHeight - this.shadowHeight - 20);
+        this.hurtBox = new BoundingBox(this.xMap+10, this.yMap+10, this.spriteWidth-20, this.spriteHeight - this.shadowHeight - 10);
         this.boundingBox = new BoundingBox(this.xMap+5, this.yMap + 2*(this.spriteHeight/3), this.spriteWidth-10, (this.spriteHeight/3)-this.shadowHeight);//+5 x, -10 width for narrower box
     };
 
 
     takeDamage(damage) {
-        if (!this.stats.dead) {
+        if (!this.stats.dead && this.game.camera.play) {
             this.stats.hurtTimer = 0;
             this.stats.health-= damage;
             this.game.camera.health--;

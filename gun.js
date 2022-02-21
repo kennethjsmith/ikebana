@@ -147,8 +147,11 @@ class Gun {
             //offscreenCtx.fillRect(this.barrelTipXMap - this.xMap, this.barrelTipYMap - this.yMap,1,1);
             this.sprites.get(this.type).set(degrees, { image: offscreenCanvas });  
         }
-        // draw the fetched or newly created image
-        ctx.drawImage(offscreenCanvas, this.xMap-this.game.camera.x, this.yMap-this.game.camera.y); 
+
+        if (!this.game.camera.lose) {
+            // draw the fetched or newly created image
+            ctx.drawImage(offscreenCanvas, this.xMap-this.game.camera.x, this.yMap-this.game.camera.y); 
+        }
 
     };
 };

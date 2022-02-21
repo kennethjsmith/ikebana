@@ -56,7 +56,6 @@ class GameEngine {
                 contextMenu: true,
                 scrolling: true,
             },
-           // debugging: true,
         };
     };
 

@@ -7,7 +7,7 @@ class LevelGenerator {
         this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/level2.png");
         if (this.game.camera.level == "level1") this.spritesheet = this.level1SpriteSheet;
         else this.spritesheet = this.level2SpriteSheet;
-        this.spriteGrid = [];
+        this.tileGrid = [];
 
         this.levelAssets = new Map;
         this.loadWalls();
@@ -24,7 +24,7 @@ class LevelGenerator {
         this.postProcessGrid();
         this.spawnLevel();
         this.addBoundingBoxes(); 
-        this.game.spriteGrid = this.spriteGrid;  
+        this.game.tileGrid = this.tileGrid;  
     };
 
     setup() {
@@ -41,9 +41,9 @@ class LevelGenerator {
 
         // fill every space in the sprite grid with a filler ground
         for (let row = 0; row < this.height; row++) {
-            this.spriteGrid.push([]);
+            this.tileGrid.push([]);
             for (let col = 0; col < this.width; col++) {
-                this.spriteGrid[row][col] = 
+                this.tileGrid[row][col] = 
                 {   
                     type: "empty",
                     BB: null, 
@@ -241,7 +241,7 @@ class LevelGenerator {
 
                 if (curr == "floor") {
                     if (nwOfCurr == "empty" && northOfCurr == "empty" && westOfCurr == "empty") {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "floor",
                             BB: null, 
@@ -251,7 +251,7 @@ class LevelGenerator {
                         };
 
                     } else if (nwOfCurr == "empty" && northOfCurr == "floor" && westOfCurr == "floor") {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "floor",
                             BB: null, 
@@ -261,7 +261,7 @@ class LevelGenerator {
                         };
 
                     } else if (nwOfCurr == "floor" && northOfCurr == "floor" && westOfCurr == "empty") {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "floor",
                             BB: null, 
@@ -271,7 +271,7 @@ class LevelGenerator {
                         };
 
                     } else if (northOfCurr == "empty" && nwOfCurr == "floor" && westOfCurr == "floor") {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "floor",
                             BB: null, 
@@ -281,7 +281,7 @@ class LevelGenerator {
                         };
 
                     } else if (northOfCurr == "empty") {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "floor",
                             BB: null, 
@@ -291,7 +291,7 @@ class LevelGenerator {
                         };
 
                     } else if (westOfCurr == "empty") {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "floor",
                             BB: null, 
@@ -301,7 +301,7 @@ class LevelGenerator {
                         };
 
                     } else {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         {
                             type: "floor",
                             BB: null, 
@@ -314,7 +314,7 @@ class LevelGenerator {
                 } else if (curr == "empty") {
 
                     if (this.isNorthSouthWallTop(row, col, northOfCurr, southOfCurr, eastOfCurr, westOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "south_wall",
                             BB: null, 
@@ -324,7 +324,7 @@ class LevelGenerator {
                         };
                     
                     } else if (this.isEastWestWallTop(seOfCurr, swOfCurr, northOfCurr, southOfCurr, eastOfCurr, westOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "wall",
                             BB: null, 
@@ -334,7 +334,7 @@ class LevelGenerator {
                         };
                 
                     } else if (this.isNECornerSWInvertedCorner(row, col, southOfCurr, westOfCurr, swOfCurr, eastOfCurr, northOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "south_wall",
                             BB: null, 
@@ -344,7 +344,7 @@ class LevelGenerator {
                         };
                     
                     } else if (this.isSECornerNWInvertedCorner(row, col, nwOfCurr, westOfCurr, northOfCurr, southOfCurr, swOfCurr, seOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         {   
                             type: "wall",
                             BB: null, 
@@ -354,7 +354,7 @@ class LevelGenerator {
                         };
 
                     } else if (this.isSWCornerNEInvertedCorner(row, col, northOfCurr, southOfCurr, eastOfCurr, swOfCurr, seOfCurr, neOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "wall",
                             BB: null, 
@@ -364,7 +364,7 @@ class LevelGenerator {
                         };
 
                     } else if (this.isNWCornerSEInvertedCorner(row, col, northOfCurr, nwOfCurr, westOfCurr, neOfCurr, southOfCurr, eastOfCurr, seOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "south_wall",
                             BB: null, 
@@ -374,7 +374,7 @@ class LevelGenerator {
                         };
 
                     } else if (this.isSECornerNECorner(row, col, westOfCurr, southOfCurr, swOfCurr, northOfCurr, eastOfCurr, neOfCurr, seOfCurr, nwOfCurr)){
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "wall",
                             BB: null, 
@@ -384,7 +384,7 @@ class LevelGenerator {
                         };
                     
                     } else if (this.isSWCornerNWCorner(row, col, westOfCurr, southOfCurr, swOfCurr, northOfCurr, eastOfCurr, neOfCurr, seOfCurr, nwOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "wall",
                             BB: null, 
@@ -394,7 +394,7 @@ class LevelGenerator {
                         };
 
                     } else if (this.isSECornerNWCorner(row, col, westOfCurr, southOfCurr, swOfCurr, northOfCurr, eastOfCurr, neOfCurr, seOfCurr, nwOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         {   
                             type: "south_wall",
                             BB: null, 
@@ -404,7 +404,7 @@ class LevelGenerator {
                         };
 
                     } else if (this.isNWallSECorner(row, col, northOfCurr, nwOfCurr, westOfCurr, southOfCurr, swOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "wall",
                             BB: null, 
@@ -414,7 +414,7 @@ class LevelGenerator {
                         };
 
                     } else if (this.isWWallSECorner(row, col, southOfCurr, northOfCurr, eastOfCurr, westOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "south_wall",
                             BB: null, 
@@ -424,7 +424,7 @@ class LevelGenerator {
                         };
 
                     } else if (this.isEWallNWCorner(row, col, southOfCurr, northOfCurr, eastOfCurr, westOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "wall",
                             BB: null, 
@@ -434,7 +434,7 @@ class LevelGenerator {
                         };
                                                 
                     } else if (this.isWWallNECorner(row, col, southOfCurr, northOfCurr, westOfCurr, eastOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "wall",
                             BB: null, 
@@ -444,7 +444,7 @@ class LevelGenerator {
                         };
 
                     } else if (this.isEWallSWCorner(northOfCurr, eastOfCurr, southOfCurr, neOfCurr, swOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "south_wall",
                             BB: null, 
@@ -454,7 +454,7 @@ class LevelGenerator {
                         };
 
                     } else if (this.isSWallNECorner(row, col, northOfCurr, eastOfCurr, westOfCurr, southOfCurr, swOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "south_wall",
                             BB: null, 
@@ -464,7 +464,7 @@ class LevelGenerator {
                         };
 
                     } else if (this.isNWallSWCorner(row, col, northOfCurr, eastOfCurr, southOfCurr, westOfCurr, neOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "wall",
                             BB: null, 
@@ -474,7 +474,7 @@ class LevelGenerator {
                         };
 
                     } else if (this.isSWallNWCorner(row, col, northOfCurr, eastOfCurr, westOfCurr, southOfCurr, seOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "south_wall",
                             BB: null, 
@@ -484,7 +484,7 @@ class LevelGenerator {
                         };
 
                     } else if (this.isEastNorthSouthWallTop(row, col, northOfCurr, westOfCurr, southOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "south_wall",
                             BB: null, 
@@ -494,7 +494,7 @@ class LevelGenerator {
                         };
                 
                     } else if (this.isWestNorthSouthWallTop(row, col, southOfCurr, northOfCurr, eastOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "south_wall",
                             BB: null, 
@@ -504,7 +504,7 @@ class LevelGenerator {
                         };
                 
                     } else if (this.isInvertedNWCornerTop(row, col, seOfCurr, southOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "wall",
                             BB: null, 
@@ -514,7 +514,7 @@ class LevelGenerator {
                         };
 
                     } else if (this.isInvertedNECornerTop(row, col, swOfCurr, southOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "wall",
                             BB: null, 
@@ -524,7 +524,7 @@ class LevelGenerator {
                         };
 
                     } else if (this.isInvertedSWCornerTop(northOfCurr, southOfCurr, eastOfCurr, westOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "south_wall",
                             BB: null, 
@@ -534,7 +534,7 @@ class LevelGenerator {
                         };
                     
                     } else if (this.isInvertedSECornerTop(eastOfCurr, northOfCurr, southOfCurr, westOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "south_wall",
                             BB: null, 
@@ -544,7 +544,7 @@ class LevelGenerator {
                         };
                     
                     } else if (this.isNWCornerTop(row, col, seOfCurr, eastOfCurr, southOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "wall",
                             BB: null, 
@@ -554,7 +554,7 @@ class LevelGenerator {
                         };
 
                     } else if (this.isSWCornerTop(northOfCurr, eastOfCurr, neOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "wall",
                             BB: null, 
@@ -564,7 +564,7 @@ class LevelGenerator {
                         };
                     
                     } else if (this.isSECornerTop(westOfCurr, northOfCurr, nwOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "wall",
                             BB: null, 
@@ -574,7 +574,7 @@ class LevelGenerator {
                         };
                     
                     } else if (this.isNECornerTop(row, col, southOfCurr, swOfCurr, westOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "wall",
                             BB: null, 
@@ -584,7 +584,7 @@ class LevelGenerator {
                         };
                     
                     } else if (this.isNWCorner(northOfCurr, eastOfCurr, seOfCurr, southOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "north_wall",
                             BB: null, 
@@ -594,7 +594,7 @@ class LevelGenerator {
                         };
 
                     } else if (this.isNECorner(northOfCurr, westOfCurr, swOfCurr, southOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "north_wall",
                             BB: null, 
@@ -604,7 +604,7 @@ class LevelGenerator {
                         };
 
                     } else if (southOfCurr == "floor") {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "north_wall",
                             BB: null, 
@@ -613,9 +613,9 @@ class LevelGenerator {
                             col: col
                         };
 
-                        if (this.spriteGrid[row][col].image != this.levelAssets.get("wall").get("nWall").get("cracked1")
-                            && this.spriteGrid[row - 1][col].image == this.levelAssets.get("ground").get("filler")) {                                
-                            this.spriteGrid[row - 1][col] = 
+                        if (this.tileGrid[row][col].image != this.levelAssets.get("wall").get("nWall").get("cracked1")
+                            && this.tileGrid[row - 1][col].image == this.levelAssets.get("ground").get("filler")) {                                
+                            this.tileGrid[row - 1][col] = 
                             { 
                                 type: "wall",
                                 BB: null, 
@@ -623,9 +623,9 @@ class LevelGenerator {
                                 row: row,
                             col: col
                             };
-                        } else if (this.spriteGrid[row][col].image == this.levelAssets.get("wall").get("nWall").get("cracked1")
-                            && this.spriteGrid[row - 1][col].image != this.levelAssets.get("ground").get("filler")) {
-                            this.spriteGrid[row][col] = 
+                        } else if (this.tileGrid[row][col].image == this.levelAssets.get("wall").get("nWall").get("cracked1")
+                            && this.tileGrid[row - 1][col].image != this.levelAssets.get("ground").get("filler")) {
+                            this.tileGrid[row][col] = 
                             { 
                                 type: "north_wall",
                                 BB: null, 
@@ -636,7 +636,7 @@ class LevelGenerator {
                         }
                     
                     } else if (this.isWestWallTop(northOfCurr, neOfCurr, eastOfCurr, seOfCurr, southOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "wall",
                             BB: null, 
@@ -646,7 +646,7 @@ class LevelGenerator {
                         };
 
                     } else if (this.isEastWallTop(northOfCurr, nwOfCurr, swOfCurr, southOfCurr)) {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "wall",
                             BB: null, 
@@ -656,7 +656,7 @@ class LevelGenerator {
                         };
 
                     } else if (northOfCurr == "floor") {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "south_wall",
                             BB: null, 
@@ -666,7 +666,7 @@ class LevelGenerator {
                         };
 
                     } else if (westOfCurr == "floor") {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "wall",
                             BB: null, 
@@ -676,7 +676,7 @@ class LevelGenerator {
                         };
                         
                     } else if (eastOfCurr == "floor") {
-                        this.spriteGrid[row][col] = 
+                        this.tileGrid[row][col] = 
                         { 
                             type: "wall",
                             BB: null, 
@@ -1202,7 +1202,7 @@ class LevelGenerator {
     addBoundingBoxes() {
         for (var row = 0; row < this.height; row++) {
             for (var col = 0; col < this.width; col++) {
-                let curr = this.spriteGrid[row][col];
+                let curr = this.tileGrid[row][col];
                 if (curr.type == "wall" || curr.type == "north_wall" ) {
                     curr.BB = new BoundingBox(Math.floor(col * this.tileSize), 
                     Math.floor(row * this.tileSize), 
@@ -1225,21 +1225,21 @@ class LevelGenerator {
     draw(ctx) {
         for (var row = 0; row < this.height; row++) {
             for (var col = 0; col < this.width; col++) {
-                var square = this.spriteGrid[row][col].image;
+                var square = this.tileGrid[row][col].image;
 
                 square.drawFrame(this.game.clockTick, ctx, Math.floor((col * this.tileSize) - (this.game.camera.x)), Math.floor((row * this.tileSize) - (this.game.camera.y)), this.scale); 
                 
                 
                 if (this.game.debug) {                
                     //drawing the bounding boxes
-                    if (this.spriteGrid[row][col].BB) {
-                        if (this.spriteGrid[row][col].type == "wall" || this.spriteGrid[row][col].type == "north_wall" ) {
-                            let bb = this.spriteGrid[row][col].BB;
+                    if (this.tileGrid[row][col].BB) {
+                        if (this.tileGrid[row][col].type == "wall" || this.tileGrid[row][col].type == "north_wall" ) {
+                            let bb = this.tileGrid[row][col].BB;
                             ctx.strokeStyle = 'red';
                             ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
                 
                         } else {
-                            let bb = this.spriteGrid[row][col].BB.lower
+                            let bb = this.tileGrid[row][col].BB.lower
                             ctx.strokeStyle = 'red';
                             ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
                 
