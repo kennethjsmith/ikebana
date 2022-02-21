@@ -146,24 +146,24 @@ class SceneManager {
 
         // if we are spawning goops start location
         if (this.startXPlayer == null && this.startYPlayer == null
-            && this.game.spriteGrid[row][col].type == "floor"
-            && this.game.spriteGrid[row+1][col].type == "floor"
-            && this.game.spriteGrid[row+2][col].type == "floor"
-            && this.game.spriteGrid[row][col+1].type == "floor"
-            && this.game.spriteGrid[row+1][col+1].type == "floor"
-            && this.game.spriteGrid[row+2][col+1].type == "floor"
-            && this.game.spriteGrid[row][col+2].type == "floor"
-            && this.game.spriteGrid[row+1][col+2].type == "floor"
-            && this.game.spriteGrid[row+2][col+2].type == "floor") {
+            && this.game.tileGrid[row][col].type == "floor"
+            && this.game.tileGrid[row+1][col].type == "floor"
+            && this.game.tileGrid[row+2][col].type == "floor"
+            && this.game.tileGrid[row][col+1].type == "floor"
+            && this.game.tileGrid[row+1][col+1].type == "floor"
+            && this.game.tileGrid[row+2][col+1].type == "floor"
+            && this.game.tileGrid[row][col+2].type == "floor"
+            && this.game.tileGrid[row+1][col+2].type == "floor"
+            && this.game.tileGrid[row+2][col+2].type == "floor") {
                 return true;
 
         // else if we are spawning an enemy start location
         // enemies cannot spawn in the same quadrant as goop
         } else if (this.startXPlayer != null && this.startYPlayer != null
-            && this.game.spriteGrid[row][col].type == "floor"
-            && this.game.spriteGrid[row][col + 1].type == "floor"
-            && this.game.spriteGrid[row + 1][col].type == "floor"
-            && this.game.spriteGrid[row + 1][col + 1].type == "floor"
+            && this.game.tileGrid[row][col].type == "floor"
+            && this.game.tileGrid[row][col + 1].type == "floor"
+            && this.game.tileGrid[row + 1][col].type == "floor"
+            && this.game.tileGrid[row + 1][col + 1].type == "floor"
             && !this.inGoopsQuadrant(row, col)
             ) 
                 return true;
@@ -250,7 +250,7 @@ class SceneManager {
                 }
 			}            
         } else if (this.play) { 
-            if (this.levelStats.get(this.level).deadEnemyCount >= this.levelStats.get(this.level).totalEnemies) {
+            if (this.levelStats.get(this.level).deadEnemyCount >= this.levelStats.get(this.level).totalEnemies) { 
                 this.levelStats.get(this.level).deadEnemyCount = 0;
 
                 if (this.level == "level1") {

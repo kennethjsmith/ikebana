@@ -67,10 +67,10 @@ class Gun {
     update() {
 
         // move the gun to goops new location
-        this.xMap += this.game.goop.velocity.x;
-        this.yMap += this.game.goop.velocity.y;
-        this.gripXMap += this.game.goop.velocity.x;
-        this.gripYMap += this.game.goop.velocity.y;
+        this.xMap += this.game.goop.velocity.x * this.game.clockTick;;
+        this.yMap += this.game.goop.velocity.y * this.game.clockTick;;
+        this.gripXMap += this.game.goop.velocity.x * this.game.clockTick;;
+        this.gripYMap += this.game.goop.velocity.y * this.game.clockTick;;
 
         // this distance from grip to center of crosshair is used to calculate angle alpha
         let xDistToCross = this.game.crosshair.xMidpoint - this.gripXMap;
@@ -147,8 +147,11 @@ class Gun {
             //offscreenCtx.fillRect(this.barrelTipXMap - this.xMap, this.barrelTipYMap - this.yMap,1,1);
             this.sprites.get(this.type).set(degrees, { image: offscreenCanvas });  
         }
-        // draw the fetched or newly created image
-        ctx.drawImage(offscreenCanvas, this.xMap-this.game.camera.x, this.yMap-this.game.camera.y); 
+
+        if (!this.game.camera.lose) {
+            // draw the fetched or newly created image
+            ctx.drawImage(offscreenCanvas, this.xMap-this.game.camera.x, this.yMap-this.game.camera.y); 
+        }
 
     };
 };
