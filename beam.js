@@ -86,7 +86,6 @@ class Beam {
                     // add tiles to draw on top                
                     if (type == "south_wall" && segment.boundingBox.collide(tile.BB.upper)) {
                         this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
-                        console.log("collision!");
 
                     }
                     if (type == "wall" && segment.boundingBox.collide(tile.BB)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
