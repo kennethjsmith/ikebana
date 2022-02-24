@@ -2,10 +2,28 @@ class Flower {
     constructor(game, x, y) {
         this.game = game;
 
-        this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/flower.png");
-        this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/flower2.png");
-        if (this.game.camera.level == "level1") this.spritesheet = this.level1SpriteSheet;
-        else this.spritesheet = this.level2SpriteSheet;
+        // RNG 1, 2, 3
+        this.random = Math.floor(Math.random() * 3) + 1;
+        if (this.game.camera.level == "level1"){
+            if (this.random == 1) this.spritesheet = ASSET_MANAGER.getAsset("./sprites/level1_flower1.png");
+            else if (this.random == 2) this.spritesheet = ASSET_MANAGER.getAsset("./sprites/level1_flower2.png");
+            else if (this.random == 3) this.spritesheet = ASSET_MANAGER.getAsset("./sprites/level1_flower3.png");
+        }
+        else if (this.game.camera.level == "level2"){
+            if (this.random == 1) this.spritesheet = ASSET_MANAGER.getAsset("./sprites/level2_flower1.png");
+            else if (this.random == 2) this.spritesheet = ASSET_MANAGER.getAsset("./sprites/level2_flower2.png");
+            else if (this.random == 3) this.spritesheet = ASSET_MANAGER.getAsset("./sprites/level2_flower3.png");
+        }
+
+
+        // this.level1SpriteSheet1 = ASSET_MANAGER.getAsset("./sprites/level1_flower1.png");
+        // this.level1SpriteSheet2 = ASSET_MANAGER.getAsset("./sprites/level1_flower2.png");
+        // this.level1SpriteSheet3 = ASSET_MANAGER.getAsset("./sprites/level1_flower3.png");
+        // this.level2SpriteSheet1 = ASSET_MANAGER.getAsset("./sprites/level2_flower1.png");
+        // this.level2SpriteSheet2 = ASSET_MANAGER.getAsset("./sprites/level2_flower2.png");
+        // this.level2SpriteSheet3 = ASSET_MANAGER.getAsset("./sprites/level2_flower3.png");
+        // if (this.game.camera.level == "level1") this.spritesheet = this.level1SpriteSheet3;
+        // else this.spritesheet = this.level2SpriteSheet3;
 
         this.scale = 5;
         this.spriteHeight = 20 * this.scale; // scaled height
