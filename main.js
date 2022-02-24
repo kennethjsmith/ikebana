@@ -12,6 +12,7 @@ ASSET_MANAGER.queueDownload("./sprites/flower2.png");
 ASSET_MANAGER.queueDownload("./sprites/crosshair.png");
 ASSET_MANAGER.queueDownload("./sprites/bullet.png");
 ASSET_MANAGER.queueDownload("./sprites/bubble.png");
+ASSET_MANAGER.queueDownload("./sprites/laser_segments.png");
 ASSET_MANAGER.queueDownload("./sprites/enemy_bullet1.png");
 ASSET_MANAGER.queueDownload("./sprites/enemy_bullet2.png");
 ASSET_MANAGER.queueDownload("./sprites/test_gun.png");

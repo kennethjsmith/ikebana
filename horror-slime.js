@@ -25,7 +25,7 @@ class HorrorSlime {
         this.midpoint = { x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
         this.radius = 4 * this.game.level.tileSize + this.widthOffset + this.heightOffset;
 
-        this.stats = new EnemyStats(172, 10, false, 5, 0, false, 50, 0, 1, 50, 0);
+        this.stats = new EnemyStats(172, 10, false, 10, 0, false, 50, 0, 1, 50, 0);
 
         this.velocity = { x: this.randomDirection(), y: this.randomDirection() }
         while (this.velocity.x == 0 && this.velocity.y == 0) {
@@ -67,7 +67,7 @@ class HorrorSlime {
         if (!this.stats.dead && (!this.stats.hurt || this.stats.hurtTimer >= this.stats.hurtTimeout)) {
             this.stats.hurtTimer = 0;
             this.stats.health-= damage;
-            if (this.stats.health == 0) this.stats.dead = true;
+            if (this.stats.health <= 0) this.stats.dead = true;
             else this.stats.hurt = true;
         }
     }

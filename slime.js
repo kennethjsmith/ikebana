@@ -67,7 +67,7 @@ class Slime {
         if (!this.stats.dead && (!this.stats.hurt || this.stats.hurtTimer >= this.stats.hurtTimeout)) {
             this.stats.hurtTimer = 0;
             this.stats.health-= damage;
-            if (this.stats.health == 0) this.stats.dead = true;
+            if (this.stats.health <= 0) this.stats.dead = true;
             else this.stats.hurt = true;
         }
     }
