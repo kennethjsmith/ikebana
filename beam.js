@@ -7,7 +7,7 @@ class Beam {
         this.removeFromWorld = false;
         this.lifeLength = 10;
 
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/bullet.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/laser_segments.png");
 
         this.SIZE = 12; // find better way to get this pizel width
         this.SCALE = 2;        
