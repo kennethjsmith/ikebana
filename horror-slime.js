@@ -182,7 +182,7 @@ class HorrorSlime {
                     let xProjectedBB = velocityUpdated ? this.boundingBox : this.boundingBox.getXProjectedBB(this.velocity.x * this.game.clockTick);
                     let yProjectedBB = velocityUpdated ? this.boundingBox : this.boundingBox.getYProjectedBB(this.velocity.y * this.game.clockTick);
 
-                    if (type == "wall" || type == "north_wall") {
+                    if (type == "wall") {
                         if (xProjectedBB.collide(tile.BB) && (!yProjectedBB.collide(tile.BB))) {
                             this.velocity.x = -this.velocity.x;
                             this.velocity.y = this.randomDirection();
@@ -190,6 +190,17 @@ class HorrorSlime {
                             this.velocity.y = -this.velocity.y;
                             this.velocity.x = this.randomDirection();
                         } else if (xProjectedBB.collide(tile.BB) && yProjectedBB.collide(tile.BB)) {
+                            this.velocity.x = -this.velocity.x;
+                            this.velocity.y = -this.velocity.y;
+                        }
+                    } else if (type == "north_wall") {
+                        if ((xProjectedBB.collide(tile.BB.lower) || xProjectedBB.collide(tile.BB.upper)) && !(yProjectedBB.collide(tile.BB.lower) || yProjectedBB.collide(tile.BB.upper))) {
+                            this.velocity.x = -this.velocity.x;
+                            this.velocity.y = this.randomDirection();
+                        } else if (!(xProjectedBB.collide(tile.BB.lower) || xProjectedBB.collide(tile.BB.upper)) && (yProjectedBB.collide(tile.BB.lower) || yProjectedBB.collide(tile.BB.upper))) {
+                            this.velocity.y = -this.velocity.y;
+                            this.velocity.x = this.randomDirection();
+                        } else if ((xProjectedBB.collide(tile.BB.lower) || xProjectedBB.collide(tile.BB.upper)) && (yProjectedBB.collide(tile.BB.lower) || yProjectedBB.collide(tile.BB.upper))) {
                             this.velocity.x = -this.velocity.x;
                             this.velocity.y = -this.velocity.y;
                         }

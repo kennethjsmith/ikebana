@@ -18,7 +18,7 @@ class BoundingBox {
 
     // this makes sure the next tile is drawn on top of the gun
     getProjectedBigBB(){
-        return new BoundingBox(this.x-40, this.y-40, this.width+80, this.height+40);
+        return new BoundingBox(this.x-35, this.y, this.width+70, this.height);
     }
     
     isInFront(otherBoundingBox){

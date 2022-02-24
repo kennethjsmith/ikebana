@@ -1203,10 +1203,20 @@ class LevelGenerator {
         for (var row = 0; row < this.height; row++) {
             for (var col = 0; col < this.width; col++) {
                 let curr = this.tileGrid[row][col];
-                if (curr.type == "wall" || curr.type == "north_wall" ) {
+                if (curr.type == "wall") {
                     curr.BB = new BoundingBox(Math.floor(col * this.tileSize), 
                     Math.floor(row * this.tileSize), 
                     this.tileSize, this.tileSize);
+                } else if (curr.type == "north_wall") {
+                    curr.BB = {
+                        upper: new BoundingBox(Math.floor(col * this.tileSize), 
+                            Math.floor(row * this.tileSize), 
+                            this.tileSize, 5*Math.floor(this.tileSize / 6)),
+
+                        lower: new BoundingBox(Math.floor(col * this.tileSize), 
+                            Math.floor(row * this.tileSize + 5*Math.floor(this.tileSize / 6)), 
+                            this.tileSize, Math.floor(this.tileSize / 6))
+                    };
                 } else if (curr.type == "south_wall") {
                     curr.BB = {
                         upper: new BoundingBox(Math.floor(col * this.tileSize), 
@@ -1233,13 +1243,19 @@ class LevelGenerator {
                 if (this.game.debug) {                
                     //drawing the bounding boxes
                     if (this.tileGrid[row][col].BB) {
-                        if (this.tileGrid[row][col].type == "wall" || this.tileGrid[row][col].type == "north_wall" ) {
+                        if (this.tileGrid[row][col].type == "wall") {
                             let bb = this.tileGrid[row][col].BB;
                             ctx.strokeStyle = 'red';
                             ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
                 
+                        } else if (this.tileGrid[row][col].type == "north_wall"){
+                            let bb = this.tileGrid[row][col].BB.lower;
+                            let bb2 = this.tileGrid[row][col].BB.upper;
+                            ctx.strokeStyle = 'red';
+                            ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
+                            ctx.strokeRect(Math.floor(bb2.left - this.game.camera.x), Math.floor(bb2.top - this.game.camera.y), this.tileSize, this.tileSize);
                         } else {
-                            let bb = this.tileGrid[row][col].BB.lower
+                            let bb = this.tileGrid[row][col].BB.lower;
                             ctx.strokeStyle = 'red';
                             ctx.strokeRect(Math.floor(bb.left - this.game.camera.x), Math.floor(bb.top - this.game.camera.y), this.tileSize, this.tileSize);
                 

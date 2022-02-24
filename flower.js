@@ -15,16 +15,6 @@ class Flower {
             else if (this.random == 3) this.spritesheet = ASSET_MANAGER.getAsset("./sprites/level2_flower3.png");
         }
 
-
-        // this.level1SpriteSheet1 = ASSET_MANAGER.getAsset("./sprites/level1_flower1.png");
-        // this.level1SpriteSheet2 = ASSET_MANAGER.getAsset("./sprites/level1_flower2.png");
-        // this.level1SpriteSheet3 = ASSET_MANAGER.getAsset("./sprites/level1_flower3.png");
-        // this.level2SpriteSheet1 = ASSET_MANAGER.getAsset("./sprites/level2_flower1.png");
-        // this.level2SpriteSheet2 = ASSET_MANAGER.getAsset("./sprites/level2_flower2.png");
-        // this.level2SpriteSheet3 = ASSET_MANAGER.getAsset("./sprites/level2_flower3.png");
-        // if (this.game.camera.level == "level1") this.spritesheet = this.level1SpriteSheet3;
-        // else this.spritesheet = this.level2SpriteSheet3;
-
         this.scale = 5;
         this.spriteHeight = 20 * this.scale; // scaled height
         this.spriteWidth = 12 * this.scale; // scaled width

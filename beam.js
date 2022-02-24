@@ -76,15 +76,22 @@ class Beam {
             this.game.tileGrid.forEach( row => {
                 row.forEach( tile => {
                     let type = tile.type;
-                    if ((type == "wall" || type == "north_wall") && segment.boundingBox.collide(tile.BB)){
+                    if (type == "wall" && segment.boundingBox.collide(tile.BB)){
+                        this.segments = this.segments.slice(0, i);
+                        endFound = true;
+                        console.log("colliding with reg wall - found end");
+                    } else if (type == "north_wall" && segment.boundingBox.collide(tile.BB.upper)) {
+                        console.log("colliding with north wall - found end");
                         this.segments = this.segments.slice(0, i);
                         endFound = true;
                     } else if (type == "south_wall" && segment.boundingBox.collide(tile.BB.lower)) {
+                        console.log("colliding with south wall - found end");
                         this.segments = this.segments.slice(0, i);
                         endFound = true;
                     }
                     // add tiles to draw on top                
                     if (type == "south_wall" && segment.boundingBox.collide(tile.BB.upper)) {
+                        console.log("colliding with upper south wall box - should add this tile to array to draw on top");
                         this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
 
                     }

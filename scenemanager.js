@@ -77,7 +77,7 @@ class SceneManager {
             this.x = this.game.goop.xMap - this.xMidpoint;
             this.y = this.game.goop.yMap - this.yMidpoint;
 
-           this.addEnemies(this.levelStats.get(this.level).totalEnemies);
+            this.addEnemies(this.levelStats.get(this.level).totalEnemies);
 
             //ASSET_MANAGER.pauseBackgroundMusic();
             //ASSET_MANAGER.playAsset("dummy-path");

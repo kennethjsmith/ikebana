@@ -18,7 +18,7 @@ class Goop {
 
         if (this.game.camera.level == "level1") {
             this.spritesheet = this.level1SpriteSheet;
-            this.gun = new Gun("uzi", this.game);
+            this.gun = new Gun("laser", this.game);
         } else if (this.game.camera.level == "level2") {
             this.spritesheet = this.level2SpriteSheet;
             this.gun = new Gun("bubble", this.game);
@@ -83,11 +83,11 @@ class Goop {
         this.game.tileGrid.forEach( row => {
             row.forEach( tile => {
                 let type = tile.type;
-                if (type == "north_wall" && this.boundingBox.getXProjectedBB(this.velocity.x * this.game.clockTick).collide(tile.BB)) {
+                if (type == "north_wall" && (this.boundingBox.getXProjectedBB(this.velocity.x * this.game.clockTick).collide(tile.BB.lower) || this.boundingBox.getXProjectedBB(this.velocity.x * this.game.clockTick).collide(tile.BB.upper))) {
                     this.velocity.x = 0;
                     collisionOccurred = true;
                 }
-                if (type == "north_wall" && this.boundingBox.getYProjectedBB(this.velocity.y * this.game.clockTick).collide(tile.BB)) {
+                if (type == "north_wall" && (this.boundingBox.getYProjectedBB(this.velocity.y * this.game.clockTick).collide(tile.BB.lower) || this.boundingBox.getYProjectedBB(this.velocity.y * this.game.clockTick).collide(tile.BB.upper))) {
                     this.velocity.y = 0;
                     collisionOccurred = true;
                 }
@@ -111,7 +111,7 @@ class Goop {
                 // add tiles to draw on top                
                 if (type == "south_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB.upper)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
                 if (type == "wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
-                if (type == "north_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB) && this.boundingBox.top < tile.BB.bottom) this.game.tilesToDrawOnTop.push(tile);
+                if (type == "north_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB.upper) && this.boundingBox.top < tile.BB.upper.bottom) this.game.tilesToDrawOnTop.push(tile);
             });
         });
 
