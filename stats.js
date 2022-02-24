@@ -1,6 +1,6 @@
 class PlayerStats {
-    constructor( health, hurt, hurtTimeout, hurtTimer, dead, dyingTimeout, dyingTimer, damageDealt) {
-        Object.assign(this, { health, hurt, hurtTimeout, hurtTimer, dead, dyingTimeout, dyingTimer, damageDealt });
+    constructor( health, hurt, hurtTimeout, hurtTimer, dead, dyingTimeout, dyingTimer) {
+        Object.assign(this, { health, hurt, hurtTimeout, hurtTimer, dead, dyingTimeout, dyingTimer });
     };
 }
 

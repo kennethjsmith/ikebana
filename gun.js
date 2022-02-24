@@ -4,11 +4,16 @@ class Gun {
         this.game = game;
         this.game.gun = this;
 
-        this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/uzi.png");
-        this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/laser.png");
+        this.uziGunSprite = ASSET_MANAGER.getAsset("./sprites/uzi.png");
+        this.bubbleGunSprite = ASSET_MANAGER.getAsset("./sprites/bubble_gun.png");
+        this.laserGunSprite = ASSET_MANAGER.getAsset("./sprites/laser.png");
 
-        if (this.game.camera.level == "level1") this.spritesheet = this.level1SpriteSheet;
-        else this.spritesheet = this.level2SpriteSheet;
+        if (this.type == "uzi") this.spritesheet = this.uziGunSprite;
+        else if (this.type == "bubble") this.spritesheet = this.bubbleGunSprite;
+        else if (this.type == "laser") this.spritesheet = this.laserGunSprite;
+
+        // if (this.game.camera.level == "level1") this.spritesheet = this.level1SpriteSheet;
+        // else this.spritesheet = this.level2SpriteSheet;
 
         this.SIZE = 38; // num of pixels wide
         this.SCALE = 2;
@@ -56,12 +61,15 @@ class Gun {
         this.sprites = new Map;
         this.sprites.set("uzi", new Map);
         this.sprites.set("laser", new Map);
-        this.sprites.set("bubble-gun", new Map);
+        this.sprites.set("bubble", new Map);
 
-        this.guncooldown = 20;
-        this.uzicooldown = 0;
-        this.damage = 1; //TODO: make this modular for different types of guns               
+        this.guncooldown = 0;
 
+        this.damage = {
+            "uzi" :  2,
+            "bubble" : 1,
+            "laser" : 5
+        };             
     };
 
     update() {
@@ -97,24 +105,27 @@ class Gun {
        
         // add bullets if clicked, else simply decrement cooldown counter
         if (this.game.clicked) {
-            if(this.type == "laser"){
+            if(this.type == "uzi") {
                 if(this.guncooldown == 0){
-                    //this.game.addEntity(new Bullet(this.game));    
-                    this.guncooldown = 20;
+                    this.game.addBullet(new Bullet("uzi", this.game));    
+                    this.guncooldown = 10;
                 }
                 this.guncooldown--;  
-            }
-            else if(this.type == "uzi") {
-                if(this.uzicooldown == 0){
-                    this.game.addBullet(new Bullet(this.game));    
-                    this.uzicooldown = 10;
+            } else if (this.type == "bubble") {
+                if(this.guncooldown == 0){
+                    this.game.addBullet(new Bullet("bubble", this.game));    
+                    this.guncooldown = 5;
                 }
-                this.uzicooldown--;  
+                this.guncooldown--;  
+            } else if(this.type == "laser"){
+                if(this.guncooldown == 0){
+                    this.game.addBullet(new Beam(this.game));    
+                    this.guncooldown = 50;
+                } if (this.guncooldown > 1) this.guncooldown--;
             }
         }
         else if(!this.game.clicked){
-             if(this.type == "laser" && this.guncooldown > 0) this.guncooldown--;
-             else if(this.type == "uzi" && this.uzicooldown > 0) this.uzicooldown--;
+            if (this.guncooldown > 0) this.guncooldown--;
         }
     };
 

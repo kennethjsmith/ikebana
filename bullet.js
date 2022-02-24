@@ -1,19 +1,22 @@
 class Bullet {
-    constructor(game) {
+    constructor(type, game) {
         this.game = game;
+        this.type = type;
         this.SPEED = 286; // TODO, we can probably make a "stats" class for bullets, for dif types of guns
         this.range = 100; //how many updates, ie this bullet will travel speed*range
         this.removeFromWorld = false;
         
+        this.uziBullet = ASSET_MANAGER.getAsset("./sprites/bullet.png");
+        this.bubbleBullet = ASSET_MANAGER.getAsset("./sprites/bubble.png");
+        this.laserBullet = ASSET_MANAGER.getAsset("./sprites/bullet.png");
 
-        this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/bullet.png");
-        this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/bubble.png");
-
-        if (this.game.camera.level == "level1") {
-            this.spritesheet = this.level1SpriteSheet;
+        if (this.type == "uzi") {
+            this.spritesheet = this.uziBullet;
             this.SPEED = 1140;
-        }    
-        else this.spritesheet = this.level2SpriteSheet;
+        } else if (this.type == "bubble") {
+            this.spritesheet = this.bubbleBullet;
+            this.SPEED = 200;
+        }
 
         this.SIZE = 12; // find better way to get this pizel width
         this.SCALE = 2;        
@@ -72,7 +75,7 @@ class Bullet {
         this.game.entities.forEach(entity => {
             if (entity instanceof Slime || entity instanceof HorrorSlime) {
                 if (entity.hurtBox && this.boundingBox.collide(entity.hurtBox)) {
-                    entity.takeDamage(this.game.gun.damage);
+                    entity.takeDamage(this.game.gun.damage[this.game.gun.type]);
                     this.removeFromWorld = true;
                 } 
             // } else if (entity instanceof Flower) {
@@ -81,8 +84,6 @@ class Bullet {
             //     }
             }
         });
-
-        
 
         this.range--;
         if(this.range == 0) this.removeFromWorld = true;
@@ -95,13 +96,8 @@ class Bullet {
 
 
     draw(ctx) {
-        //console.log("drawing bullet");
-        //console.log("bullet x:"+ this.xMap+"bullet y:"+ this.yMap);
-        
-        //ctx.save();
-        //this.game.ctx.fillRect(this.xMap-this.game.camera.x,this.yMap-this.game.camera.y,1,1);
         this.animations.drawFrame(this.game.clockTick, ctx, this.xMap - this.game.camera.x - this.spriteWidth/2, this.yMap - this.game.camera.y - this.spriteWidth/2, this.SCALE);
-        //ctx.restore();
+
         if (this.game.debug) {
             ctx.strokeStyle = 'red';
             ctx.strokeRect(Math.floor(this.boundingBox.left - this.game.camera.x), Math.floor(this.boundingBox.top - this.game.camera.y), this.spriteWidth, this.spriteHeight - this.shadowHeight);
