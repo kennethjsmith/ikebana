@@ -103,3 +103,55 @@ const getDistance = (x1, y1, x2, y2) => {
 const chooseRandom = items => items.length > 0
     ? items[floor(random() * items.length)]
     : null;
+
+// const insertionSort = (entities) => {
+//     let length = entities.length;
+//     for (let i = 1; i < length; i++) {
+//         let entity = entities[i];
+//         if (entity.boundingBox) {
+//             let sorted = false;
+//             let j = i - 1;
+//             while (sorted == false && j >= 0) {
+                
+//                 if (entities[j].boundingBox) {
+//                     // console.log("ENTITY 1")
+//                     // console.log(entity);
+//                     // console.log("ENTITY 2")
+//                     // console.log(entities[j]);
+//                     if(entities[j].boundingBox.midpoint.y < entity.boundingBox.midpoint.y) {
+//                         entities[j + 1] = entities[j];
+//                     } else {
+//                         sorted = true;
+//                     }
+//                 } 
+//                 j = j - 1;
+//             }
+//             entities[j + 1] = entity;
+//         }
+//     }
+//     return entities;
+// };
+
+
+
+function insertionSort(inputArr) {
+    let n = inputArr.length;
+        for (let i = 1; i < n; i++) {
+            // Choosing the first element in our unsorted subarray
+            let current = inputArr[i];
+            // The last element of our sorted subarray
+            let j = i-1; 
+            while ((j > -1) && !isSorted(current, inputArr[j])) {
+                inputArr[j+1] = inputArr[j];
+                j--;
+            }
+            inputArr[j+1] = current;
+        }
+    return inputArr;
+}
+
+function isSorted(a, b) {
+    if (a.boundingBox && b.boundingBox && a.boundingBox.midpoint.y > b.boundingBox.midpoint.y) {
+        return false;
+    } else return true;
+}

@@ -48,7 +48,7 @@ class GameEngine {
         // THE KILL SWITCH
         this.running = false;
 
-        this.debug = false;
+        this.debug = true;
 
         // Options and the Details
         this.options = options || {
@@ -305,6 +305,8 @@ class GameEngine {
 
         this.camera.hud.update();
         this.crosshair.update();
+        this.entities = insertionSort(this.entities);
+
     };
 
     loop() {

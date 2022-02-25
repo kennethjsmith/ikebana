@@ -176,7 +176,7 @@ class Goop {
         this.animation = this.animations.get(this.facing).get(this.state);
         // update the animation
         if (this.stats.hurt) {
-            if (this.game.camera.health == 0) {
+            if (this.game.camera.health <= 0) {
                 this.stats.dead = true;
             } else if (this.stats.hurtTimer < this.stats.hurtTimeout) this.animation = this.animations.get(this.facing).get("hurt");
             this.stats.hurtTimer++;
@@ -217,7 +217,7 @@ class Goop {
             this.stats.hurtTimer = 0;
             this.stats.health-= damage;
             this.game.camera.health--;
-            if (this.stats.health == 0) {
+            if (this.stats.health <= 0) {
                 this.stats.dead = true;
                 //this.animations.get(this.facing).get("dying");
             }
