@@ -24,7 +24,8 @@ class Flower {
         this.xMap = x - this.widthOffset;
         this.yMap = y - this.heightOffset;
         this.boundingBox = boundingBox;
-       // this.midpoint = { x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
+        this.boundingBox.midpoint.y -= 10;
+        // this.midpoint = { x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
 
         // flower's state variables
         this.state = "growing"; // growing grown, or destroyed
