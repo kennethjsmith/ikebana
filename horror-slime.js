@@ -57,7 +57,7 @@ class HorrorSlime {
         this.animations.get("right").set("vibing", new Animator(this.spritesheet, 408, 0, 24, 21, 5, .12));
         this.animations.get("right").set("hurt", new Animator(this.spritesheet, 576, 0, 24, 21, 1, 0.08));
 
-        this.animation.set("splat", new Animator(this.splatsheet, 0, 0, 32, 32, 9, .12));
+        this.animations.set("splat", new Animator(this.splatsheet, 0, 0, 32, 32, 9, .12));
     };
 
     randomDirection() {
