@@ -48,7 +48,7 @@ class GameEngine {
         // THE KILL SWITCH
         this.running = false;
 
-        this.debug = true;
+        this.debug = false;
 
         // Options and the Details
         this.options = options || {

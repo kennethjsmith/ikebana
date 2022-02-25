@@ -62,7 +62,9 @@ class EnemyBullet {
         this.game.tileGrid.forEach(row => {
             row.forEach(tile => {
                 let type = tile.type;
-                if ((type == "wall" || type == "north_wall") && this.boundingBox.collide(tile.BB)) {
+                if ((type == "wall") && this.boundingBox.collide(tile.BB)) {
+                    this.removeFromWorld = true;
+                } else if (type == "north_wall" && this.boundingBox.collide(tile.BB.upper)) {
                     this.removeFromWorld = true;
                 } else if (type == "south_wall" && this.boundingBox.collide(tile.BB.lower)) {
                     this.removeFromWorld = true;
@@ -70,7 +72,7 @@ class EnemyBullet {
                 // add tiles to draw on top                
                 if (type == "south_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB.upper)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
                 if (type == "wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
-                if (type == "north_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB) && this.boundingBox.top < tile.BB.bottom) this.game.tilesToDrawOnTop.push(tile);
+                if (type == "north_wall" && this.boundingBox.collide(tile.BB.upper) && this.boundingBox.top < tile.BB.bottom) this.game.tilesToDrawOnTop.push(tile);
             });
         });
 

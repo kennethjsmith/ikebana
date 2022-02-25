@@ -1221,11 +1221,11 @@ class LevelGenerator {
                     curr.BB = {
                         upper: new BoundingBox(Math.floor(col * this.tileSize), 
                             Math.floor(row * this.tileSize), 
-                            this.tileSize, 5*Math.floor(this.tileSize / 6)),
+                            this.tileSize, Math.floor(this.tileSize / 2)),
 
                         lower: new BoundingBox(Math.floor(col * this.tileSize), 
-                            Math.floor(row * this.tileSize + 5*Math.floor(this.tileSize / 6)), 
-                            this.tileSize, Math.floor(this.tileSize / 6))
+                            Math.floor(row * this.tileSize + Math.floor(this.tileSize / 2)), 
+                            this.tileSize, Math.floor(this.tileSize / 2))
                     };
                 }
             }

@@ -66,10 +66,11 @@ class Bullet {
                 }
                 
 
-                // add tiles to draw on top                
-                if (type == "south_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB.upper)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
-                if (type == "wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
-                if (type == "north_wall" && this.boundingBox.getProjectedBigBB().collide(tile.BB.upper) && !this.game.goop.boundingBox.getProjectedBigBB().collide(tile.BB) && this.boundingBox.top < tile.BB.bottom) this.game.tilesToDrawOnTop.push(tile);
+                // add tiles to draw on top  
+                // TODO do we need these lines?              
+                if (type == "south_wall" && this.boundingBox.collide(tile.BB.upper)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
+                //if (type == "wall" && this.boundingBox.collide(tile.BB)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
+                if (type == "north_wall" && this.boundingBox.collide(tile.BB.upper) && !this.game.goop.boundingBox.getProjectedBigBB().collide(tile.BB) && this.boundingBox.top < tile.BB.bottom) this.game.tilesToDrawOnTop.push(tile);
             });
         });
 

@@ -22,6 +22,7 @@ class Beam {
         this.yVelocity = this.yTrajectory * this.SPEED;
         this.spriteWidth = this.SIZE * this.SCALE; 
 
+        this.trackedTiles = []; // this adds tiles to draw on top each update
         this.segments = [];
         while (this.range > 0) {
             this.segments.push({ 
@@ -59,6 +60,8 @@ class Beam {
 
         this.lifeLength--;
         if (this.lifeLength == 0) this.removeFromWorld = true;
+
+        this.trackedTiles.forEach(tile => this.game.tilesToDrawOnTop.push(tile));
     };
 
     addBoundingBox(x, y) {
@@ -79,24 +82,25 @@ class Beam {
                     if (type == "wall" && segment.boundingBox.collide(tile.BB)){
                         this.segments = this.segments.slice(0, i);
                         endFound = true;
-                        console.log("colliding with reg wall - found end");
                     } else if (type == "north_wall" && segment.boundingBox.collide(tile.BB.upper)) {
-                        console.log("colliding with north wall - found end");
                         this.segments = this.segments.slice(0, i);
                         endFound = true;
-                    } else if (type == "south_wall" && segment.boundingBox.collide(tile.BB.lower)) {
-                        console.log("colliding with south wall - found end");
-                        this.segments = this.segments.slice(0, i);
-                        endFound = true;
+                    } else if (type == "south_wall" && (segment.boundingBox.collide(tile.BB.lower) || segment.boundingBox.collide(tile.BB.upper))) {
+                        if (segment.boundingBox.collide(tile.BB.lower)){
+                            this.segments = this.segments.slice(0, i);
+                            endFound = true;
+                        }
+                        this.game.tilesToDrawOnTop.push(tile);
+                        this.trackedTiles.push(tile);
                     }
                     // add tiles to draw on top                
-                    if (type == "south_wall" && segment.boundingBox.collide(tile.BB.upper)) {
-                        console.log("colliding with upper south wall box - should add this tile to array to draw on top");
-                        this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
+                    // if (type == "south_wall" && segment.boundingBox.collide(tile.BB.upper)) {
+                    //     console.log("colliding with upper south wall box - should add this tile to array to draw on top");
+                    //     this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
 
-                    }
-                    if (type == "wall" && segment.boundingBox.collide(tile.BB)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
-                    if (type == "north_wall" && segment.boundingBox.collide(tile.BB) && segment.boundingBox.top < tile.BB.bottom) this.game.tilesToDrawOnTop.push(tile);
+                    // }
+                    //if (type == "wall" && segment.boundingBox.collide(tile.BB)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
+                    //if (type == "north_wall" && segment.boundingBox.collide(tile.BB.upper) && segment.boundingBox.top < tile.BB.bottom) this.game.tilesToDrawOnTop.push(tile);
                 });
             });
         };
