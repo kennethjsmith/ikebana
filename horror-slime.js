@@ -5,10 +5,17 @@ class HorrorSlime {
         this.yMap = y;
 
         this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/horror_slime.png");
+        this.level1SplatSheet = ASSET_MANAGER.getAsset("./sprites/horror_slime_splat.png");
         this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/horror_slime2.png");
+        this.level2SplatSheet = ASSET_MANAGER.getAsset("./sprites/horror_slime_splat2.png");
 
-        if (this.game.camera.level == "level1") this.spritesheet = this.level1SpriteSheet;
-        else this.spritesheet = this.level2SpriteSheet;      
+        if (this.game.camera.level == "level1") {
+            this.spritesheet = this.level1SpriteSheet;
+            this.splatsheet = this.level1SplatSheet;
+        } else {
+            this.spritesheet = this.level2SpriteSheet; 
+            this.splatsheet = this.level2SplatSheet;
+        }    
         this.scale = 4;
 
         this.shootingCooldown = 1;
@@ -49,6 +56,8 @@ class HorrorSlime {
         this.animations.get("right").set("walking", new Animator(this.spritesheet, 144, 0, 24, 21, 6, .12));
         this.animations.get("right").set("vibing", new Animator(this.spritesheet, 408, 0, 24, 21, 5, .12));
         this.animations.get("right").set("hurt", new Animator(this.spritesheet, 576, 0, 24, 21, 1, 0.08));
+
+        this.animation.set("splat", new Animator(this.splatsheet, 0, 0, 32, 32, 9, .12));
     };
 
     randomDirection() {

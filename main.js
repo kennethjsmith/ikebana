@@ -5,6 +5,8 @@ ASSET_MANAGER.queueDownload("./sprites/goop.png");
 ASSET_MANAGER.queueDownload("./sprites/goop2.png");
 ASSET_MANAGER.queueDownload("./sprites/horror_slime.png");
 ASSET_MANAGER.queueDownload("./sprites/horror_slime2.png");
+ASSET_MANAGER.queueDownload("./sprites/horror_slime_splat.png");
+ASSET_MANAGER.queueDownload("./sprites/horror_slime_splat2.png");
 ASSET_MANAGER.queueDownload("./sprites/slime.png");
 ASSET_MANAGER.queueDownload("./sprites/slime2.png");
 ASSET_MANAGER.queueDownload("./sprites/level1_flower1.png");
