@@ -294,6 +294,14 @@ class GameEngine {
 
         // Add new things
         this.entities = this.entities.concat(this.entitiesToAdd);
+        //console.log(this.entities);
+        if (this.entitiesToAdd.length > 0) {
+            //console.log("BEFORE SORT");
+            //console.log(this.entities);
+            this.entities = insertionSort(this.entities);
+            //console.log("AFTER SORT");
+            //console.log(this.entities);
+        }
         this.entitiesToAdd = [];
 
         // Add new things

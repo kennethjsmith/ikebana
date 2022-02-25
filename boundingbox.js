@@ -6,28 +6,32 @@ class BoundingBox {
         this.top = y;
         this.right = this.left + this.width;
         this.bottom = this.top + this.height;
-    }
+        this.midpoint = { 
+            x: (this.left + (this.width / 2)), 
+            y: (this.top + (this.height / 2)) 
+        };
+    };
 
-    getXProjectedBB(xVelocity){
+    getXProjectedBB(xVelocity) {
         return new BoundingBox(this.x+xVelocity, this.y, this.width, this.height);
-    }
+    };
 
-    getYProjectedBB(yVelocity){
+    getYProjectedBB(yVelocity) {
         return new BoundingBox(this.x, this.y+yVelocity, this.width, this.height);
-    }
+    };
 
     // this makes sure the next tile is drawn on top of the gun
-    getProjectedBigBB(){
+    getProjectedBigBB() {
         return new BoundingBox(this.x-35, this.y, this.width+70, this.height);
-    }
+    };
     
-    isInFront(otherBoundingBox){
+    isInFront(otherBoundingBox) {
         return (this.top >= otherBoundingBox.bottom);
-    }
+    };
 
-    containsPoint(x, y){
+    containsPoint(x, y) {
         return (x> this.left && x < this.right && y > this.top && y < this.bottom);
-    }
+    };
 
     // returns true if there is a collision between this and oth
     collide(oth) {
@@ -40,5 +44,5 @@ class BoundingBox {
         ) 
             return true;
         return false;
-    }
-}
+    };
+};
