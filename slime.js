@@ -81,7 +81,7 @@ class Slime {
             if (this.stats.deadTimer >= this.stats.deadTimeout) {
                 this.removeFromWorld = true;
                 this.game.camera.levelStats.get(this.game.camera.level).deadEnemyCount++;
-                this.game.addEntity(new Flower(this.game, this.midpoint.x, this.midpoint.y));
+                this.game.addEntity(new Flower(this.game, this.midpoint.x, this.midpoint.y, this.boundingBox));
             }
             else {
                 this.stats.deadTimer++;

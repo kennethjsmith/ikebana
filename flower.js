@@ -1,5 +1,5 @@
 class Flower {
-    constructor(game, x, y) {
+    constructor(game, x, y, boundingBox) {
         this.game = game;
 
         // RNG 1, 2, 3
@@ -23,6 +23,7 @@ class Flower {
         
         this.xMap = x - this.widthOffset;
         this.yMap = y - this.heightOffset;
+        this.boundingBox = boundingBox;
        // this.midpoint = { x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
 
         // flower's state variables
