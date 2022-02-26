@@ -1,4 +1,4 @@
-class HorrorSlime {
+class Jar {
     constructor(game, x, y) {
         this.game = game;
         this.xMap = x;

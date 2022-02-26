@@ -80,9 +80,16 @@ class EnemyBullet {
 
         // check collisions with goop
         if (this.game.goop.hurtBox && this.boundingBox.collide(this.game.goop.hurtBox)) {
-            this.game.goop.takeDamage(1);
+            this.game.goop.takeDamage(0.5);
             this.removeFromWorld = true;
         }
+
+        this.game.entities.forEach(entity => {
+            if (entity instanceof Terrain && entity.type == "pillar" && this.boundingBox.collide(entity.boundingBox)) {
+                this.removeFromWorld = true;
+            };
+
+        });
 
 
         this.range--;
@@ -96,11 +103,8 @@ class EnemyBullet {
 
 
     draw(ctx) {
-
-        //ctx.save();
-        //this.game.ctx.fillRect(this.xMap-this.game.camera.x,this.yMap-this.game.camera.y,1,1);
         this.animations.drawFrame(this.game.clockTick, ctx, this.xMap - this.game.camera.x - this.spriteWidth / 2, this.yMap - this.game.camera.y - this.spriteWidth / 2, this.SCALE);
-        //ctx.restore();
+
         if (this.game.debug) {
             ctx.strokeStyle = 'red';
             ctx.strokeRect(Math.floor(this.boundingBox.left - this.game.camera.x), Math.floor(this.boundingBox.top - this.game.camera.y), this.spriteWidth, this.spriteHeight - this.shadowHeight);

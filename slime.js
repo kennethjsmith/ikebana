@@ -17,7 +17,7 @@ class Slime {
         this.spriteHeight = 16 * this.scale; // scaled height
         this.spriteWidth = 16 * this.scale; // scaled width
         this.shadowHeight = 2 * this.scale;
-        this.heightOffset = this.spriteHeight / 2; // used for finding teh midpoint
+        this.heightOffset = this.spriteHeight / 2; // used for finding the midpoint
         this.widthOffset = this.spriteWidth / 2; // udes for finding the midpoint
         this.midpoint = { x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
         this.radius = 5 * this.game.level.tileSize + this.widthOffset + this.heightOffset;
@@ -146,6 +146,20 @@ class Slime {
 
             // collisions with other entities
             this.game.entities.forEach(entity => {
+
+                let xProjectedBB = velocityUpdated ? this.hurtBox : this.hurtBox.getXProjectedBB(this.velocity.x * this.game.clockTick);
+                let yProjectedBB = velocityUpdated ? this.hurtBox : this.hurtBox.getYProjectedBB(this.velocity.y * this.game.clockTick);
+    
+                if (entity instanceof Terrain && entity.type == "pillar") {
+                    if (xProjectedBB.collide(entity.boundingBox)) {
+                        this.velocity.x = 0;
+                        velocityUpdated = true;
+                    } else if (yProjectedBB.collide(entity.boundingBox)) {
+                        this.velocity.y = 0;
+                        velocityUpdated = true;
+                    }
+                }
+
                 if (entity instanceof Slime && entity != this) {
                     // let xProjectedBB = velocityUpdated ? this.boundingBox : this.boundingBox.getXProjectedBB(this.velocity.x);
                     // let yProjectedBB = velocityUpdated ? this.boundingBox : this.boundingBox.getYProjectedBB(this.velocity.y);

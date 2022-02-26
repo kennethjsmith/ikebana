@@ -3,6 +3,10 @@ const gameEngine = new GameEngine();
 const ASSET_MANAGER = new AssetManager();
 ASSET_MANAGER.queueDownload("./sprites/goop.png");
 ASSET_MANAGER.queueDownload("./sprites/goop2.png");
+ASSET_MANAGER.queueDownload("./sprites/jar1.png");
+ASSET_MANAGER.queueDownload("./sprites/jar2.png");
+ASSET_MANAGER.queueDownload("./sprites/ooze.png");
+ASSET_MANAGER.queueDownload("./sprites/fish.png");
 ASSET_MANAGER.queueDownload("./sprites/horror_slime.png");
 ASSET_MANAGER.queueDownload("./sprites/horror_slime2.png");
 ASSET_MANAGER.queueDownload("./sprites/horror_slime_splat.png");
@@ -30,7 +34,26 @@ ASSET_MANAGER.queueDownload("./sprites/symbol_flower.png");
 ASSET_MANAGER.queueDownload("./sprites/numbers.png");
 ASSET_MANAGER.queueDownload("./sprites/level1.png");
 ASSET_MANAGER.queueDownload("./sprites/level2.png");
-ASSET_MANAGER.queueDownload("./sprites/title.png");
+ASSET_MANAGER.queueDownload("./sprites/level1_pillar.png");
+ASSET_MANAGER.queueDownload("./sprites/level2_pillar.png");
+ASSET_MANAGER.queueDownload("./sprites/level1_plant1.png");
+ASSET_MANAGER.queueDownload("./sprites/level2_plant1.png");
+ASSET_MANAGER.queueDownload("./sprites/level1_plant2.png");
+ASSET_MANAGER.queueDownload("./sprites/level2_plant2.png");
+ASSET_MANAGER.queueDownload("./sprites/level1_plant3.png");
+ASSET_MANAGER.queueDownload("./sprites/level2_plant3.png");
+ASSET_MANAGER.queueDownload("./sprites/level1_rocks.png");
+ASSET_MANAGER.queueDownload("./sprites/level2_rocks.png");
+ASSET_MANAGER.queueDownload("./sprites/level1_rocks2.png");
+ASSET_MANAGER.queueDownload("./sprites/level2_rocks2.png");
+ASSET_MANAGER.queueDownload("./sprites/level1_wallplant.png");
+ASSET_MANAGER.queueDownload("./sprites/level2_wallplant.png");
+ASSET_MANAGER.queueDownload("./sprites/level1_wallplant2.png");
+ASSET_MANAGER.queueDownload("./sprites/level2_wallplant2.png");
+ASSET_MANAGER.queueDownload("./sprites/level1_wideplant.png");
+ASSET_MANAGER.queueDownload("./sprites/level2_wideplant.png");
+
+
 ASSET_MANAGER.queueDownload("./sprites/placeholder_title.png");
 ASSET_MANAGER.queueDownload("./sprites/tint_screen.png");
 
