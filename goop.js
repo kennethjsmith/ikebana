@@ -213,15 +213,12 @@ class Goop {
 
 
     takeDamage(damage) {
-        if (!this.stats.dead && this.game.camera.play) {
+        if ((!this.stats.hurt || this.stats.hurtTimer >= this.stats.hurtTimeout) && !this.stats.dead && this.game.camera.play) {
             this.stats.hurtTimer = 0;
-            this.stats.health-= damage;
-            this.game.camera.health--;
-            if (this.stats.health <= 0) {
+            this.game.camera.health -= damage;
+            if (this.game.camera.health <= 0) {
                 this.stats.dead = true;
-                //this.animations.get(this.facing).get("dying");
-            }
-            else this.stats.hurt = true;
+            } else this.stats.hurt = true;
         }
     }
 };

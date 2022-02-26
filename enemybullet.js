@@ -80,7 +80,7 @@ class EnemyBullet {
 
         // check collisions with goop
         if (this.game.goop.hurtBox && this.boundingBox.collide(this.game.goop.hurtBox)) {
-            this.game.goop.takeDamage(1);
+            this.game.goop.takeDamage(0.5);
             this.removeFromWorld = true;
         }
 
