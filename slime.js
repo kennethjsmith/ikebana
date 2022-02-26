@@ -146,6 +146,20 @@ class Slime {
 
             // collisions with other entities
             this.game.entities.forEach(entity => {
+
+                let xProjectedBB = velocityUpdated ? this.hurtBox : this.hurtBox.getXProjectedBB(this.velocity.x * this.game.clockTick);
+                let yProjectedBB = velocityUpdated ? this.hurtBox : this.hurtBox.getYProjectedBB(this.velocity.y * this.game.clockTick);
+    
+                if (entity instanceof Terrain && entity.type == "pillar") {
+                    if (xProjectedBB.collide(entity.boundingBox)) {
+                        this.velocity.x = 0;
+                        velocityUpdated = true;
+                    } else if (yProjectedBB.collide(entity.boundingBox)) {
+                        this.velocity.y = 0;
+                        velocityUpdated = true;
+                    }
+                }
+
                 if (entity instanceof Slime && entity != this) {
                     // let xProjectedBB = velocityUpdated ? this.boundingBox : this.boundingBox.getXProjectedBB(this.velocity.x);
                     // let yProjectedBB = velocityUpdated ? this.boundingBox : this.boundingBox.getYProjectedBB(this.velocity.y);

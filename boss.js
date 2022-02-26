@@ -23,9 +23,9 @@ class Boss {
         this.heightOffset = this.spriteHeight / 2; // used for finding teh midpoint
         this.widthOffset = this.spriteWidth / 2; // udes for finding the midpoint
         this.midpoint = { x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
-        this.radius = 4 * this.game.level.tileSize + this.widthOffset + this.heightOffset;
+        this.radius = 10 * this.game.level.tileSize + this.widthOffset + this.heightOffset;
 
-        this.stats = new EnemyStats(100, 11, false, 10, 0, false, 50, 0, 0.5, 50, 0);
+        this.stats = new EnemyStats(100, 20, false, 10, 0, false, 50, 0, 0.5, 50, 0);
 
         this.velocity = { x: this.randomDirection(), y: this.randomDirection() }
         while (this.velocity.x == 0 && this.velocity.y == 0) {
