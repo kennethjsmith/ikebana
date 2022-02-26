@@ -78,15 +78,15 @@ class Bullet {
 
         // check collisions with entities
         this.game.entities.forEach(entity => {
-            if (entity instanceof Slime || entity instanceof HorrorSlime) {
+            if (entity instanceof Slime || entity instanceof HorrorSlime || entity instanceof Boss) {
                 if (entity.hurtBox && this.boundingBox.collide(entity.hurtBox)) {
                     entity.takeDamage(this.game.gun.damage[this.game.gun.type]);
                     this.removeFromWorld = true;
                 } 
-            // } else if (entity instanceof Flower) {
-            //     if (entity.boundingBox && this.boundingBox.collide(entity.boundingBox)) {
-            //         entity.state = "destroyed";
-            //     }
+            } else if (entity instanceof Terrain && entity.type == "pillar") {
+                if (this.boundingBox.collide(entity.boundingBox)) {
+                    this.removeFromWorld = true;
+                }
             }
         });
 

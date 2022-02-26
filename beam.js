@@ -50,10 +50,14 @@ class Beam {
         // goes through enemies, gives them damage if there is a collision
         this.segments.forEach(segment => {
             this.game.entities.forEach(entity => {
-                if (entity instanceof Slime || entity instanceof HorrorSlime) {
+                if (entity instanceof Slime || entity instanceof HorrorSlime || entity instanceof Boss) {
                     if (entity.hurtBox && segment.boundingBox.collide(entity.hurtBox)) {
                         entity.takeDamage(this.game.gun.damage[this.game.gun.type]);
                     } 
+                } else if (entity instanceof Terrain && entity.type == "pillar") {
+                    if (segment.boundingBox.collide(entity.boundingBox)) {
+                        this.removeFromWorld = true;
+                    }
                 }
             });
         });
@@ -93,14 +97,6 @@ class Beam {
                         this.game.tilesToDrawOnTop.push(tile);
                         this.trackedTiles.push(tile);
                     }
-                    // add tiles to draw on top                
-                    // if (type == "south_wall" && segment.boundingBox.collide(tile.BB.upper)) {
-                    //     console.log("colliding with upper south wall box - should add this tile to array to draw on top");
-                    //     this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
-
-                    // }
-                    //if (type == "wall" && segment.boundingBox.collide(tile.BB)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
-                    //if (type == "north_wall" && segment.boundingBox.collide(tile.BB.upper) && segment.boundingBox.top < tile.BB.bottom) this.game.tilesToDrawOnTop.push(tile);
                 });
             });
         };
