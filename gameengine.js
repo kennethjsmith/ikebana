@@ -277,6 +277,7 @@ class GameEngine {
         this.tilesToDrawOnTop = [];
         // Update Entities
         this.entities.forEach(entity => entity.update(this));
+
         // Update Bullets
         this.bullets.forEach(bullet => bullet.update(this));
         // Update Enemy Bullets
@@ -305,8 +306,8 @@ class GameEngine {
 
         this.camera.hud.update();
         this.crosshair.update();
+        
         this.entities = insertionSort(this.entities);
-
     };
 
     loop() {

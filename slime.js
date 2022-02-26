@@ -17,7 +17,7 @@ class Slime {
         this.spriteHeight = 16 * this.scale; // scaled height
         this.spriteWidth = 16 * this.scale; // scaled width
         this.shadowHeight = 2 * this.scale;
-        this.heightOffset = this.spriteHeight / 2; // used for finding teh midpoint
+        this.heightOffset = this.spriteHeight / 2; // used for finding the midpoint
         this.widthOffset = this.spriteWidth / 2; // udes for finding the midpoint
         this.midpoint = { x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
         this.radius = 5 * this.game.level.tileSize + this.widthOffset + this.heightOffset;

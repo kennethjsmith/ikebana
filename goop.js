@@ -118,8 +118,18 @@ class Goop {
         if (collisionOccurred) this.updateBoundingBox();
 
         this.game.entities.forEach(entity => {
+            let xProjectedBB = collisionOccurred ? this.hurtBox : this.hurtBox.getXProjectedBB(this.velocity.x * this.game.clockTick);
+            let yProjectedBB = collisionOccurred ? this.hurtBox : this.hurtBox.getYProjectedBB(this.velocity.y * this.game.clockTick);
 
-            if ((!this.stats.hurt || this.stats.hurtTimer >= this.stats.hurtTimeout) 
+            if (entity instanceof Terrain && entity.type == "pillar") {
+                if (xProjectedBB.collide(entity.boundingBox)) {
+                    this.velocity.x = 0;
+                    collisionOccurred = true;
+                } else if (yProjectedBB.collide(entity.boundingBox)) {
+                    this.velocity.y = 0;
+                    collisionOccurred = true;
+                }
+            } else if ((!this.stats.hurt || this.stats.hurtTimer >= this.stats.hurtTimeout) 
                 && (entity instanceof Slime || entity instanceof HorrorSlime) 
                 && !entity.stats.dead 
                 && this.game.camera.play) {

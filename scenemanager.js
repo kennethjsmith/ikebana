@@ -19,12 +19,13 @@ class SceneManager {
         this.level = "level1";
         this.levelStats = new Map;
         this.levelStats.set("level1", new LevelStats("Level 1", 10, 0));
-        this.levelStats.set("level2", new LevelStats("Level 2", 10, 0));
+        this.levelStats.set("level2", new LevelStats("Level 2", 15, 0));
         this.levelStats.set("level3", new LevelStats("Level 3", 40, 0));
 
         this.title = true; 
         this.pause = false;
         this.play = false;
+        this.bossSpawned = false;
         this.nextLevel = false; // use something like this to move to the next levels?
         this.win = false;
         this.lose = false;
@@ -78,7 +79,8 @@ class SceneManager {
             this.y = this.game.goop.yMap - this.yMidpoint;
 
             this.addEnemies(this.levelStats.get(this.level).totalEnemies);
-
+            this.populateTerrain();
+           
             //ASSET_MANAGER.pauseBackgroundMusic();
             //ASSET_MANAGER.playAsset("dummy-path");
         }
@@ -94,15 +96,48 @@ class SceneManager {
         let numSlimes = floor(numEnemies * 2 / 3);
         let numHorrorSlimes = numEnemies - numSlimes;
         for (let i = 0; i < numSlimes; i++) {        
-            let enemyLocation = this.randomLocation();
+            let enemyLocation = this.randomLocation(true);
             this.game.addEntity(new Slime(this.game, enemyLocation.x, enemyLocation.y));
         }
 
         for (let i = 0; i < numHorrorSlimes; i++) {        
-            let enemyLocation = this.randomLocation();
+            let enemyLocation = this.randomLocation(true);
             this.game.addEntity(new HorrorSlime(this.game, enemyLocation.x, enemyLocation.y));
         }
 
+    }
+
+    populateTerrain() {
+        // place a random num of pillars
+        for (let i = 0; i < (Math.random() * 5); i++) {
+            let location = this.randomLocation(false);
+            this.game.addEntity(new Terrain(this.game, "pillar", location.x, location.y));
+        }
+
+        // place a random num of plants
+        for (let i = 0; i < (Math.random() * 10) + 15; i++) {
+            let location = this.randomLocation(false);
+            this.game.addEntity(new Terrain(this.game, "plant", location.x, location.y));
+        }
+
+        // place a random number of wide plants
+        for (let i = 0; i < (Math.random() * 10) + 5; i++) {
+            let location = this.randomLocation(false);
+            this.game.addEntity(new Terrain(this.game, "wideplant", location.x, location.y));
+        }
+
+        // place a random number of wall plants
+        for (let i = 0; i < (Math.random() * 10) + 5; i++) {
+            let location = this.randomWallLocation();
+            this.game.addEntity(new Terrain(this.game, "wallplant", location.x, location.y));
+        }
+
+        // place a random number of rocks
+        for (let i = 0; i < (Math.random() * 10) + 10; i++) {
+            let location = this.randomLocation(false);
+            this.game.addEntity(new Terrain(this.game, "rock", location.x, location.y));
+        }
+        
     }
 
     // used to find a random start location for goop
@@ -113,7 +148,7 @@ class SceneManager {
         if (choice < 1) {
             for (let row = 1; row < this.levelYSize - 3; row++) {
                 for (let col = 1; col < this.levelXSize - 3; col++) {
-                    if (this.acceptableSpawnLocation(row, col)) {
+                    if (this.acceptableSpawnLocation(row, col, 3, false)) {
                         return { x: col * this.game.level.tileSize, y: row * this.game.level.tileSize };
                     }
                 }
@@ -122,7 +157,7 @@ class SceneManager {
         } else {
             for (let row = this.levelYSize - 3; row > 3; row--) {
                 for (let col = this.levelXSize - 3; col > 3; col--) {
-                    if (this.acceptableSpawnLocation(row, col)) {
+                    if (this.acceptableSpawnLocation(row, col, 3, false)) {
                         return { x: col * this.game.level.tileSize, y: row * this.game.level.tileSize };
                     }
                 }
@@ -130,45 +165,44 @@ class SceneManager {
         }
     };
 
-    // used to find a random start location for enemies
-    randomLocation() {
+    // used to find a random start location for enemies and terrain
+    randomLocation(spawnAwayFromGoop) {
         var row = floor(Math.random() * 41);
         var col = floor(Math.random() * 75);
-        while (!this.acceptableSpawnLocation(row, col)) {
+        while (!this.acceptableSpawnLocation(row, col, 2, spawnAwayFromGoop)) {
             row = floor(Math.random() * 41);
             col = floor(Math.random() * 75);
         }
         return { x: col * this.game.level.tileSize, y: row * this.game.level.tileSize };        
     }
 
-    // returns true if the location is a 3x3 grid of floorspace
-    acceptableSpawnLocation(row, col) {
+    // used to find a random start location for enemies and terrain
+    randomWallLocation() {
+        var row = floor(Math.random() * 41);
+        var col = floor(Math.random() * 75);
+        while (this.game.tileGrid[row][col].type != "north_wall") {
+            row = floor(Math.random() * 41);
+            col = floor(Math.random() * 75);
+        }
+        return { x: col * this.game.level.tileSize, y: row * this.game.level.tileSize };        
+    }
 
-        // if we are spawning goops start location
-        if (this.startXPlayer == null && this.startYPlayer == null
-            && this.game.tileGrid[row][col].type == "floor"
-            && this.game.tileGrid[row+1][col].type == "floor"
-            && this.game.tileGrid[row+2][col].type == "floor"
-            && this.game.tileGrid[row][col+1].type == "floor"
-            && this.game.tileGrid[row+1][col+1].type == "floor"
-            && this.game.tileGrid[row+2][col+1].type == "floor"
-            && this.game.tileGrid[row][col+2].type == "floor"
-            && this.game.tileGrid[row+1][col+2].type == "floor"
-            && this.game.tileGrid[row+2][col+2].type == "floor") {
-                return true;
+    // returns true if the location is a "size" by "size" grid of floorspace
+    acceptableSpawnLocation(row, col, size, spawnAwayFromGoop) {
 
-        // else if we are spawning an enemy start location
-        // enemies cannot spawn in the same quadrant as goop
-        } else if (this.startXPlayer != null && this.startYPlayer != null
-            && this.game.tileGrid[row][col].type == "floor"
-            && this.game.tileGrid[row][col + 1].type == "floor"
-            && this.game.tileGrid[row + 1][col].type == "floor"
-            && this.game.tileGrid[row + 1][col + 1].type == "floor"
-            && !this.inGoopsQuadrant(row, col)
-            ) 
-                return true;
-        
-        return false;
+        if (this.game.tileGrid[row][col].type == "floor") {
+            for (let i = 1; i < size; i++) {
+                if (this.game.tileGrid[row + i][col].type == "floor"
+                    && this.game.tileGrid[row][col + i].type == "floor"
+                    && this.game.tileGrid[row + i][col + i].type == "floor") {
+                        if (spawnAwayFromGoop && this.inGoopsQuadrant(row, col)) {
+                            return false;
+                        } 
+                        continue;
+                } else return false;
+            }
+            return true;
+        } else return false;
     };
 
     // returns true if the row and col are within goops quadrant
@@ -250,14 +284,19 @@ class SceneManager {
                 }
 			}            
         } else if (this.play) { 
-            if (this.levelStats.get(this.level).deadEnemyCount >= this.levelStats.get(this.level).totalEnemies) { 
+            if (this.levelStats.get(this.level).deadEnemyCount >= 5 && !this.bossSpawned) {
+                let location = this.randomLocation(true);
+                this.game.addEntity(new Boss(this.game, location.x, location.y));
+                this.bossSpawned = true;
+
+            } else if (this.levelStats.get(this.level).deadEnemyCount >= this.levelStats.get(this.level).totalEnemies) { 
                 this.levelStats.get(this.level).deadEnemyCount = 0;
 
                 if (this.level == "level1") {
                     this.level = "level2";
                     this.loadLevel(this.level, false);
                 } else if (this.level == "level2") {
-                    this.win = true;
+                   this.win = true;
                 }
                 
             } else {

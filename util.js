@@ -104,36 +104,6 @@ const chooseRandom = items => items.length > 0
     ? items[floor(random() * items.length)]
     : null;
 
-// const insertionSort = (entities) => {
-//     let length = entities.length;
-//     for (let i = 1; i < length; i++) {
-//         let entity = entities[i];
-//         if (entity.boundingBox) {
-//             let sorted = false;
-//             let j = i - 1;
-//             while (sorted == false && j >= 0) {
-                
-//                 if (entities[j].boundingBox) {
-//                     // console.log("ENTITY 1")
-//                     // console.log(entity);
-//                     // console.log("ENTITY 2")
-//                     // console.log(entities[j]);
-//                     if(entities[j].boundingBox.midpoint.y < entity.boundingBox.midpoint.y) {
-//                         entities[j + 1] = entities[j];
-//                     } else {
-//                         sorted = true;
-//                     }
-//                 } 
-//                 j = j - 1;
-//             }
-//             entities[j + 1] = entity;
-//         }
-//     }
-//     return entities;
-// };
-
-
-
 function insertionSort(inputArr) {
     let n = inputArr.length;
         for (let i = 1; i < n; i++) {

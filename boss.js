@@ -1,11 +1,11 @@
-class HorrorSlime {
+class Boss {
     constructor(game, x, y) {
         this.game = game;
         this.xMap = x;
         this.yMap = y;
 
-        this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/horror_slime.png");
-        this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/horror_slime2.png");
+        this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/ooze.png");
+        this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/fish.png");
 
         if (this.game.camera.level == "level1") this.spritesheet = this.level1SpriteSheet;
         else this.spritesheet = this.level2SpriteSheet;
@@ -17,15 +17,15 @@ class HorrorSlime {
         this.facing = "right"; // left or right
         this.state = "vibing"; // walking or vibing
 
-        this.spriteHeight = 21 * this.scale; // scaled height
-        this.spriteWidth = 24 * this.scale; // scaled width
-        this.shadowHeight = 2 * this.scale;
+        this.spriteHeight = 52 * this.scale; // scaled height
+        this.spriteWidth = 52 * this.scale; // scaled width
+        this.shadowHeight = 6 * this.scale;
         this.heightOffset = this.spriteHeight / 2; // used for finding teh midpoint
         this.widthOffset = this.spriteWidth / 2; // udes for finding the midpoint
         this.midpoint = { x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
         this.radius = 4 * this.game.level.tileSize + this.widthOffset + this.heightOffset;
 
-        this.stats = new EnemyStats(172, 11, false, 10, 0, false, 50, 0, 0.5, 50, 0);
+        this.stats = new EnemyStats(100, 11, false, 10, 0, false, 50, 0, 0.5, 50, 0);
 
         this.velocity = { x: this.randomDirection(), y: this.randomDirection() }
         while (this.velocity.x == 0 && this.velocity.y == 0) {
@@ -42,13 +42,13 @@ class HorrorSlime {
         this.animations.set("left", new Map);
         this.animations.set("right", new Map);
 
-        this.animations.get("left").set("walking", new Animator(this.spritesheet, 0, 0, 24, 21, 6, .12));
-        this.animations.get("left").set("vibing", new Animator(this.spritesheet, 288, 0, 24, 21, 5, .12));
-        this.animations.get("left").set("hurt", new Animator(this.spritesheet, 528, 0, 24, 21, 1, 0.08));
+        this.animations.get("left").set("walking", new Animator(this.spritesheet, 0, 0, 52, 52, 8, .12));
+        this.animations.get("left").set("vibing", new Animator(this.spritesheet, 0, 0, 52, 52, 8, .12));
+        this.animations.get("left").set("hurt", new Animator(this.spritesheet, 832, 0, 52, 52, 1, 0.08));
 
-        this.animations.get("right").set("walking", new Animator(this.spritesheet, 144, 0, 24, 21, 6, .12));
-        this.animations.get("right").set("vibing", new Animator(this.spritesheet, 408, 0, 24, 21, 5, .12));
-        this.animations.get("right").set("hurt", new Animator(this.spritesheet, 576, 0, 24, 21, 1, 0.08));
+        this.animations.get("right").set("walking", new Animator(this.spritesheet, 416, 0, 52, 52, 8, .12));
+        this.animations.get("right").set("vibing", new Animator(this.spritesheet, 416, 0, 52, 52, 8, .12));
+        this.animations.get("right").set("hurt", new Animator(this.spritesheet, 884, 0, 52, 52, 1, 0.08));
     };
 
     randomDirection() {
