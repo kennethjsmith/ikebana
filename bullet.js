@@ -78,7 +78,7 @@ class Bullet {
 
         // check collisions with entities
         this.game.entities.forEach(entity => {
-            if (entity instanceof Slime || entity instanceof HorrorSlime || entity instanceof Boss) {
+            if (entity instanceof Slime || entity instanceof HorrorSlime || entity instanceof Boss || (entity instanceof Jar && entity.status != "broken")) {
                 if (entity.hurtBox && this.boundingBox.collide(entity.hurtBox)) {
                     entity.takeDamage(this.game.gun.damage[this.game.gun.type]);
                     this.removeFromWorld = true;

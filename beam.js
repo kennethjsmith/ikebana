@@ -50,7 +50,7 @@ class Beam {
         // goes through enemies, gives them damage if there is a collision
         this.segments.forEach(segment => {
             this.game.entities.forEach(entity => {
-                if (entity instanceof Slime || entity instanceof HorrorSlime || entity instanceof Boss) {
+                if (entity instanceof Slime || entity instanceof HorrorSlime || entity instanceof Boss || (entity instanceof Jar && entity.status != "broken")) {
                     if (entity.hurtBox && segment.boundingBox.collide(entity.hurtBox)) {
                         entity.takeDamage(this.game.gun.damage[this.game.gun.type]);
                     } 

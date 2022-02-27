@@ -22,10 +22,10 @@ class Terrain {
                 this.getRandomLevel1Plant();
 
             } else if (type == "wideplant") {
-                this.sprite = new Animator(ASSET_MANAGER.getAsset("./sprites/level1_wideplant.png"), 0, 0, 27, 14, 1, 1);
+                this.sprite = new Animator(ASSET_MANAGER.getAsset("./sprites/level1_wideplant.png"), 0, 0, 32, 16, 1, 1);
                 this.scale = 5;
-                this.spriteHeight = 14 * this.scale;
-                this.spriteWidth = 27 * this.scale;
+                this.spriteHeight = 16 * this.scale;
+                this.spriteWidth = 32 * this.scale;
                 this.shadowHeight = 2 * this.scale;
 
             } else if (type == "wallplant") {
@@ -50,10 +50,10 @@ class Terrain {
                 this.getRandomLevel2Plant();
 
             } else if (type == "wideplant") {
-                this.sprite = new Animator(ASSET_MANAGER.getAsset("./sprites/level2_wideplant.png"), 0, 0, 27, 14, 1, 1);
+                this.sprite = new Animator(ASSET_MANAGER.getAsset("./sprites/level2_wideplant.png"), 0, 0, 32, 16, 1, 1);
                 this.scale = 5;
-                this.spriteHeight = 14 * this.scale;
-                this.spriteWidth = 27 * this.scale;
+                this.spriteHeight = 16 * this.scale;
+                this.spriteWidth = 32* this.scale;
                 this.shadowHeight = 2 * this.scale;
 
             } else if (type == "wallplant") {
