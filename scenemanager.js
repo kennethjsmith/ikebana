@@ -62,7 +62,6 @@ class SceneManager {
             let goopStartLocation = this.randomEdgeLocation();
             this.startXPlayer = goopStartLocation.x;
             this.startYPlayer = goopStartLocation.y;
-            this.calculateGoopsStartQuadrant();
 
             // add gun
             //this.game.addEntity(new Gun("uzi",this.game)); // 5 is level scaler and 16 is the sprite width/height for level tiles
@@ -73,6 +72,8 @@ class SceneManager {
 
             // add goop
             this.game.addEntity(new Goop(this.game));
+            this.calculateGoopsQuadrant();
+
 
             this.game.gun = this.game.goop.gun;
 
@@ -192,10 +193,12 @@ class SceneManager {
     }
 
     // returns true if the location is a "size" by "size" grid of floorspace
+    // I'm sorry for this mangled and nearly unreadable method :( -heather
     acceptableSpawnLocation(row, col, size, spawnAwayFromGoop) {
-
+        let acceptableSpawnSpot = false;
         if (this.game.tileGrid[row][col].type == "floor") {
-            for (let i = 1 - floor(size/2); i < floor(size/2); i++) {
+            //for (let i = 1 - floor(size/2); i < floor(size/2); i++) {
+            for (let i = 0; i < size; i++) {
                 if (this.game.tileGrid[row + i][col].type == "floor"
                     && this.game.tileGrid[row][col + i].type == "floor"
                     && this.game.tileGrid[row + i][col + i].type == "floor") {
@@ -205,8 +208,19 @@ class SceneManager {
                         continue;
                 } else return false;
             }
-            return true;
-        } else return false;
+            acceptableSpawnSpot = true;
+        } 
+
+        if (acceptableSpawnSpot) {
+            this.game.entities.forEach( entity => {
+                if (entity instanceof Jar || (entity instanceof Terrain)) {
+                    if (entity.boundingBox.containsPoint(row * this.game.level.tileSize, col * this.game.level.tileSize)) {
+                        return false;
+                    }
+                } 
+            });
+        }
+        return acceptableSpawnSpot;
     };
 
     // returns true if the row and col are within goops quadrant
@@ -231,11 +245,17 @@ class SceneManager {
         }
     };
 
-    calculateGoopsStartQuadrant() {
-        if (this.startXPlayer > this.levelXSize * this.game.level.tileSize / 2) {
-            if (this.startYPlayer > this.levelYSize * this.game.level.tileSize / 2) this.goopsQuadrant = "SE";
+    calculateGoopsQuadrant() {
+        if (this.game.goop.xMap > this.levelXSize * this.game.level.tileSize / 2) {
+
+       // if (this.startXPlayer > this.levelXSize * this.game.level.tileSize / 2) {
+           // if (this.startYPlayer > this.levelYSize * this.game.level.tileSize / 2) this.goopsQuadrant = "SE";
+            if (this.game.goop.yMap > this.levelYSize * this.game.level.tileSize / 2) this.goopsQuadrant = "SE";
+
             else this.goopsQuadrant = "NE";
-        } else if (this.startYPlayer > this.levelYSize * this.game.level.tileSize / 2) this.goopsQuadrant = "SW";
+//        } else if (this.startYPlayer > this.levelYSize * this.game.level.tileSize / 2) this.goopsQuadrant = "SW";
+        } else if (this.game.goop.yMap > this.levelYSize * this.game.level.tileSize / 2) this.goopsQuadrant = "SW";
+
         else this.goopsQuadrant = "NW";
 
     }
@@ -289,8 +309,9 @@ class SceneManager {
 			}            
         } else if (this.play) { 
             if (this.levelStats.get(this.level).deadEnemyCount >= 5 && !this.bossSpawned) {
-                //let location = this.randomLocation(3, true);
-                this.game.addEntity(new Boss(this.game, this.levelXSize / 2 * this.game.level.tileSize, this.levelYSize  / 2* this.game.level.tileSize));
+                this.calculateGoopsQuadrant();
+                let location = this.randomLocation(3, true);
+                this.game.addEntity(new Boss(this.game, location.x, location.y));
                 this.bossSpawned = true;
 
             } else if (this.bossSpawned && this.seedPickedUp) {

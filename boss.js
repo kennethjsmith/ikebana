@@ -293,8 +293,6 @@ class Boss {
     };
 
     updateBoundingBox() {
-        //this.boundingBox = new BoundingBox(this.xMap+1, this.yMap, this.spriteWidth-2, this.spriteHeight - this.shadowHeight);
-        //this.boundingBox = new BoundingBox(this.xMap+5, this.yMap + 2*(this.spriteHeight/3), this.spriteWidth-10, (this.spriteHeight/3)-this.shadowHeight);//+5 x, -10 width for narrower box
         this.hurtBox = new BoundingBox(this.xMap + 1, this.yMap, this.spriteWidth - 2, this.spriteHeight - this.shadowHeight);
         this.boundingBox = new BoundingBox(this.xMap + 5, this.yMap + 2 * (this.spriteHeight / 3), this.spriteWidth - 10, (this.spriteHeight / 3) - this.shadowHeight);//+5 x, -10 width for narrower box
 

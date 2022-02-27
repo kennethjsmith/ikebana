@@ -105,6 +105,7 @@ class Gun {
        
         // add bullets if clicked, else simply decrement cooldown counter
         if (this.game.clicked) {
+            console.log(this.xMap + ", " + this.yMap);
             if(this.type == "uzi") {
                 if(this.guncooldown == 0){
                     this.game.addBullet(new Bullet("uzi", this.game));    
