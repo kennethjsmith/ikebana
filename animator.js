@@ -3,6 +3,7 @@ class Animator {
         Object.assign(this, { spritesheet, xStart, yStart, height, width, frameCount, frameDuration});
         this.elapsedTime = 0;
         this.totalTime = this.frameCount * this.frameDuration;
+        this.BUFFER = 0.2;
 
     };
 
@@ -25,6 +26,9 @@ class Animator {
     };
 
     isDone() {
-        return (this.elapsedTime >= this.totalTime);
+        console.log("ELAPSED TIME: " + this.elapsedTime);
+        console.log("TOTAL TIME: " + this.totalTime)
+
+        return (this.elapsedTime >= this.totalTime - this.BUFFER);
     };
 };

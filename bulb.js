@@ -16,37 +16,23 @@ class Bulb {
 
         this.sparkle = false;
         this.animation = this.animations.get(this.sparkle);
-        this.sparkleTimeout = 200;
-        this.sparkleTimer = 0;
     };
 
     loadAnimations() {
-        this.animations.set(false, new Animator(this.spritesheet, 0, 0, 10, 10, 1, 200));
+        this.animations.set(false, new Animator(this.spritesheet, 0, 0, 10, 10, 1, 1));
         this.animations.set(true, new Animator(this.spritesheet, 0, 0, 10, 10, 8, .08));
     };
 
     update() {
-        console.log(this.sparkle);
-        console.log(this.animation.currentFrame());
-        //console.log("TIMER: " + this.sparkleTimer);
 
         if (this.sparkle && this.animation.isDone()) {
             this.sparkle = false;
             this.animation = this.animations.get(this.sparkle);
-            //this.sparkleTimer = 0;
 
         } else if (!this.sparkle && this.animation.isDone()) {
             this.sparkle = true;
             this.animation = this.animations.get(this.sparkle);
         }
-            // if (this.sparkleTimer >= this.sparkleTimeout) {
-            //     this.sparkle = true;
-            //     this.animation = this.animations.get(this.sparkle);
-            //     this.sparkleTimer = 0;
-            // } else {
-            //     this.sparkleTimer++;
-            // }
-        //}
     };
 
     draw(ctx) {
