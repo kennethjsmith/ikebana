@@ -289,8 +289,8 @@ class SceneManager {
 			}            
         } else if (this.play) { 
             if (this.levelStats.get(this.level).deadEnemyCount >= 5 && !this.bossSpawned) {
-                let location = this.randomLocation(20, true);
-                this.game.addEntity(new Boss(this.game, location.x, location.y));
+                //let location = this.randomLocation(3, true);
+                this.game.addEntity(new Boss(this.game, this.levelXSize / 2 * this.game.level.tileSize, this.levelYSize  / 2* this.game.level.tileSize));
                 this.bossSpawned = true;
 
             } else if (this.bossSpawned && this.seedPickedUp) {
