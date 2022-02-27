@@ -207,7 +207,6 @@ class Terrain {
         this.boundingBox = new BoundingBox(this.xMap, this.yMap + 2*(this.spriteHeight/3), this.spriteWidth, (this.spriteHeight/3)-this.shadowHeight);
         if (this.type == "pillar") {
             this.boundingBox = new BoundingBox(this.xMap + (4*this.scale), this.yMap + (24*this.scale), this.spriteBaseWidth, this.spriteBaseHeight);
-            console.log(this.boundingBox);
         }
     };
 
