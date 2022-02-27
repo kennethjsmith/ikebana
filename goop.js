@@ -129,6 +129,15 @@ class Goop {
                     this.velocity.y = 0;
                     collisionOccurred = true;
                 }
+            } 
+            if (entity instanceof Jar && entity.status != "broken") {
+                if (xProjectedBB.collide(entity.boundingBox)) {
+                    this.velocity.x = 0;
+                    collisionOccurred = true;
+                } else if (yProjectedBB.collide(entity.boundingBox)) {
+                    this.velocity.y = 0;
+                    collisionOccurred = true;
+                }
             } else if ((!this.stats.hurt || this.stats.hurtTimer >= this.stats.hurtTimeout) 
                 && (entity instanceof Slime || entity instanceof HorrorSlime) 
                 && !entity.stats.dead 
