@@ -30,7 +30,7 @@ class BoundingBox {
     };
 
     containsPoint(x, y) {
-        return (x> this.left && x < this.right && y > this.top && y < this.bottom);
+        return (x >= this.left && x <= this.right && y >= this.top && y <= this.bottom);
     };
 
     // returns true if there is a collision between this and oth

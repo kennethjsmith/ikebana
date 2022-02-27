@@ -90,20 +90,19 @@ class HorrorSlime {
         let velocityUpdated = false;
 
 
+
         if (this.stats.dead) {
             if (this.stats.deadTimer >= this.stats.deadTimeout) {
                 this.removeFromWorld = true;
                 this.game.addEntity(new Slime(this.game, this.boundingBox.x + this.boundingBox.width - 40, this.boundingBox.y)); // 40 is the size of a scaled slime
                 this.game.addEntity(new Slime(this.game, this.boundingBox.x + this.boundingBox.width, this.boundingBox.y));
-            }
-            else {
+            } else {
                 this.stats.deadTimer++;
-                this.animation = this.animations.get("splat");
                 this.velocity.x = 0;
                 this.velocity.y = 0;
             }
-        } else if (this.stats.hurt) {
 
+        } else if (this.stats.hurt) {
             this.stats.hurtTimer++;
             if (this.stats.hurtTimer <= this.stats.hurtTimeout / 2) {
                 this.velocity.x = 0;
@@ -114,6 +113,7 @@ class HorrorSlime {
                 this.velocity.x = this.randomDirection();
                 this.velocity.y = this.randomDirection();
             }
+
         } else {
 
             // if there were no collisions and goop is within our radius, attempt to shoot + chase Goop
@@ -292,21 +292,20 @@ class HorrorSlime {
 
         // update the animation
         this.animation = this.animations.get(this.facing).get(this.state);
+
         if (this.stats.hurt) {
             this.animation = this.animations.get(this.facing).get("hurt");
         } else if (this.stats.dead) {
-            this.animation = this.animations.get(this.facing).get("hurt");
+            this.animation = this.animations.get("splat");
         }
+
         this.midpoint = { x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
         if (this.stats.attacking) this.stats.attackTimer++;
     };
 
     updateBoundingBox() {
-        //this.boundingBox = new BoundingBox(this.xMap+1, this.yMap, this.spriteWidth-2, this.spriteHeight - this.shadowHeight);
-        //this.boundingBox = new BoundingBox(this.xMap+5, this.yMap + 2*(this.spriteHeight/3), this.spriteWidth-10, (this.spriteHeight/3)-this.shadowHeight);//+5 x, -10 width for narrower box
         this.hurtBox = new BoundingBox(this.xMap + 1, this.yMap, this.spriteWidth - 2, this.spriteHeight - this.shadowHeight);
         this.boundingBox = new BoundingBox(this.xMap + 5, this.yMap + 2 * (this.spriteHeight / 3), this.spriteWidth - 10, (this.spriteHeight / 3) - this.shadowHeight);//+5 x, -10 width for narrower box
-
     };
 
     draw(ctx) {

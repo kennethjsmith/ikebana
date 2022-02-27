@@ -67,13 +67,11 @@ class SceneManager {
             //this.game.addEntity(new Gun("uzi",this.game)); // 5 is level scaler and 16 is the sprite width/height for level tiles
             
             // add jar
-            this.game.addEntity(new Jar(this.game, this.randomLocation(true)));
-
+            this.game.addEntity(new Jar(this.game, this.randomLocation(2, true, "Jar")));
 
             // add goop
             this.game.addEntity(new Goop(this.game));
             this.calculateGoopsQuadrant();
-
 
             this.game.gun = this.game.goop.gun;
 
@@ -109,12 +107,12 @@ class SceneManager {
         let numSlimes = floor(numEnemies * 2 / 3);
         let numHorrorSlimes = numEnemies - numSlimes;
         for (let i = 0; i < numSlimes; i++) {        
-            let enemyLocation = this.randomLocation(2, true);
+            let enemyLocation = this.randomLocation(2, true, "Slime");
             this.game.addEntity(new Slime(this.game, enemyLocation.x, enemyLocation.y));
         }
 
         for (let i = 0; i < numHorrorSlimes; i++) {        
-            let enemyLocation = this.randomLocation(4, true);
+            let enemyLocation = this.randomLocation(4, true, "HorrorSlime");
             this.game.addEntity(new HorrorSlime(this.game, enemyLocation.x, enemyLocation.y));
         }
 
@@ -123,19 +121,19 @@ class SceneManager {
     populateTerrain() {
         // place a random num of pillars
         for (let i = 0; i < (Math.random() * 5); i++) {
-            let location = this.randomLocation(7, false);
+            let location = this.randomLocation(7, false, "Pillar");
             this.game.addEntity(new Terrain(this.game, "pillar", location.x, location.y));
         }
 
         // place a random num of plants
         for (let i = 0; i < (Math.random() * 10) + 15; i++) {
-            let location = this.randomLocation(1, false);
+            let location = this.randomLocation(1, false, "Plant");
             this.game.addEntity(new Terrain(this.game, "plant", location.x, location.y));
         }
 
         // place a random number of wide plants
         for (let i = 0; i < (Math.random() * 10) + 5; i++) {
-            let location = this.randomLocation(4, false);
+            let location = this.randomLocation(4, false, "WidePlant");
             this.game.addEntity(new Terrain(this.game, "wideplant", location.x, location.y));
         }
 
@@ -147,7 +145,7 @@ class SceneManager {
 
         // place a random number of rocks
         for (let i = 0; i < (Math.random() * 10) + 10; i++) {
-            let location = this.randomLocation(1, false);
+            let location = this.randomLocation(1, false, "Rock");
             this.game.addEntity(new Terrain(this.game, "rock", location.x, location.y));
         }
         
@@ -179,10 +177,10 @@ class SceneManager {
     };
 
     // used to find a random start location for enemies and terrain
-    randomLocation(size, spawnAwayFromGoop) {
+    randomLocation(size, spawnAwayFromGoop, type) {
         var row = floor(Math.random() * 41);
         var col = floor(Math.random() * 75);
-        while (!this.acceptableSpawnLocation(row, col, size, spawnAwayFromGoop)) {
+        while (!this.acceptableSpawnLocation(row, col, size, spawnAwayFromGoop, type)) {
             row = floor(Math.random() * 41);
             col = floor(Math.random() * 75);
         }
@@ -202,18 +200,56 @@ class SceneManager {
 
     // returns true if the location is a "size" by "size" grid of floorspace
     // I'm sorry for this mangled and nearly unreadable method :( -heather
-    acceptableSpawnLocation(row, col, size, spawnAwayFromGoop) {
+    acceptableSpawnLocation(row, col, size, spawnAwayFromGoop, type) {
+        let tempXMap = col * this.game.level.tileSize;
+        let tempYMap = row * this.game.level.tileSize;
+        let tempBoundingBox = new BoundingBox(0, 0, 0, 0);
+
+        // make temp bounding boxes
+        if (type == "Jar") {
+            let jarHeight = 64;
+            let JarWidth = 64;
+            let jarShadow = 8;
+            tempBoundingBox = new BoundingBox(tempXMap + 5, tempYMap + 2 * (jarHeight / 3), JarWidth - 10, (jarHeight / 3) - jarShadow);
+
+        } else if (type == "Slime") {
+            let slimeHeight = 40;
+            let slimeWidth = 40;
+            let slimeShadow = 5;
+            tempBoundingBox = new BoundingBox(tempXMap + 5, tempYMap + 2 * (slimeHeight / 3), slimeWidth - 10, (slimeHeight / 3) - slimeShadow);
+
+        } else if (type == "HorrorSlime") {
+            let horrorHeight = 84;
+            let horrorWidth = 96;
+            let horrorShadow = 8;
+            tempBoundingBox = new BoundingBox(tempXMap + 5, tempYMap + 2 * (horrorHeight / 3), horrorWidth - 10, (horrorHeight / 3) - horrorShadow);
+            
+        } else if (type == "Pillar") {
+            let pillarScale = 5;
+            let pillarBaseHeight = 55;
+            let pillarBaseWidth = 35;
+            tempBoundingBox = new BoundingBox(tempXMap + (4*pillarScale), tempYMap + (24*pillarScale), pillarBaseWidth, pillarBaseHeight);
+
+        } else if (type == "Boss" && this.game.camera.level == "level1") {
+            let bossHeight = 208;
+            let bossWidth = 208;
+            let bossShadow = 24;
+            tempBoundingBox = new BoundingBox(tempXMap + 5, tempYMap + 2 * (bossHeight / 3), bossWidth - 10, (bossHeight / 3) - bossShadow);
+
+        } else if (type == "Boss" && this.game.camera.level == "level2") {
+            let bossHeight = 156;
+            let bossWidth = 172;
+            let bossShadow = 0;
+            tempBoundingBox = new BoundingBox(tempXMap + 5, tempYMap + 2 * (bossHeight / 3), bossWidth - 10, (bossHeight / 3) - bossShadow);
+        } 
+        
         let acceptableSpawnSpot = false;
         if (this.game.tileGrid[row][col].type == "floor") {
-            //for (let i = 1 - floor(size/2); i < floor(size/2); i++) {
             for (let i = 0; i < size; i++) {
                 if (this.game.tileGrid[row + i][col].type == "floor"
                     && this.game.tileGrid[row][col + i].type == "floor"
                     && this.game.tileGrid[row + i][col + i].type == "floor") {
-                        if (spawnAwayFromGoop && this.inGoopsQuadrant(row, col)) {
-                            return false;
-                        } 
-                        continue;
+                        if (spawnAwayFromGoop && this.inGoopsQuadrant(row, col)) return false;
                 } else return false;
             }
             acceptableSpawnSpot = true;
@@ -221,10 +257,12 @@ class SceneManager {
 
         if (acceptableSpawnSpot) {
             this.game.entities.forEach( entity => {
-                if (entity instanceof Jar || (entity instanceof Terrain)) {
-                    if (entity.boundingBox.containsPoint(row * this.game.level.tileSize, col * this.game.level.tileSize)) {
-                        return false;
-                    }
+                if (entity instanceof Slime 
+                    || entity instanceof HorrorSlime 
+                    || entity instanceof Jar 
+                    || (entity instanceof Terrain && entity.type == "pillar")) {
+                        
+                    if (entity.boundingBox.collide(tempBoundingBox)) return false;
                 } 
             });
         }
@@ -255,18 +293,11 @@ class SceneManager {
 
     calculateGoopsQuadrant() {
         if (this.game.goop.xMap > this.levelXSize * this.game.level.tileSize / 2) {
-
-       // if (this.startXPlayer > this.levelXSize * this.game.level.tileSize / 2) {
-           // if (this.startYPlayer > this.levelYSize * this.game.level.tileSize / 2) this.goopsQuadrant = "SE";
             if (this.game.goop.yMap > this.levelYSize * this.game.level.tileSize / 2) this.goopsQuadrant = "SE";
-
             else this.goopsQuadrant = "NE";
-//        } else if (this.startYPlayer > this.levelYSize * this.game.level.tileSize / 2) this.goopsQuadrant = "SW";
         } else if (this.game.goop.yMap > this.levelYSize * this.game.level.tileSize / 2) this.goopsQuadrant = "SW";
-
         else this.goopsQuadrant = "NW";
-
-    }
+    };
 
     update() {
         if (this.title) {
@@ -322,7 +353,7 @@ class SceneManager {
         } else if (this.play) { 
             if (this.levelStats.get(this.level).deadEnemyCount >= 5 && !this.bossSpawned) {
                 this.calculateGoopsQuadrant();
-                let location = this.randomLocation(3, true);
+                let location = this.randomLocation(3, true, "Boss");
                 this.game.addEntity(new Boss(this.game, location.x, location.y));
                 this.bossSpawned = true;
 

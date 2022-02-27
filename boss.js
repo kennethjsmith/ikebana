@@ -19,9 +19,9 @@ class Boss {
         this.facing = "right"; // left or right
         this.state = "vibing"; // walking or vibing
 
-        this.spriteHeight = 52 * this.scale; // scaled height
-        this.spriteWidth = 52 * this.scale; // scaled width
-        this.shadowHeight = 6 * this.scale;
+        this.animations = new Map;
+        this.loadAnimations();
+
         this.heightOffset = this.spriteHeight / 2; // used for finding teh midpoint
         this.widthOffset = this.spriteWidth / 2; // udes for finding the midpoint
         this.midpoint = { x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
@@ -35,13 +35,15 @@ class Boss {
         }
         this.updateBoundingBox();
 
-        this.animations = new Map;
-        this.loadAnimations();
         this.animation = this.animations.get("left").get("vibing");
     };
 
     loadAnimations() {
         if (this.game.camera.level == "level1"){
+            this.spriteHeight = 52 * this.scale; // scaled height
+            this.spriteWidth = 52 * this.scale; // scaled width
+            this.shadowHeight = 6 * this.scale;
+
             this.animations.set("left", new Map);
             this.animations.set("right", new Map);
 
@@ -54,6 +56,10 @@ class Boss {
             this.animations.get("right").set("hurt", new Animator(this.spritesheet, 884, 0, 52, 52, 1, 0.08));
         }
         if (this.game.camera.level == "level2"){
+            this.spriteHeight = 39 * this.scale; // scaled height
+            this.spriteWidth = 43 * this.scale; // scaled width
+            this.shadowHeight = 0;
+
             this.animations.set("left", new Map);
             this.animations.set("right", new Map);
 
@@ -133,7 +139,7 @@ class Boss {
                     if (this.shootingCooldown == 0) {
                         this.game.addEnemyBullet(new EnemyBullet(this.game, this.midpoint.x, this.midpoint.y));
                         this.shootingCooldown = 1;
-                        this.game.addEntity(new Slime(this.game, this.boundingBox.x + this.boundingBox.width - 40, this.boundingBox.y)); // 40 is the size of a scaled slime                this.stats.attacking = true;
+                        if (this.game.camera.play) this.game.addEntity(new Slime(this.game, this.boundingBox.x + this.boundingBox.width - 40, this.boundingBox.y)); // 40 is the size of a scaled slime                this.stats.attacking = true;
 
                     }
                     this.shootingCooldown--;
