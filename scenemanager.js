@@ -95,6 +95,14 @@ class SceneManager {
         this.game.entities.forEach(function (entity) {
             entity.removeFromWorld = true;
         });
+
+        this.game.bullets.forEach( bullet => {
+            bullet.removeFromWorld = true;
+        });
+
+        this.game.enemyBullets.forEach( bullet => {
+            bullet.removeFromWorld = true;
+        });
     };
 
     addEnemies(numEnemies) {
@@ -266,7 +274,7 @@ class SceneManager {
 			    if (this.game.crosshair.xMidpoint >= 275 && this.game.crosshair.xMidpoint <= 375 && this.game.crosshair.yMidpoint <= 400 && this.game.crosshair.yMidpoint >= 350) {
                     this.title = false;
                     this.play = true;
-				    this.loadLevel(this.level, false);
+				    this.loadLevel(this.level);
                 }
 			}
 		} else if (this.pause) { // do nothing right now
@@ -287,7 +295,9 @@ class SceneManager {
                     this.health = 3;
                     this.flowers = 0;
                     this.level = "level1";
-				    this.loadLevel(this.level, false);
+                    this.bossSpawned = false;
+                    this.seedPickedUp = false;
+				    this.loadLevel(this.level);
                 }
 			}            
         } else if (this.win) {
@@ -304,7 +314,9 @@ class SceneManager {
                     this.health = 3;
                     this.flowers = 0;
                     this.level = "level1";
-				    this.loadLevel(this.level, false);
+                    this.bossSpawned = false;
+                    this.seedPickedUp = false;
+				    this.loadLevel(this.level);
                 }
 			}            
         } else if (this.play) { 
@@ -316,10 +328,12 @@ class SceneManager {
 
             } else if (this.bossSpawned && this.seedPickedUp) {
                 this.levelStats.get(this.level).deadEnemyCount = 0;
+                this.bossSpawned = false;
+                this.seedPickedUp = false;
 
                 if (this.level == "level1") {
                     this.level = "level2";
-                    this.loadLevel(this.level, false);
+                    this.loadLevel(this.level);
                 } else if (this.level == "level2") {
                    this.win = true;
                 }

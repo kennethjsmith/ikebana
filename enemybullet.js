@@ -33,7 +33,6 @@ class EnemyBullet {
         // normalize the trajectory
         this.xVelocity = -this.xTrajectory * this.SPEED;
         this.yVelocity = -this.yTrajectory * this.SPEED;
-        //        console.log("xvel"+this.xVelocity+",yvel"+this.yVelocity);
 
         // for DEBUG
         //this.game.ctx.fillRect(this.xMap,this.yMap,1,1);

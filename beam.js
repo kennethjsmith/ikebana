@@ -65,7 +65,6 @@ class Beam {
     };
 
     addBoundingBox(x, y) {
-        //console.log(segment);
         return new BoundingBox(x, y, this.spriteWidth, this.spriteWidth);
     };
 
@@ -100,7 +99,6 @@ class Beam {
                 if (entity instanceof Terrain && entity.type == "pillar") {
                     if (segment.boundingBox.collide(entity.boundingBox)) {
                         this.segments = this.segments.slice(0, i);
-                        this.removeFromWorld = true;
                     }
                 }
             });

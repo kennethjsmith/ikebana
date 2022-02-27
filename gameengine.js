@@ -234,9 +234,23 @@ class GameEngine {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         if (!this.camera.title) {   
             this.level.draw(this.ctx);
-            // Draw latest entities first
+
+             //Player radius updates only
             for (let i = this.entities.length - 1; i >= 0; i--) {
-                this.entities[i].draw(this.ctx, this);
+                if (this.goop &&
+                    (getDistance(this.entities[i].xMap, this.entities[i].yMap, this.goop.xMap, this.goop.yMap) < 800 ||
+                        this.entities[i] instanceof Goop || 
+                        this.entities[i] instanceof SceneManager)) {
+                    //if the player exists update things close to the player
+                    let entity = this.entities[i];
+                    entity.draw(this.ctx, this);
+
+                } else if (!this.goop) {
+                    //if no player update everythign so we dont crash
+                    for (let i = this.entities.length - 1; i >= 0; i--) {
+                        this.entities[i].draw(this.ctx, this);
+                    }
+                }
             }
 
             // draw goops gun
@@ -274,9 +288,27 @@ class GameEngine {
     };
 
     update() {
+        
         this.tilesToDrawOnTop = [];
-        // Update Entities
-        this.entities.forEach(entity => entity.update(this));
+
+        //Player radius updates only
+        for (let i = this.entities.length - 1; i >= 0; i--) {
+            if (this.goop &&
+                (getDistance(this.entities[i].xMap, this.entities[i].yMap, this.goop.xMap, this.goop.yMap) < 800 ||
+                    this.entities[i] instanceof Goop || 
+                    this.entities[i] instanceof Slime ||
+                    this.entities[i] instanceof HorrorSlime ||
+                    this.entities[i] instanceof Boss ||
+                    this.entities[i] instanceof SceneManager)) {
+                //if the player exists update things close to the player
+                let entity = this.entities[i];
+                entity.update(this);
+
+            } else if (!this.goop) {
+                //if no player update everythign so we dont crash
+                this.entities.forEach(entity => entity.update(this));
+            }
+        }
 
         // Update Bullets
         this.bullets.forEach(bullet => bullet.update(this));

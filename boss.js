@@ -84,6 +84,7 @@ class Boss {
         if (this.stats.dead) {
             if (this.stats.deadTimer >= this.stats.deadTimeout) {
                 this.removeFromWorld = true;
+                this.game.camera.seedPickedUp = true;
                 this.game.addEntity(new Bulb(this.game, this.midpoint.x, this.midpoint.y)); 
             }
             else {

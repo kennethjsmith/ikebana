@@ -1237,8 +1237,12 @@ class LevelGenerator {
             for (var col = 0; col < this.width; col++) {
                 var square = this.tileGrid[row][col].image;
 
-                square.drawFrame(this.game.clockTick, ctx, Math.floor((col * this.tileSize) - (this.game.camera.x)), Math.floor((row * this.tileSize) - (this.game.camera.y)), this.scale); 
-                
+                // only draw tiles within a specific radius of Goop
+                if (this.game.goop && getDistance(col * this.tileSize, row * this.tileSize, this.game.goop.xMap, this.game.goop.yMap) < 800) {
+                    square.drawFrame(this.game.clockTick, ctx, Math.floor((col * this.tileSize) - (this.game.camera.x)), Math.floor((row * this.tileSize) - (this.game.camera.y)), this.scale); 
+                } else if (!this.game.goop) { // if goop isn't in the game, draw every tile
+                    square.drawFrame(this.game.clockTick, ctx, Math.floor((col * this.tileSize) - (this.game.camera.x)), Math.floor((row * this.tileSize) - (this.game.camera.y)), this.scale); 
+                }
                 
                 if (this.game.debug) {                
                     //drawing the bounding boxes
