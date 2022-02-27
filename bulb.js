@@ -21,7 +21,8 @@ class Bulb {
 
     loadAnimations() {
         this.animations.set(false, new Animator(this.spritesheet, 0, 0, 10, 12, 1, 1));
-        this.animations.set(true, new Animator(this.spritesheet, 0, 0, 10, 12, 8, .08));
+        this.animations.set(true, new Animator(this.spritesheet, 0, 0, 10, 12, 7, .08));
+        this.animations.set("select", new Animator(this.spritesheet, 70, 0, 10, 12, 1, 1));
     };
 
     updateBoundingBox() {
@@ -30,13 +31,21 @@ class Bulb {
 
     update() {
 
-        if (this.sparkle && this.animation.isDone()) {
+        if (this.boundingBox.collide(this.game.goop.hurtBox)){
             this.sparkle = false;
+            this.animation = this.animations.get("select");
+            if (this.game.interact) {
+                // do the thing
+            }
+        } else {
             this.animation = this.animations.get(this.sparkle);
-
-        } else if (!this.sparkle && this.animation.isDone()) {
-            this.sparkle = true;
-            this.animation = this.animations.get(this.sparkle);
+            if (this.sparkle && this.animation.isDone()) {
+                this.sparkle = false;
+                this.animation = this.animations.get(this.sparkle);
+            } else if (!this.sparkle && this.animation.isDone()) {
+                this.sparkle = true;
+                this.animation = this.animations.get(this.sparkle);
+            }
         }
     };
 

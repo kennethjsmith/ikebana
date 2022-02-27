@@ -155,6 +155,9 @@ class GameEngine {
                 case "KeyS":
                     this.down = true;
                     break;
+                case "KeyE":
+                    this.interact = true;
+                    break;     
             }
         }, false);
 
@@ -176,6 +179,9 @@ class GameEngine {
                 case "KeyS":
                     this.down = false;
                     break;
+                case "KeyE":
+                    this.interact = false;
+                    break;    
             }
         }, false);
 
