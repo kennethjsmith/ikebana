@@ -28,6 +28,8 @@ ASSET_MANAGER.queueDownload("./sprites/laser.png");
 ASSET_MANAGER.queueDownload("./sprites/hearts.png");
 ASSET_MANAGER.queueDownload("./sprites/symbol_flower.png");
 ASSET_MANAGER.queueDownload("./sprites/numbers.png");
+ASSET_MANAGER.queueDownload("./sprites/bulb1.png");
+ASSET_MANAGER.queueDownload("./sprites/bulb2.png");
 ASSET_MANAGER.queueDownload("./sprites/level1.png");
 ASSET_MANAGER.queueDownload("./sprites/level2.png");
 ASSET_MANAGER.queueDownload("./sprites/level1_pillar.png");

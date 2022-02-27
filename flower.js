@@ -18,8 +18,8 @@ class Flower {
         this.scale = 5;
         this.spriteHeight = 20 * this.scale; // scaled height
         this.spriteWidth = 12 * this.scale; // scaled width
-        this.heightOffset = this.spriteHeight - 15; // 
-        this.widthOffset = this.spriteWidth / 2;
+        this.heightOffset = this.spriteHeight - 15; // offset so that flowers spawn in the correct spot over dead slimes
+        this.widthOffset = this.spriteWidth / 2; // offset so that flowers spawn in the correct spot over dead slimes
         
         this.xMap = x - this.widthOffset;
         this.yMap = y - this.heightOffset;

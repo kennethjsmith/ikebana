@@ -104,10 +104,10 @@ class HorrorSlime {
         } else {
 
             // if there were no collisions and goop is within our radius, attempt to shoot + chase Goop
-            if (!this.stats.attacking || this.stats.attackCounter >= this.stats.attackTimeout) {
+            if (!this.stats.attacking || this.stats.attackTimer >= this.stats.attackTimeout) {
 
                 this.stats.attacking = true;
-                this.stats.attackCounter = 0;
+                this.stats.attackTimer = 0;
                 let distance = Math.floor(Math.sqrt(
                     Math.pow((this.midpoint.x - this.game.goop.midpoint.x), 2)
                     + Math.pow((this.midpoint.y - this.game.goop.midpoint.y), 2)));
@@ -149,7 +149,7 @@ class HorrorSlime {
 
                 } else {
                     this.stats.attacking = false;
-                    this.stats.attackCounter = 0;
+                    this.stats.attackTimer = 0;
                 }
             }
 
@@ -157,6 +157,28 @@ class HorrorSlime {
 
             // collisions with other entities
             this.game.entities.forEach(entity => {
+
+                let xProjectedBB = velocityUpdated ? this.hurtBox : this.hurtBox.getXProjectedBB(this.velocity.x * this.game.clockTick);
+                let yProjectedBB = velocityUpdated ? this.hurtBox : this.hurtBox.getYProjectedBB(this.velocity.y * this.game.clockTick);
+    
+                if (entity instanceof Terrain && entity.type == "pillar") {
+                    if (xProjectedBB.collide(entity.boundingBox) && (!yProjectedBB.collide(entity.boundingBox))) {
+                        this.velocity.x = -this.velocity.x;
+                        this.velocity.y = this.randomDirection();
+                        if (velocityUpdated) this.updateBoundingBox();
+
+                    } else if ((!xProjectedBB.collide(entity.boundingBox)) && (yProjectedBB.collide(entity.boundingBox))) {
+                        this.velocity.y = -this.velocity.y;
+                        this.velocity.x = this.randomDirection();
+                        if (velocityUpdated) this.updateBoundingBox();
+
+                    } else if (xProjectedBB.collide(entity.boundingBox) && yProjectedBB.collide(entity.boundingBox)) {
+                        this.velocity.x = -this.velocity.x;
+                        this.velocity.y = -this.velocity.y;
+                        if (velocityUpdated) this.updateBoundingBox();
+                    }
+                }
+
                 if (entity instanceof HorrorSlime && entity != this) {
                     // let xProjectedBB = velocityUpdated ? this.boundingBox : this.boundingBox.getXProjectedBB(this.velocity.x);
                     // let yProjectedBB = velocityUpdated ? this.boundingBox : this.boundingBox.getYProjectedBB(this.velocity.y);
@@ -263,7 +285,7 @@ class HorrorSlime {
             this.animation = this.animations.get(this.facing).get("hurt");
         }
         this.midpoint = { x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
-        if (this.stats.attacking) this.stats.attackCounter++;
+        if (this.stats.attacking) this.stats.attackTimer++;
     };
 
     updateBoundingBox() {

@@ -3,6 +3,8 @@ class Boss {
         this.game = game;
         this.xMap = x;
         this.yMap = y;
+        console.log("boss spawned");
+        console.log("x: " + this.xMap + ", y: " + this.yMap);
 
         this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/ooze.png");
         this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/fish.png");
@@ -25,7 +27,7 @@ class Boss {
         this.midpoint = { x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
         this.radius = 10 * this.game.level.tileSize + this.widthOffset + this.heightOffset;
 
-        this.stats = new EnemyStats(100, 20, false, 10, 0, false, 50, 0, 0.5, 50, 0);
+        this.stats = new EnemyStats(100, 20, false, 10, 0, false, 50, 0, 0.5, 200, 0);
 
         this.velocity = { x: this.randomDirection(), y: this.randomDirection() }
         while (this.velocity.x == 0 && this.velocity.y == 0) {
@@ -73,6 +75,7 @@ class Boss {
     }
 
     update() {
+
         const WALK = this.stats.speed;
         const DIAGONAL = Math.sqrt(Math.pow(this.stats.speed, 2) / 2); //  based on WALK speed: 1^2 = 2(a^2); where a = x = y
         let velocityUpdated = false;
@@ -81,8 +84,7 @@ class Boss {
         if (this.stats.dead) {
             if (this.stats.deadTimer >= this.stats.deadTimeout) {
                 this.removeFromWorld = true;
-                this.game.addEntity(new Slime(this.game, this.boundingBox.x + this.boundingBox.width - 40, this.boundingBox.y)); // 40 is the size of a scaled slime
-                this.game.addEntity(new Slime(this.game, this.boundingBox.x + this.boundingBox.width, this.boundingBox.y));
+                this.game.addEntity(new Bulb(this.game, this.midpoint.x, this.midpoint.y)); 
             }
             else {
                 this.stats.deadTimer++;
@@ -104,10 +106,10 @@ class Boss {
         } else {
 
             // if there were no collisions and goop is within our radius, attempt to shoot + chase Goop
-            if (!this.stats.attacking || this.stats.attackCounter >= this.stats.attackTimeout) {
-
+            if (!this.stats.attacking || this.stats.attackTimer >= this.stats.attackTimeout) {
+                
                 this.stats.attacking = true;
-                this.stats.attackCounter = 0;
+                this.stats.attackTimer = 0;
                 let distance = Math.floor(Math.sqrt(
                     Math.pow((this.midpoint.x - this.game.goop.midpoint.x), 2)
                     + Math.pow((this.midpoint.y - this.game.goop.midpoint.y), 2)));
@@ -117,6 +119,8 @@ class Boss {
                     if (this.shootingCooldown == 0) {
                         this.game.addEnemyBullet(new EnemyBullet(this.game, this.midpoint.x, this.midpoint.y));
                         this.shootingCooldown = 1;
+                        this.game.addEntity(new Slime(this.game, this.boundingBox.x + this.boundingBox.width - 40, this.boundingBox.y)); // 40 is the size of a scaled slime                this.stats.attacking = true;
+
                     }
                     this.shootingCooldown--;
 
@@ -149,7 +153,7 @@ class Boss {
 
                 } else {
                     this.stats.attacking = false;
-                    this.stats.attackCounter = 0;
+                    this.stats.attackTimer = 0;
                 }
             }
 
@@ -157,6 +161,28 @@ class Boss {
 
             // collisions with other entities
             this.game.entities.forEach(entity => {
+
+                let xProjectedBB = velocityUpdated ? this.hurtBox : this.hurtBox.getXProjectedBB(this.velocity.x * this.game.clockTick);
+                let yProjectedBB = velocityUpdated ? this.hurtBox : this.hurtBox.getYProjectedBB(this.velocity.y * this.game.clockTick);
+    
+                if (entity instanceof Terrain && entity.type == "pillar") {
+                    if (xProjectedBB.collide(entity.boundingBox) && (!yProjectedBB.collide(entity.boundingBox))) {
+                        this.velocity.x = -this.velocity.x;
+                        this.velocity.y = this.randomDirection();
+                        if (velocityUpdated) this.updateBoundingBox();
+
+                    } else if ((!xProjectedBB.collide(entity.boundingBox)) && (yProjectedBB.collide(entity.boundingBox))) {
+                        this.velocity.y = -this.velocity.y;
+                        this.velocity.x = this.randomDirection();
+                        if (velocityUpdated) this.updateBoundingBox();
+
+                    } else if (xProjectedBB.collide(entity.boundingBox) && yProjectedBB.collide(entity.boundingBox)) {
+                        this.velocity.x = -this.velocity.x;
+                        this.velocity.y = -this.velocity.y;
+                        if (velocityUpdated) this.updateBoundingBox();
+                    }
+                }
+
                 if (entity instanceof HorrorSlime && entity != this) {
                     // let xProjectedBB = velocityUpdated ? this.boundingBox : this.boundingBox.getXProjectedBB(this.velocity.x);
                     // let yProjectedBB = velocityUpdated ? this.boundingBox : this.boundingBox.getYProjectedBB(this.velocity.y);
@@ -263,7 +289,7 @@ class Boss {
             this.animation = this.animations.get(this.facing).get("hurt");
         }
         this.midpoint = { x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
-        if (this.stats.attacking) this.stats.attackCounter++;
+        if (this.stats.attacking) this.stats.attackTimer++;
     };
 
     updateBoundingBox() {
