@@ -29,7 +29,7 @@ class Goop {
         this.facing = "right"; // left or right
         this.state = "vibing"; // walking or vibin
 
-        this.stats = new PlayerStats(this.game.camera.health, false, 10, 0, false, 10, 0)
+        this.stats = new PlayerStats(this.game.camera.health, false, 15, 0, false, 10, 0)
         this.velocity = { x: 0, y: 0 };
 
         this.animations = new Map;

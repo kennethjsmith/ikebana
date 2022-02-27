@@ -54,10 +54,6 @@ class Beam {
                     if (entity.hurtBox && segment.boundingBox.collide(entity.hurtBox)) {
                         entity.takeDamage(this.game.gun.damage[this.game.gun.type]);
                     } 
-                } else if (entity instanceof Terrain && entity.type == "pillar") {
-                    if (segment.boundingBox.collide(entity.boundingBox)) {
-                        this.removeFromWorld = true;
-                    }
                 }
             });
         });
@@ -99,7 +95,16 @@ class Beam {
                     }
                 });
             });
-        };
+
+            this.game.entities.forEach( entity => {
+                if (entity instanceof Terrain && entity.type == "pillar") {
+                    if (segment.boundingBox.collide(entity.boundingBox)) {
+                        this.segments = this.segments.slice(0, i);
+                        this.removeFromWorld = true;
+                    }
+                }
+            });
+        }
     };
 
 

@@ -26,7 +26,7 @@ class SceneManager {
         this.pause = false;
         this.play = false;
         this.bossSpawned = false;
-        this.nextLevel = false; // use something like this to move to the next levels?
+        this.seedPickedUp = false;
         this.win = false;
         this.lose = false;
 
@@ -100,12 +100,12 @@ class SceneManager {
         let numSlimes = floor(numEnemies * 2 / 3);
         let numHorrorSlimes = numEnemies - numSlimes;
         for (let i = 0; i < numSlimes; i++) {        
-            let enemyLocation = this.randomLocation(true);
+            let enemyLocation = this.randomLocation(2, true);
             this.game.addEntity(new Slime(this.game, enemyLocation.x, enemyLocation.y));
         }
 
         for (let i = 0; i < numHorrorSlimes; i++) {        
-            let enemyLocation = this.randomLocation(true);
+            let enemyLocation = this.randomLocation(4, true);
             this.game.addEntity(new HorrorSlime(this.game, enemyLocation.x, enemyLocation.y));
         }
 
@@ -114,19 +114,19 @@ class SceneManager {
     populateTerrain() {
         // place a random num of pillars
         for (let i = 0; i < (Math.random() * 5); i++) {
-            let location = this.randomLocation(false);
+            let location = this.randomLocation(7, false);
             this.game.addEntity(new Terrain(this.game, "pillar", location.x, location.y));
         }
 
         // place a random num of plants
         for (let i = 0; i < (Math.random() * 10) + 15; i++) {
-            let location = this.randomLocation(false);
+            let location = this.randomLocation(1, false);
             this.game.addEntity(new Terrain(this.game, "plant", location.x, location.y));
         }
 
         // place a random number of wide plants
         for (let i = 0; i < (Math.random() * 10) + 5; i++) {
-            let location = this.randomLocation(false);
+            let location = this.randomLocation(4, false);
             this.game.addEntity(new Terrain(this.game, "wideplant", location.x, location.y));
         }
 
@@ -138,7 +138,7 @@ class SceneManager {
 
         // place a random number of rocks
         for (let i = 0; i < (Math.random() * 10) + 10; i++) {
-            let location = this.randomLocation(false);
+            let location = this.randomLocation(1, false);
             this.game.addEntity(new Terrain(this.game, "rock", location.x, location.y));
         }
         
@@ -170,10 +170,10 @@ class SceneManager {
     };
 
     // used to find a random start location for enemies and terrain
-    randomLocation(spawnAwayFromGoop) {
+    randomLocation(size, spawnAwayFromGoop) {
         var row = floor(Math.random() * 41);
         var col = floor(Math.random() * 75);
-        while (!this.acceptableSpawnLocation(row, col, 2, spawnAwayFromGoop)) {
+        while (!this.acceptableSpawnLocation(row, col, size, spawnAwayFromGoop)) {
             row = floor(Math.random() * 41);
             col = floor(Math.random() * 75);
         }
@@ -195,7 +195,7 @@ class SceneManager {
     acceptableSpawnLocation(row, col, size, spawnAwayFromGoop) {
 
         if (this.game.tileGrid[row][col].type == "floor") {
-            for (let i = 1; i < size; i++) {
+            for (let i = 1 - floor(size/2); i < floor(size/2); i++) {
                 if (this.game.tileGrid[row + i][col].type == "floor"
                     && this.game.tileGrid[row][col + i].type == "floor"
                     && this.game.tileGrid[row + i][col + i].type == "floor") {
@@ -289,11 +289,11 @@ class SceneManager {
 			}            
         } else if (this.play) { 
             if (this.levelStats.get(this.level).deadEnemyCount >= 5 && !this.bossSpawned) {
-                let location = this.randomLocation(true);
+                let location = this.randomLocation(20, true);
                 this.game.addEntity(new Boss(this.game, location.x, location.y));
                 this.bossSpawned = true;
 
-            } else if (this.levelStats.get(this.level).deadEnemyCount >= this.levelStats.get(this.level).totalEnemies) { 
+            } else if (this.bossSpawned && this.seedPickedUp) {
                 this.levelStats.get(this.level).deadEnemyCount = 0;
 
                 if (this.level == "level1") {
@@ -302,6 +302,16 @@ class SceneManager {
                 } else if (this.level == "level2") {
                    this.win = true;
                 }
+            
+                // this.levelStats.get(this.level).deadEnemyCount >= this.levelStats.get(this.level).totalEnemies) { 
+                // this.levelStats.get(this.level).deadEnemyCount = 0;
+
+                // if (this.level == "level1") {
+                //     this.level = "level2";
+                //     this.loadLevel(this.level, false);
+                // } else if (this.level == "level2") {
+                //    this.win = true;
+                // }
                 
             } else {
 
