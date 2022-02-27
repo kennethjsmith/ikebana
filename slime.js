@@ -21,8 +21,8 @@ class Slime {
         this.widthOffset = this.spriteWidth / 2; // udes for finding the midpoint
         this.midpoint = { x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
         this.radius = 5 * this.game.level.tileSize + this.widthOffset + this.heightOffset;
-                                
-        this.stats = new EnemyStats(230, 5, false, 10, 0, false, 50, 0, 0.5, 15, 0); // NOTE: Change speed to 1 or so when not debugging
+                              
+        this.stats = new EnemyStats(230, 5, false, 10, 0, false, 50, 0, 0.5, 30, 0); // NOTE: Change speed to 1 or so when not debugging
 
         this.velocity = { x: this.randomDirection(), y: this.randomDirection() }
         while (this.velocity.x == 0 && this.velocity.y == 0) {
@@ -73,6 +73,7 @@ class Slime {
     }
 
     update() {
+
         const WALK = this.stats.speed;
         const DIAGONAL = Math.sqrt(Math.pow(this.stats.speed, 2) / 2); //  based on WALK speed: 1^2 = 2(a^2); where a = x = y
         let velocityUpdated = false;
@@ -103,9 +104,9 @@ class Slime {
         } else {
 
             // if there were no collisions and goop is within our radius, chase Goop
-            if (!this.stats.attacking || this.stats.attackCounter >= this.stats.attackTimeout) {
+            if (!this.stats.attacking || this.stats.attackTimer >= this.stats.attackTimeout) {
                 this.stats.attacking = true;
-                this.stats.attackCounter = 0;
+                this.stats.attackTimer = 0;
                 let distance = Math.floor(Math.sqrt( 
                     Math.pow((this.midpoint.x - this.game.goop.midpoint.x), 2) 
                     + Math.pow((this.midpoint.y - this.game.goop.midpoint.y), 2) ));
@@ -138,7 +139,7 @@ class Slime {
                     velocityUpdated = true;
                 } else {
                     this.stats.attacking = false;
-                    this.stats.attackCounter = 0;
+                    this.stats.attackTimer = 0;
                 }
             }
 
@@ -151,12 +152,20 @@ class Slime {
                 let yProjectedBB = velocityUpdated ? this.hurtBox : this.hurtBox.getYProjectedBB(this.velocity.y * this.game.clockTick);
     
                 if (entity instanceof Terrain && entity.type == "pillar") {
-                    if (xProjectedBB.collide(entity.boundingBox)) {
-                        this.velocity.x = 0;
-                        velocityUpdated = true;
-                    } else if (yProjectedBB.collide(entity.boundingBox)) {
-                        this.velocity.y = 0;
-                        velocityUpdated = true;
+                    if (xProjectedBB.collide(entity.boundingBox) && (!yProjectedBB.collide(entity.boundingBox))) {
+                        this.velocity.x = -this.velocity.x;
+                        this.velocity.y = this.randomDirection();
+                        if (velocityUpdated) this.updateBoundingBox();
+
+                    } else if ((!xProjectedBB.collide(entity.boundingBox)) && (yProjectedBB.collide(entity.boundingBox))) {
+                        this.velocity.y = -this.velocity.y;
+                        this.velocity.x = this.randomDirection();
+                        if (velocityUpdated) this.updateBoundingBox();
+
+                    } else if (xProjectedBB.collide(entity.boundingBox) && yProjectedBB.collide(entity.boundingBox)) {
+                        this.velocity.x = -this.velocity.x;
+                        this.velocity.y = -this.velocity.y;
+                        if (velocityUpdated) this.updateBoundingBox();
                     }
                 }
 
@@ -266,7 +275,7 @@ class Slime {
             this.animation = this.animations.get(this.facing).get("dying");
         }
         this.midpoint = { x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
-        if (this.stats.attacking) this.stats.attackCounter++;
+        if (this.stats.attacking) this.stats.attackTimer++;
 
     };
 
