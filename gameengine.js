@@ -259,8 +259,8 @@ class GameEngine {
                 }
             }
 
-            // draw goops gun
-            this.goop.gun.draw(this.ctx);
+            // draw goops gun --- > moved this into Goops draw method
+            // this.goop.gun.draw(this.ctx);
 
             // Draw latest bullets first
             for (let i = this.bullets.length - 1; i >= 0; i--) {

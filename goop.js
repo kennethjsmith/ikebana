@@ -217,7 +217,7 @@ class Goop {
 
     draw(ctx) {
         this.animation.drawFrame(this.game.clockTick, ctx, Math.floor(this.xMap-this.game.camera.x), Math.floor(this.yMap-this.game.camera.y), this.SCALE);
-        
+        this.gun.draw(ctx);
         if (this.game.debug) {
             drawBoundingBox(this.hurtBox, ctx, this.game, "red");
             drawBoundingBox(this.boundingBox, ctx, this.game, "white");
