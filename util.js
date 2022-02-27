@@ -121,7 +121,7 @@ function insertionSort(inputArr) {
 }
 
 function isSorted(a, b) {
-    if (a.boundingBox && b.boundingBox && a.boundingBox.midpoint.y > b.boundingBox.midpoint.y) {
+    if (a.boundingBox && b.boundingBox && a.boundingBox.bottom > b.boundingBox.bottom) {
         return false;
     } else return true;
 }

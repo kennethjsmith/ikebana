@@ -26,9 +26,6 @@ class Animator {
     };
 
     isDone() {
-        console.log("ELAPSED TIME: " + this.elapsedTime);
-        console.log("TOTAL TIME: " + this.totalTime)
-
         return (this.elapsedTime >= this.totalTime - this.BUFFER);
     };
 };

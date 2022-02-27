@@ -43,13 +43,11 @@ class Jar {
         if (this.status == "new") {
             this.hurtTimer = 0;
             this.status = "flash1";
-            console.log(this.status);
         }
         
         if (this.status == "cracked") {
             this.hurtTimer = 0;
             this.status = "flash2";
-            console.log("here2");
         }
     }
 

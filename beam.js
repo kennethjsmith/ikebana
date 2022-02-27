@@ -45,7 +45,7 @@ class Beam {
     loadAnimations() {
         this.animations.set("shot", new Animator(this.spritesheet, 0, 0, 12, 12, 1, 1));
     };
-sd
+
     update() {
         // goes through enemies, gives them damage if there is a collision
         this.segments.forEach(segment => {

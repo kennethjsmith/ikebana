@@ -12,10 +12,12 @@ class Terrain {
     selectSprite(type) {
         if (this.game.camera.level == "level1") {
             if (type == "pillar") {
-                this.sprite = new Animator(ASSET_MANAGER.getAsset("./sprites/level1_pillar.png"), 3, 0, 11, 44, 1, 1);
+                this.sprite = new Animator(ASSET_MANAGER.getAsset("./sprites/level1_pillar.png"), 0, 0, 16, 44, 1, 1);
                 this.scale = 5;
                 this.spriteHeight = 44 * this.scale;
-                this.spriteWidth = 11 * this.scale;
+                this.spriteWidth = 16 * this.scale;
+                this.spriteBaseHeight = 11 * this.scale;
+                this.spriteBaseWidth = 7 * this.scale;
                 this.shadowHeight = 13 * this.scale;
 
             } else if (type == "plant") {
@@ -39,10 +41,12 @@ class Terrain {
 
         } else if (this.game.camera.level = "level2") {
             if (type == "pillar") {
-                this.sprite = new Animator(ASSET_MANAGER.getAsset("./sprites/level2_pillar.png"), 3, 0, 11, 44, 1, 1);
+                this.sprite = new Animator(ASSET_MANAGER.getAsset("./sprites/level2_pillar.png"), 0, 0, 16, 44, 1, 1);
                 this.scale = 5;
                 this.spriteHeight = 44 * this.scale;
-                this.spriteWidth = 11 * this.scale;
+                this.spriteBaseHeight = 11 * this.scale;
+                this.spriteBaseWidth = 7 * this.scale;
+                this.spriteWidth = 16 * this.scale;
                 this.shadowHeight = 13 * this.scale;
 
 
@@ -201,7 +205,10 @@ class Terrain {
         //this.boundingBox = new BoundingBox(this.xMap, this.yMap, this.spriteWidth, this.spriteHeight - this.shadowHeight);
         //this.hurtBox = new BoundingBox(this.xMap+1, this.yMap, this.spriteWidth-2, this.spriteHeight - this.shadowHeight);
         this.boundingBox = new BoundingBox(this.xMap, this.yMap + 2*(this.spriteHeight/3), this.spriteWidth, (this.spriteHeight/3)-this.shadowHeight);
-        
+        if (this.type == "pillar") {
+            this.boundingBox = new BoundingBox(this.xMap + (4*this.scale), this.yMap + (24*this.scale), this.spriteBaseWidth, this.spriteBaseHeight);
+            console.log(this.boundingBox);
+        }
     };
 
     draw(ctx) {

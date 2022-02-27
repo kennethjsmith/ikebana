@@ -118,8 +118,8 @@ class Goop {
         if (collisionOccurred) this.updateBoundingBox();
 
         this.game.entities.forEach(entity => {
-            let xProjectedBB = collisionOccurred ? this.hurtBox : this.hurtBox.getXProjectedBB(this.velocity.x * this.game.clockTick);
-            let yProjectedBB = collisionOccurred ? this.hurtBox : this.hurtBox.getYProjectedBB(this.velocity.y * this.game.clockTick);
+            let xProjectedBB = collisionOccurred ? this.boundingBox : this.boundingBox.getXProjectedBB(this.velocity.x * this.game.clockTick);
+            let yProjectedBB = collisionOccurred ? this.boundingBox : this.boundingBox.getYProjectedBB(this.velocity.y * this.game.clockTick);
 
             if (entity instanceof Terrain && entity.type == "pillar") {
                 if (xProjectedBB.collide(entity.boundingBox)) {
@@ -130,7 +130,7 @@ class Goop {
                     collisionOccurred = true;
                 }
             } 
-            if (entity instanceof Jar && entity.status != "broken") {
+            else if (entity instanceof Jar && entity.status != "broken") {
                 if (xProjectedBB.collide(entity.boundingBox)) {
                     this.velocity.x = 0;
                     collisionOccurred = true;
@@ -138,7 +138,9 @@ class Goop {
                     this.velocity.y = 0;
                     collisionOccurred = true;
                 }
-            } else if ((!this.stats.hurt || this.stats.hurtTimer >= this.stats.hurtTimeout) 
+            } 
+            
+            if ((!this.stats.hurt || this.stats.hurtTimer >= this.stats.hurtTimeout) 
                 && (entity instanceof Slime || entity instanceof HorrorSlime) 
                 && !entity.stats.dead 
                 && this.game.camera.play) {
