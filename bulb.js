@@ -26,7 +26,7 @@ class Bulb {
     };
 
     updateBoundingBox() {
-        this.boundingBox = new BoundingBox(this.xMap, this.yMap + 2*(this.spriteHeight/3), this.spriteWidth, this.spriteHeight/3);
+        this.boundingBox = new BoundingBox(this.xMap, this.yMap + 2*(this.spriteHeight/3), this.spriteWidth, this.spriteHeight);
     };
 
     update() {
@@ -50,7 +50,7 @@ class Bulb {
     };
 
     draw(ctx) {
-        this.animation.drawFrame(this.game.clockTick, ctx, Math.floor(this.xMap-this.game.camera.x), Math.floor(this.yMap-this.game.camera.y), this.scale);
+        this.animation.drawFrame(this.game.clockTick, ctx, this.xMap-this.game.camera.x, this.yMap-this.game.camera.y, this.scale);
     };
 
 };

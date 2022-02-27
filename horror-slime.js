@@ -76,8 +76,11 @@ class HorrorSlime {
         if (!this.stats.dead && (!this.stats.hurt || this.stats.hurtTimer >= this.stats.hurtTimeout)) {
             this.stats.hurtTimer = 0;
             this.stats.health -= damage;
-            if (this.stats.health <= 0) this.stats.dead = true;
-            else this.stats.hurt = true;
+            if (this.stats.health <= 0) {
+                this.stats.hurt = false;
+                this.animation = this.animations.get("splat");
+                this.stats.dead = true;
+            } else this.stats.hurt = true;
         }
     }
 
@@ -95,6 +98,7 @@ class HorrorSlime {
             }
             else {
                 this.stats.deadTimer++;
+                this.animation = this.animations.get("splat");
                 this.velocity.x = 0;
                 this.velocity.y = 0;
             }
