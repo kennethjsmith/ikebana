@@ -334,6 +334,7 @@ class SceneManager {
                 if (this.level == "level1") {
                     this.level = "level2";
                     this.loadLevel(this.level);
+                    
                 } else if (this.level == "level2") {
                    this.win = true;
                 }

@@ -35,7 +35,7 @@ class Bulb {
             this.sparkle = false;
             this.animation = this.animations.get("select");
             if (this.game.interact) {
-                // do the thing
+                this.game.camera.seedPickedUp = true;
             }
         } else {
             this.animation = this.animations.get(this.sparkle);
