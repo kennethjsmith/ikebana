@@ -41,16 +41,30 @@ class Boss {
     };
 
     loadAnimations() {
-        this.animations.set("left", new Map);
-        this.animations.set("right", new Map);
+        if (this.game.camera.level == "level1"){
+            this.animations.set("left", new Map);
+            this.animations.set("right", new Map);
 
-        this.animations.get("left").set("walking", new Animator(this.spritesheet, 0, 0, 52, 52, 8, .12));
-        this.animations.get("left").set("vibing", new Animator(this.spritesheet, 0, 0, 52, 52, 8, .12));
-        this.animations.get("left").set("hurt", new Animator(this.spritesheet, 832, 0, 52, 52, 1, 0.08));
+            this.animations.get("left").set("walking", new Animator(this.spritesheet, 0, 0, 52, 52, 8, .12));
+            this.animations.get("left").set("vibing", new Animator(this.spritesheet, 0, 0, 52, 52, 8, .12));
+            this.animations.get("left").set("hurt", new Animator(this.spritesheet, 832, 0, 52, 52, 1, 0.08));
 
-        this.animations.get("right").set("walking", new Animator(this.spritesheet, 416, 0, 52, 52, 8, .12));
-        this.animations.get("right").set("vibing", new Animator(this.spritesheet, 416, 0, 52, 52, 8, .12));
-        this.animations.get("right").set("hurt", new Animator(this.spritesheet, 884, 0, 52, 52, 1, 0.08));
+            this.animations.get("right").set("walking", new Animator(this.spritesheet, 416, 0, 52, 52, 8, .12));
+            this.animations.get("right").set("vibing", new Animator(this.spritesheet, 416, 0, 52, 52, 8, .12));
+            this.animations.get("right").set("hurt", new Animator(this.spritesheet, 884, 0, 52, 52, 1, 0.08));
+        }
+        if (this.game.camera.level == "level2"){
+            this.animations.set("left", new Map);
+            this.animations.set("right", new Map);
+
+            this.animations.get("left").set("walking", new Animator(this.spritesheet, 0, 0, 43, 39, 10, .12));
+            this.animations.get("left").set("vibing", new Animator(this.spritesheet, 0, 0, 43, 39, 10, .12));
+            this.animations.get("left").set("hurt", new Animator(this.spritesheet, 860, 0, 43, 39, 1, 0.08));
+
+            this.animations.get("right").set("walking", new Animator(this.spritesheet, 430, 0, 43, 39, 10, .12));
+            this.animations.get("right").set("vibing", new Animator(this.spritesheet, 430, 0, 43, 39, 10, .12));
+            this.animations.get("right").set("hurt", new Animator(this.spritesheet, 903, 0, 43, 39, 1, 0.08));
+        }
     };
 
     randomDirection() {

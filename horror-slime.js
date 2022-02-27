@@ -76,8 +76,11 @@ class HorrorSlime {
         if (!this.stats.dead && (!this.stats.hurt || this.stats.hurtTimer >= this.stats.hurtTimeout)) {
             this.stats.hurtTimer = 0;
             this.stats.health -= damage;
-            if (this.stats.health <= 0) this.stats.dead = true;
-            else this.stats.hurt = true;
+            if (this.stats.health <= 0) {
+                this.stats.hurt = false;
+                this.animation = this.animations.get("splat");
+                this.stats.dead = true;
+            } else this.stats.hurt = true;
         }
     }
 
@@ -95,6 +98,7 @@ class HorrorSlime {
             }
             else {
                 this.stats.deadTimer++;
+                this.animation = this.animations.get("splat");
                 this.velocity.x = 0;
                 this.velocity.y = 0;
             }
@@ -306,17 +310,17 @@ class HorrorSlime {
     };
 
     draw(ctx) {
-        this.animation.drawFrame(this.game.clockTick, ctx, Math.floor(this.xMap - this.game.camera.x), Math.floor(this.yMap - this.game.camera.y), this.scale);
+        this.animation.drawFrame(this.game.clockTick, ctx, this.xMap - this.game.camera.x, this.yMap - this.game.camera.y, this.scale);
 
         if (this.game.debug) {
             drawBoundingBox(this.hurtBox, ctx, this.game, "red");
             drawBoundingBox(this.boundingBox, ctx, this.game, "white");
             ctx.strokeStyle = 'red';
             // draws midpoint
-            ctx.strokeRect(Math.floor(this.midpoint.x - this.game.camera.x), Math.floor(this.midpoint.y - this.game.camera.y), 2, 2);
+            ctx.strokeRect(this.midpoint.x - this.game.camera.x, this.midpoint.y - this.game.camera.y, 2, 2);
             // Draws their radius
             ctx.beginPath();
-            ctx.arc(Math.floor(this.midpoint.x - this.game.camera.x), Math.floor(this.midpoint.y - this.game.camera.y), this.radius, 0, Math.PI * 2, true);
+            ctx.arc(this.midpoint.x - this.game.camera.x, this.midpoint.y - this.game.camera.y, this.radius, 0, Math.PI * 2, true);
             ctx.stroke();
         }
     };

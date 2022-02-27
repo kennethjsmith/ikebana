@@ -356,8 +356,8 @@ class SceneManager {
                 let totalDistance = Math.hypot(xDistance,yDistance);
                 
                 if(totalDistance < this.MAXRADIUS){
-                    this.x = this.game.goop.xMap - this.xMidpoint + (xDistance/2);
-                    this.y = this.game.goop.yMap - this.yMidpoint + (yDistance/2);
+                    this.x = Math.floor(this.game.goop.xMap - this.xMidpoint + (xDistance/2));
+                    this.y = Math.floor(this.game.goop.yMap - this.yMidpoint + (yDistance/2));
                 } else { //get max camera movement
 
                     // first, get imaginary point on line
