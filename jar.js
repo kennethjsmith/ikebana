@@ -1,8 +1,9 @@
 class Jar {
-    constructor(game, location) {
+    constructor(game, location, item) {
         this.game = game;
         this.xMap = location.x;
         this.yMap = location.y;
+        this.item = item;
 
         this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/jar1.png");
         this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/jar2.png");
@@ -62,7 +63,20 @@ class Jar {
             this.hurtTimer++;
             if(this.hurtTimer == this.hurtTimeout){
                 this.status = "broken";
-                // add gun here
+                if (this.item) {
+                    if (this.item == "laser") {
+                        this.game.addEntity(new Gun("laser", this.game, false, this.xMap, this.yMap));
+                    
+                    } else if (this.item == "bubble") {
+                        this.game.addEntity(new Gun("bubble", this.game, false, this.xMap, this.yMap));
+
+                    } else if (this.item == "uzi") {
+                        this.game.addEntity(new Gun("uzi", this.game, false, this.xMap, this.yMap));
+
+                    } else if (this.item == "health") {
+
+                    }
+                }
             }
         }
         this.animation = this.animations.get(this.status); 

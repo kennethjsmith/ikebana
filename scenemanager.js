@@ -67,13 +67,13 @@ class SceneManager {
             //this.game.addEntity(new Gun("uzi",this.game)); // 5 is level scaler and 16 is the sprite width/height for level tiles
             
             // add jar
-            this.game.addEntity(new Jar(this.game, this.randomLocation(2, true, "Jar")));
+            this.game.addEntity(new Jar(this.game, this.randomLocation(2, true, "Jar"), "laser"));
 
             // add goop
             this.game.addEntity(new Goop(this.game));
             this.calculateGoopsQuadrant();
 
-            this.game.gun = this.game.goop.gun;
+            // this.game.gun = this.game.goop.gun;
 
             this.xMidpoint = this.game.ctx.canvas.width/2 - (this.game.goop.spriteWidth/2);
             this.yMidpoint = this.game.ctx.canvas.height/2 - (this.game.goop.spriteHeight/2);
@@ -300,9 +300,10 @@ class SceneManager {
     };
 
     update() {
+        
         if (this.title) {
             if(this.game.clicked) {
-			    if (this.game.crosshair.xMidpoint >= 275 && this.game.crosshair.xMidpoint <= 375 && this.game.crosshair.yMidpoint <= 400 && this.game.crosshair.yMidpoint >= 350) {
+			    if (this.game.crosshair.xMidpoint >= 325 && this.game.crosshair.xMidpoint <= 425 && this.game.crosshair.yMidpoint <= 450 && this.game.crosshair.yMidpoint >= 400) {
                     this.title = false;
                     this.play = true;
 				    this.loadLevel(this.level);
@@ -317,8 +318,8 @@ class SceneManager {
             this.levelStats.get(this.level).deadEnemyCount = 0;
 
             if(this.game.clicked) {
-			    if (this.game.crosshair.xMidpoint - this.x  >= 250 && this.game.crosshair.xMidpoint - this.x <= 400 && 
-                    this.game.crosshair.yMidpoint - this.y  <= 400 && this.game.crosshair.yMidpoint - this.y >= 350) {
+			    if (this.game.crosshair.xMidpoint - this.x  >= 300 && this.game.crosshair.xMidpoint - this.x <= 450 && 
+                    this.game.crosshair.yMidpoint - this.y  <= 450 && this.game.crosshair.yMidpoint - this.y >= 400) {
                     this.x = 0;
                     this.y = 0;
                     this.play = true;
@@ -336,8 +337,8 @@ class SceneManager {
             this.levelStats.get(this.level).deadEnemyCount = 0;
 
             if(this.game.clicked) {
-			    if (this.game.crosshair.xMidpoint - this.x  >= 250 && this.game.crosshair.xMidpoint - this.x <= 400 &&
-                    this.game.crosshair.yMidpoint  - this.y <= 400 && this.game.crosshair.yMidpoint - this.y >= 350) {
+			    if (this.game.crosshair.xMidpoint - this.x  >= 300 && this.game.crosshair.xMidpoint - this.x <= 450 &&
+                    this.game.crosshair.yMidpoint  - this.y <= 450 && this.game.crosshair.yMidpoint - this.y >= 400) {
                     this.x = 0;
                     this.y = 0;
                     this.play = true;
@@ -409,20 +410,20 @@ class SceneManager {
     draw(ctx) {
         if (this.title) {
             ctx.drawImage(this.titleSprite, 0, 0, ctx.canvas.width, ctx.canvas.height);
-            ctx.fillStyle = ((this.game.crosshair.xMidpoint >= 275
-                                && this.game.crosshair.xMidpoint <= 375 
-                                && this.game.crosshair.yMidpoint >= 350 
-                                && this.game.crosshair.yMidpoint <= 400) 
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint >= 325
+                                && this.game.crosshair.xMidpoint <= 425 
+                                && this.game.crosshair.yMidpoint >= 400 
+                                && this.game.crosshair.yMidpoint <= 450) 
                                 ? '#2c2f5e' : "White");
-			ctx.fillRect(275, 350, 100, 50);
+			ctx.fillRect(325, 400, 100, 50);
 			//ctx.fillStyle = "Pink";
-            ctx.fillStyle = ((this.game.crosshair.xMidpoint >= 275
-                && this.game.crosshair.xMidpoint <= 375 
-                && this.game.crosshair.yMidpoint >= 350 
-                && this.game.crosshair.yMidpoint <= 400) 
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint >= 325
+                && this.game.crosshair.xMidpoint <= 425 
+                && this.game.crosshair.yMidpoint >= 400 
+                && this.game.crosshair.yMidpoint <= 450) 
                 ? "White" : '#2c2f5e');
             ctx.font = '30px Kouryuu';
-            ctx.fillText("play", 290, 385)
+            ctx.fillText("play", 340, 435)
 
 		} else if (this.pause) {
             // draw pause screen
@@ -431,41 +432,41 @@ class SceneManager {
 
             ctx.fillStyle = "White";
 
-            ctx.fillText("goop's down bad", 95, 200)
+            ctx.fillText("goop's down bad", 145, 250)
 
-            ctx.fillStyle = ((this.game.crosshair.xMidpoint - this.x >= 250
-                && this.game.crosshair.xMidpoint - this.x  <= 400 
-                && this.game.crosshair.yMidpoint - this.y  >= 350 
-                && this.game.crosshair.yMidpoint - this.y  <= 400) 
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint - this.x >= 300
+                && this.game.crosshair.xMidpoint - this.x  <= 450 
+                && this.game.crosshair.yMidpoint - this.y  >= 400 
+                && this.game.crosshair.yMidpoint - this.y  <= 450) 
                 ? '#2c2f5e' : "White");
-            ctx.fillRect(250, 350, 150, 50);
-            ctx.fillStyle = ((this.game.crosshair.xMidpoint  - this.x >= 250
-                && this.game.crosshair.xMidpoint  - this.x <= 400 
-                && this.game.crosshair.yMidpoint  - this.y >= 350 
-                && this.game.crosshair.yMidpoint - this.y  <= 400) 
+            ctx.fillRect(300, 400, 150, 50);
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint  - this.x >= 300
+                && this.game.crosshair.xMidpoint  - this.x <= 450 
+                && this.game.crosshair.yMidpoint  - this.y >= 400 
+                && this.game.crosshair.yMidpoint - this.y  <= 450) 
                 ? "White" : '#2c2f5e');
             ctx.font = '25px Kouryuu';
-            ctx.fillText("play again", 255, 385);
+            ctx.fillText("play again", 305, 435);
         } else if (this.win) {
             ctx.drawImage(this.tintScreen, 0, 0, ctx.canvas.width, ctx.canvas.height);
 
             ctx.fillStyle = "White";
 
-            ctx.fillText("nice!", 260, 200)
+            ctx.fillText("nice!", 310, 250)
 
-            ctx.fillStyle = ((this.game.crosshair.xMidpoint - this.x  >= 250
-                && this.game.crosshair.xMidpoint - this.x  <= 400 
-                && this.game.crosshair.yMidpoint - this.y  >= 350 
-                && this.game.crosshair.yMidpoint - this.y <= 400) 
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint - this.x  >= 300
+                && this.game.crosshair.xMidpoint - this.x  <= 450 
+                && this.game.crosshair.yMidpoint - this.y  >= 400 
+                && this.game.crosshair.yMidpoint - this.y <= 450) 
                 ? '#2c2f5e' : "White");
-            ctx.fillRect(250, 350, 150, 50);
-            ctx.fillStyle = ((this.game.crosshair.xMidpoint - this.x  >= 250
-                && this.game.crosshair.xMidpoint - this.x  <= 400 
-                && this.game.crosshair.yMidpoint - this.y  >= 350 
-                && this.game.crosshair.yMidpoint - this.y  <= 400) 
+            ctx.fillRect(300, 400, 150, 50);
+            ctx.fillStyle = ((this.game.crosshair.xMidpoint - this.x  >= 300
+                && this.game.crosshair.xMidpoint - this.x  <= 450 
+                && this.game.crosshair.yMidpoint - this.y  >= 400 
+                && this.game.crosshair.yMidpoint - this.y  <= 450) 
                 ? "White" : '#2c2f5e');
             ctx.font = '25px Kouryuu';
-            ctx.fillText("play again", 255, 385);
+            ctx.fillText("play again", 305, 435);
         } 
     };
 }
