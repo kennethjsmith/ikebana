@@ -18,9 +18,9 @@ class SceneManager {
 
         this.level = "level1";
         this.levelStats = new Map;
-        this.levelStats.set("level1", new LevelStats("Level 1", 10, 0));
-        this.levelStats.set("level2", new LevelStats("Level 2", 15, 0));
-        this.levelStats.set("level3", new LevelStats("Level 3", 40, 0));
+        this.levelStats.set("level1", new LevelStats("Level 1", 24, 0, 16));
+        this.levelStats.set("level2", new LevelStats("Level 2", 33, 0, 22));
+        this.levelStats.set("level3", new LevelStats("Level 3", 42, 0, 26));
 
         this.title = true; 
         this.pause = false;
@@ -364,7 +364,7 @@ class SceneManager {
                 }
 			}            
         } else if (this.play) { 
-            if (this.levelStats.get(this.level).deadEnemyCount >= 5 && !this.bossSpawned) {
+            if (this.levelStats.get(this.level).deadEnemyCount >= this.levelStats.get(this.level).bossSpawn && !this.bossSpawned) {
                 this.calculateGoopsQuadrant();
                 let location = this.randomLocation(3, true, "Boss");
                 this.game.addEntity(new Boss(this.game, location.x, location.y));
@@ -382,16 +382,6 @@ class SceneManager {
                 } else if (this.level == "level2") {
                    this.win = true;
                 }
-            
-                // this.levelStats.get(this.level).deadEnemyCount >= this.levelStats.get(this.level).totalEnemies) { 
-                // this.levelStats.get(this.level).deadEnemyCount = 0;
-
-                // if (this.level == "level1") {
-                //     this.level = "level2";
-                //     this.loadLevel(this.level, false);
-                // } else if (this.level == "level2") {
-                //    this.win = true;
-                // }
                 
             } else {
 

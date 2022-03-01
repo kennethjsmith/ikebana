@@ -33,6 +33,9 @@ class HorrorSlime {
         this.radius = 4 * this.game.level.tileSize + this.widthOffset + this.heightOffset;
 
         this.stats = new EnemyStats(172, 11, false, 10, 0, false, 25, 0, 0.5, 50, 0);
+        this.WALK = this.stats.speed;
+        this.DIAGONAL = Math.sqrt(Math.pow(this.stats.speed, 2) / 2); //  based on WALK speed: 1^2 = 2(a^2); where a = x = y
+        
 
         this.velocity = { x: this.randomDirection(), y: this.randomDirection() }
         while (this.velocity.x == 0 && this.velocity.y == 0) {
@@ -85,8 +88,6 @@ class HorrorSlime {
     }
 
     update() {
-        const WALK = this.stats.speed;
-        const DIAGONAL = Math.sqrt(Math.pow(this.stats.speed, 2) / 2); //  based on WALK speed: 1^2 = 2(a^2); where a = x = y
         let velocityUpdated = false;
 
 
@@ -144,28 +145,28 @@ class HorrorSlime {
                     this.shootingCooldown--;
 
                     if (this.game.goop.midpoint.x < this.xMap && this.game.goop.midpoint.y < this.yMap) { // if goop is NW of this slime
-                        this.velocity.x = -WALK;
-                        this.velocity.y = -WALK;
+                        this.velocity.x = -this.WALK;
+                        this.velocity.y = -this.WALK;
                     } else if (this.game.goop.midpoint.x > this.xMap && this.game.goop.midpoint.y > this.yMap) { // if goop is SE of this slime
-                        this.velocity.x = WALK;
-                        this.velocity.y = WALK;
+                        this.velocity.x = this.WALK;
+                        this.velocity.y = this.WALK;
                     } else if (this.game.goop.midpoint.x > this.xMap && this.game.goop.midpoint.y < this.yMap) { // if goop is NE of this slime
-                        this.velocity.x = WALK;
-                        this.velocity.y = -WALK;
+                        this.velocity.x = this.WALK;
+                        this.velocity.y = -this.WALK;
                     } else if (this.game.goop.midpoint.x < this.xMap && this.game.goop.midpoint.y > this.yMap) {// if goop is SW of this slime
-                        this.velocity.x = -WALK;
-                        this.velocity.y = WALK;
+                        this.velocity.x = -this.WALK;
+                        this.velocity.y = this.WALK;
                     } else if (this.game.goop.midpoint.y < this.yMap) { // if goop is N of this slime
-                        this.velocity.y = -WALK;
+                        this.velocity.y = -this.WALK;
                         this.velocity.x = 0;
                     } else if (this.game.goop.midpoint.y > this.yMap) { // else they are S of this slime
-                        this.velocity.y = WALK;
+                        this.velocity.y = this.WALK;
                         this.velocity.x = 0;
                     } else if (this.game.goop.midpoint.x < this.xMap) { // if goop is W of this slime
-                        this.velocity.x = -WALK;
+                        this.velocity.x = -this.WALK;
                         this.velocity.y = 0;
                     } else { // otherwise goop is E of this slime
-                        this.velocity.x = WALK;
+                        this.velocity.x = this.WALK;
                         this.velocity.y = 0;
                     }
                     velocityUpdated = true;
@@ -273,11 +274,11 @@ class HorrorSlime {
 
         // update velocity if they are moving diagonally
         if (this.velocity.x != 0 && this.velocity.y != 0) {
-            this.velocity.x = this.velocity.x > 0 ? DIAGONAL : -DIAGONAL;
-            this.velocity.y = this.velocity.y > 0 ? DIAGONAL : -DIAGONAL;
+            this.velocity.x = this.velocity.x > 0 ? this.DIAGONAL : -this.DIAGONAL;
+            this.velocity.y = this.velocity.y > 0 ? this.DIAGONAL : -this.DIAGONAL;
         } else {
-            if (this.velocity.x != 0) this.velocity.x = this.velocity.x > 0 ? WALK : -WALK;
-            if (this.velocity.y != 0) this.velocity.y = this.velocity.y > 0 ? WALK : -WALK;
+            if (this.velocity.x != 0) this.velocity.x = this.velocity.x > 0 ? this.WALK : -this.WALK;
+            if (this.velocity.y != 0) this.velocity.y = this.velocity.y > 0 ? this.WALK : -this.WALK;
         }
 
         // update the positions

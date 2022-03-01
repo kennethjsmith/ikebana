@@ -11,7 +11,7 @@ class EnemyStats {
 }
 
 class LevelStats {
-    constructor(label, totalEnemies, deadEnemyCount) {
-        Object.assign(this, { label, totalEnemies, deadEnemyCount });
+    constructor(label, totalEnemies, deadEnemyCount, bossSpawn) {
+        Object.assign(this, { label, totalEnemies, deadEnemyCount, bossSpawn });
     };
 }

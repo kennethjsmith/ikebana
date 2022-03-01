@@ -242,9 +242,10 @@ class GameEngine {
              //Player radius updates only
             for (let i = this.entities.length - 1; i >= 0; i--) {
                 if (this.goop &&
-                    (getDistance(this.entities[i].xMap, this.entities[i].yMap, this.goop.xMap, this.goop.yMap) < 800 ||
-                        this.entities[i] instanceof Goop || 
-                        this.entities[i] instanceof SceneManager)) {
+                    (getDistance(this.entities[i].xMap, this.entities[i].yMap, this.goop.xMap, this.goop.yMap) < 700 //||
+                        //this.entities[i] instanceof Goop || 
+                        //this.entities[i] instanceof SceneManager
+                        )) {
                     //if the player exists update things close to the player
                     let entity = this.entities[i];
                     entity.draw(this.ctx, this);
@@ -298,12 +299,13 @@ class GameEngine {
         //Player radius updates only
         for (let i = this.entities.length - 1; i >= 0; i--) {
             if (this.goop &&
-                (getDistance(this.entities[i].xMap, this.entities[i].yMap, this.goop.xMap, this.goop.yMap) < 800 ||
-                    this.entities[i] instanceof Goop || 
-                    this.entities[i] instanceof Slime ||
-                    this.entities[i] instanceof HorrorSlime ||
-                    this.entities[i] instanceof Boss ||
-                    this.entities[i] instanceof SceneManager)) {
+                (getDistance(this.entities[i].xMap, this.entities[i].yMap, this.goop.xMap, this.goop.yMap) < 700 //||
+                    //this.entities[i] instanceof Goop || 
+                    //this.entities[i] instanceof Slime ||
+                    //this.entities[i] instanceof HorrorSlime ||
+                    //this.entities[i] instanceof Boss ||
+                    //this.entities[i] instanceof SceneManager
+                    )) {
                 //if the player exists update things close to the player
                 let entity = this.entities[i];
                 entity.update(this);
