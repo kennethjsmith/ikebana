@@ -65,16 +65,17 @@ class Jar {
                 this.status = "broken";
                 if (this.item) {
                     if (this.item == "laser") {
-                        this.game.addEntity(new Gun("laser", this.game, false, this.xMap, this.yMap));
+                        this.game.addEntity(new Gun("laser", this.game, false, this.xMap+5, this.yMap+20));
                     
                     } else if (this.item == "bubble") {
-                        this.game.addEntity(new Gun("bubble", this.game, false, this.xMap, this.yMap));
+                        this.game.addEntity(new Gun("bubble", this.game, false, this.xMap+5, this.yMap+20));
 
                     } else if (this.item == "uzi") {
-                        this.game.addEntity(new Gun("uzi", this.game, false, this.xMap, this.yMap));
+                        this.game.addEntity(new Gun("uzi", this.game, false, this.xMap+5, this.yMap+20)); // these magic #s center item over jar
 
-                    } else if (this.item == "health") {
-
+                    } else if (this.item == "medkit") {
+                        this.game.addEntity(new Medkit(this.game, this.xMap+5, this.yMap+20));
+                        console.log("here");
                     }
                 }
             }

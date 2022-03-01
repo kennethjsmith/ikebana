@@ -45,6 +45,8 @@ class GameEngine {
         this.up = false;
         this.down = false;
 
+        this.interactFlag = false;
+
         // THE KILL SWITCH
         this.running = false;
 
@@ -139,48 +141,44 @@ class GameEngine {
 
         this.ctx.canvas.addEventListener("keydown", e => {
             switch (e.code) {
-                case "ArrowLeft":
                 case "KeyA":
                     this.left = true;
                     break;
-                case "ArrowRight":
                 case "KeyD":
                     this.right = true;
                     break;
-                case "ArrowUp":
                 case "KeyW":
                     this.up = true;
                     break;
-                case "ArrowDown":
                 case "KeyS":
                     this.down = true;
                     break;
                 case "KeyE":
-                    this.interact = true;
+                    if (!this.interactFlag) {
+                        this.interact = true;
+                        this.interactFlag = true;
+                    }
                     break;     
             }
         }, false);
 
         this.ctx.canvas.addEventListener("keyup", e => {
             switch (e.code) {
-                case "ArrowLeft":
                 case "KeyA":
                     this.left = false;
                     break;
-                case "ArrowRight":
                 case "KeyD":
                     this.right = false;
                     break;
-                case "ArrowUp":
                 case "KeyW":
                     this.up = false;
                     break;
-                case "ArrowDown":
                 case "KeyS":
                     this.down = false;
                     break;
                 case "KeyE":
                     this.interact = false;
+                    this.interactFlag = false;
                     break;    
             }
         }, false);
@@ -346,6 +344,8 @@ class GameEngine {
         this.crosshair.update();
         
         this.entities = insertionSort(this.entities);
+
+        this.interact = false;
     };
 
     loop() {

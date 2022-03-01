@@ -32,6 +32,7 @@ ASSET_MANAGER.queueDownload("./sprites/uzi.png");
 ASSET_MANAGER.queueDownload("./sprites/ground_uzi.png");
 ASSET_MANAGER.queueDownload("./sprites/laser.png");
 ASSET_MANAGER.queueDownload("./sprites/ground_laser.png");
+ASSET_MANAGER.queueDownload("./sprites/health_drop.png");
 ASSET_MANAGER.queueDownload("./sprites/hearts.png");
 ASSET_MANAGER.queueDownload("./sprites/symbol_flower.png");
 ASSET_MANAGER.queueDownload("./sprites/numbers.png");

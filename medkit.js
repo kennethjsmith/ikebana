@@ -1,12 +1,11 @@
-class Bulb {
+class Medkit {
     constructor(game, x, y) {
         this.game = game;
-        if (this.game.camera.level == "level1") this.spritesheet = ASSET_MANAGER.getAsset("./sprites/bulb1.png");
-        else if (this.game.camera.level == "level2") this.spritesheet = ASSET_MANAGER.getAsset("./sprites/bulb2.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/health_drop.png");
 
-        this.scale = 5;
-        this.spriteHeight = 8 * this.scale; // scaled height
-        this.spriteWidth = 6 * this.scale; // scaled width
+        this.scale = 4;
+        this.spriteHeight = 12 * this.scale; // scaled height
+        this.spriteWidth = 12 * this.scale; // scaled width
 
         this.xMap = x;
         this.yMap = y;
@@ -20,9 +19,9 @@ class Bulb {
     };
 
     loadAnimations() {
-        this.animations.set(false, new Animator(this.spritesheet, 0, 0, 10, 12, 1, 1));
-        this.animations.set(true, new Animator(this.spritesheet, 0, 0, 10, 12, 7, .08));
-        this.animations.set("select", new Animator(this.spritesheet, 70, 0, 10, 12, 1, 1));
+        this.animations.set(false, new Animator(this.spritesheet, 0, 0, 12, 12, 1, 1));
+        this.animations.set(true, new Animator(this.spritesheet, 0, 0, 12, 12, 7, .08));
+        this.animations.set("select", new Animator(this.spritesheet, 84, 0, 12, 12, 1, 1));
     };
 
     updateBoundingBox() {
@@ -35,7 +34,9 @@ class Bulb {
             this.sparkle = false;
             this.animation = this.animations.get("select");
             if (this.game.interact) {
-                this.game.camera.seedPickedUp = true;
+                if (this.game.camera.health <= 2) this.game.camera.health++;
+                else this.game.camera.health = 3;
+                this.removeFromWorld = true;
             }
         } else {
             this.animation = this.animations.get(this.sparkle);

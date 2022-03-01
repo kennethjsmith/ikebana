@@ -65,14 +65,15 @@ class Gun {
         
         this.animations = new Map;
         this.loadAnimations();
-        this.animation = this.animations.get(true);
+        this.sparkle = true;
+        this.animation = this.animations.get(this.sparkle);
         this.updateBoundingBox();
     };
 
     loadAnimations() {
-        this.animations.set(false, new Animator(this.spritesheet, 0, 0, 28, 22, 1, 1));
-        this.animations.set(true, new Animator(this.spritesheet, 0, 0, 28, 22, 7, .08));
-        this.animations.set("select", new Animator(this.spritesheet, 96, 0, 28, 22, 1, 1));
+        this.animations.set(false, new Animator(this.groundSpritesheet, 0, 0, 28, 24, 1, 1));
+        this.animations.set(true, new Animator(this.groundSpritesheet, 0, 0, 28, 24, 7, .08));
+        this.animations.set("select", new Animator(this.groundSpritesheet, 196, 0, 30, 24, 1, 1));
     }
 
     prepareLocations() {
@@ -108,16 +109,14 @@ class Gun {
             this.sparkle = false;
             this.animation = this.animations.get("select");
             if (this.game.interact) {
-                console.log(this);
-                console.log(this.game.gun);
 
                 // place the current gun on the ground
-                let gunToSave = this.game.gun;
                 this.game.addEntity(this.game.gun);
                 this.game.gun.xMap = this.xMap;
                 this.game.gun.yMap = this.yMap;
                 this.game.gun.updateBoundingBox();
                 this.game.gun.pickedUp = false;
+                this.game.gun.removeFromWorld = false;
 
                 // pick up this
                 this.game.gun = this;
@@ -125,13 +124,11 @@ class Gun {
                 this.pickedUp = true;
                 this.removeFromWorld = true;
                 this.prepareLocations();
-                console.log(this);
-                console.log(gunToSave);
             }
 
         // cycle through the sparkle animation
         } else if (!this.pickedUp) {
-            this.sparkle = true;
+            // this.sparkle = true;
             this.animation = this.animations.get(this.sparkle);
             if (this.sparkle && this.animation.isDone()) {
                 this.sparkle = false;
@@ -199,7 +196,7 @@ class Gun {
     };
 
     updateBoundingBox() {
-        this.boundingBox = new BoundingBox(this.xMap, this.yMap + 2*(this.spriteHeight/3), this.spriteWidth, this.spriteHeight);
+        this.boundingBox = new BoundingBox(this.xMap, this.yMap, this.spriteWidth, this.spriteHeight);
     };
 
     draw(ctx) {

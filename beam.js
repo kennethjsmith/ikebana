@@ -3,7 +3,7 @@ class Beam {
         this.game = game;
         this.SPEED = 1;
        // this.SPEED = 286; // TODO, we can probably make a "stats" class for bullets, for dif types of guns
-        this.range = 500; //how many updates, ie this bullet will travel speed*range
+        this.range = 700; //how many updates, ie this bullet will travel speed*range
         this.removeFromWorld = false;
         this.lifeLength = 10;
 

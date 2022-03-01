@@ -22,7 +22,8 @@ class Goop {
             this.game.gun = this.gun;
         } else if (this.game.camera.level == "level2") {
              this.spritesheet = this.level2SpriteSheet;
-             this.gun = this.game.gun;
+             this.gun = new Gun(this.game.gun.type, this.game, true);
+             this.game.gun = this.gun;
         //     this.gun = new Gun("bubble", this.game, true);
         } 
 

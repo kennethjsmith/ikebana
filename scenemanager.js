@@ -66,8 +66,12 @@ class SceneManager {
             // add gun
             //this.game.addEntity(new Gun("uzi",this.game)); // 5 is level scaler and 16 is the sprite width/height for level tiles
             
-            // add jar
-            this.game.addEntity(new Jar(this.game, this.randomLocation(2, true, "Jar"), "laser"));
+            // add jars
+            if (this.level == "level1") this.game.addEntity(new Jar(this.game, this.randomLocation(2, true, "Jar"), "laser"));
+            if (this.level == "level2") this.game.addEntity(new Jar(this.game, this.randomLocation(2, true, "Jar"), "bubble"));
+            this.game.addEntity(new Jar(this.game, this.randomLocation(2, true, "Jar"), null));
+            this.game.addEntity(new Jar(this.game, this.randomLocation(2, true, "Jar"), null));
+            this.game.addEntity(new Jar(this.game, this.randomLocation(2, true, "Jar"), "medkit"));
 
             // add goop
             this.game.addEntity(new Goop(this.game));

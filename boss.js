@@ -3,8 +3,6 @@ class Boss {
         this.game = game;
         this.xMap = x;
         this.yMap = y;
-        console.log("boss spawned");
-        console.log("x: " + this.xMap + ", y: " + this.yMap);
 
         this.level1SpriteSheet = ASSET_MANAGER.getAsset("./sprites/ooze.png");
         this.level2SpriteSheet = ASSET_MANAGER.getAsset("./sprites/fish.png");
@@ -27,7 +25,7 @@ class Boss {
         this.midpoint = { x: this.xMap + this.widthOffset, y: this.yMap + this.heightOffset };
         this.radius = 10 * this.game.level.tileSize + this.widthOffset + this.heightOffset;
 
-        this.stats = new EnemyStats(100, 20, false, 10, 0, false, 50, 0, 0.5, 200, 0);
+        this.stats = new EnemyStats(150, 50, false, 10, 0, false, 50, 0, 0.5, 200, 0);
 
         this.velocity = { x: this.randomDirection(), y: this.randomDirection() }
         while (this.velocity.x == 0 && this.velocity.y == 0) {
