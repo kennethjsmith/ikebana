@@ -47,6 +47,13 @@ class Flower {
     update() {
         if (this.animation.currentFrame() == 5) this.state = "grown";
         this.animation = this.animations.get(this.state);
+
+        this.game.tileGrid.forEach(row => {
+            row.forEach(tile => {
+                let type = tile.type;
+                if (type == "south_wall" && this.boundingBox.collide(tile.BB.upper)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
+            });
+        });
     };
 
     draw(ctx) {

@@ -109,6 +109,12 @@ class Boss {
                 this.velocity.x = 0;
                 this.velocity.y = 0;
             }
+            this.game.tileGrid.forEach(row => {
+                row.forEach(tile => {
+                    let type = tile.type;
+                    if (type == "south_wall" && this.boundingBox.collide(tile.BB.upper)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
+                });
+            });
         } else if (this.stats.hurt) {
 
             this.stats.hurtTimer++;
@@ -121,6 +127,12 @@ class Boss {
                 this.velocity.x = this.randomDirection();
                 this.velocity.y = this.randomDirection();
             }
+            this.game.tileGrid.forEach(row => {
+                row.forEach(tile => {
+                    let type = tile.type;
+                    if (type == "south_wall" && this.boundingBox.collide(tile.BB.upper)) this.game.tilesToDrawOnTop.push(tile); // this will always redraw the tile
+                });
+            });        
         } else {
 
             // if there were no collisions and goop is within our radius, attempt to shoot + chase Goop
