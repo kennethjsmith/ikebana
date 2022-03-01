@@ -67,13 +67,13 @@ class SceneManager {
             //this.game.addEntity(new Gun("uzi",this.game)); // 5 is level scaler and 16 is the sprite width/height for level tiles
             
             // add jar
-            this.game.addEntity(new Jar(this.game, this.randomLocation(2, true, "Jar")));
+            this.game.addEntity(new Jar(this.game, this.randomLocation(2, true, "Jar"), "laser"));
 
             // add goop
             this.game.addEntity(new Goop(this.game));
             this.calculateGoopsQuadrant();
 
-            this.game.gun = this.game.goop.gun;
+            // this.game.gun = this.game.goop.gun;
 
             this.xMidpoint = this.game.ctx.canvas.width/2 - (this.game.goop.spriteWidth/2);
             this.yMidpoint = this.game.ctx.canvas.height/2 - (this.game.goop.spriteHeight/2);
@@ -300,6 +300,7 @@ class SceneManager {
     };
 
     update() {
+        
         if (this.title) {
             if(this.game.clicked) {
 			    if (this.game.crosshair.xMidpoint >= 325 && this.game.crosshair.xMidpoint <= 425 && this.game.crosshair.yMidpoint <= 450 && this.game.crosshair.yMidpoint >= 400) {

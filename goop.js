@@ -18,10 +18,12 @@ class Goop {
 
         if (this.game.camera.level == "level1") {
             this.spritesheet = this.level1SpriteSheet;
-            this.gun = new Gun("laser", this.game);
+            this.gun = new Gun("uzi", this.game, true);
+            this.game.gun = this.gun;
         } else if (this.game.camera.level == "level2") {
-            this.spritesheet = this.level2SpriteSheet;
-            this.gun = new Gun("bubble", this.game);
+             this.spritesheet = this.level2SpriteSheet;
+             this.gun = this.game.gun;
+        //     this.gun = new Gun("bubble", this.game, true);
         } 
 
         //this.alt_spritesheet = ASSET_MANAGER.getAsset("./sprites/grep.png");
