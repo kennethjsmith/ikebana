@@ -10,6 +10,7 @@ class Hud {
         this.loadSprites();
         this.health = this.sprites.get("heart").get(3);
         this.flower = this.sprites.get("flower");
+        this.time = null;
     };
 
     loadSprites() {
@@ -63,26 +64,26 @@ class Hud {
         // draw timer
         if (!this.game.camera.title) {
             if (this.game.camera.lose || this.game.camera.win) {
-                ctx.fillStyle = "White";
-                ctx.font = '56px Kouryuu';
                 let milliseconds = Math.floor(((this.game.camera.endTime  - this.game.camera.startTime)%1000)/10) + '';
-                let seconds = Math.floor((this.game.camera.endTime - this.game.camera.startTime)/1000);
-                let minutes = Math.floor(seconds / 60) + '';
-                seconds = seconds%60 + '';
-                ctx.fillText(minutes.padStart(2,'0') + ":" + seconds.padStart(2,'0') + ":" + milliseconds.padStart(2,'0'), 10, 735);
-                // ctx.strokeStyle ='#2c2f5e';
-                // ctx.strokeText(this.game.camera.endTime - this.game.camera.startTime, 0, 600);
+                if (milliseconds != this.lastmilliseconds) {
+                    let seconds = Math.floor((this.game.camera.endTime - this.game.camera.startTime)/1000);
+                    let minutes = Math.floor(seconds / 60) + '';
+                    seconds = seconds%60 + '';
+                    this.time = minutes.padStart(2,'0') + ":" + seconds.padStart(2,'0') + ":" + milliseconds.padStart(2,'0')
+                }
+                ctx.fillText(this.time, 10, 735);
+                this.lastmilliseconds = milliseconds;
             }
             else {
-                ctx.fillStyle = "White";
-                ctx.font = '56px Kouryuu';
                 let milliseconds = Math.floor(((performance.now()  - this.game.camera.startTime)%1000)/10) + '';
-                let seconds = Math.floor((performance.now()  - this.game.camera.startTime)/1000);
-                let minutes = Math.floor(seconds / 60) + '';
-                seconds = seconds%60 + '';
-                ctx.fillText(minutes.padStart(2,'0') + ":" + seconds.padStart(2,'0') + ":" + milliseconds.padStart(2,'0'), 10, 735);
-                    // ctx.strokeStyle ='#2c2f5e';
-                    // ctx.strokeText(performance.now() - this.game.camera.startTime, 0, 600);
+                if (milliseconds != this.lastmilliseconds) {
+                    let seconds = Math.floor((performance.now()  - this.game.camera.startTime)/1000);
+                    let minutes = Math.floor(seconds / 60) + '';
+                    seconds = seconds%60 + '';
+                    this.time = minutes.padStart(2,'0') + ":" + seconds.padStart(2,'0') + ":" + milliseconds.padStart(2,'0')
+                }
+                ctx.fillText(this.time, 10, 735);
+                this.lastmilliseconds = milliseconds;
             }
         }
     };
