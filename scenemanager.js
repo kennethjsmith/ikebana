@@ -30,6 +30,8 @@ class SceneManager {
         this.win = false;
         this.lose = false;
 
+        this.startTime = null;
+        this.endTime = null;
 
         this.levelXSize = 75; // # of tiles
         this.levelYSize = 41; // # of tiles
@@ -311,6 +313,8 @@ class SceneManager {
                     this.title = false;
                     this.play = true;
 				    this.loadLevel(this.level);
+                    this.startTime = performance.now();
+                    this.endTime = null;
                 }
 			}
 		} else if (this.pause) { // do nothing right now
@@ -318,7 +322,7 @@ class SceneManager {
         } else if (this.health <= 0) {
             this.play = false;
             this.lose = true;
-           
+            if(!this.endTime) this.endTime = performance.now();
             this.levelStats.get(this.level).deadEnemyCount = 0;
 
             if(this.game.clicked) {
@@ -334,12 +338,14 @@ class SceneManager {
                     this.bossSpawned = false;
                     this.seedPickedUp = false;
 				    this.loadLevel(this.level);
+                    this.startTime = performance.now();
+                    this.endTime = null;
                 }
 			}            
         } else if (this.win) {
             this.play = false;
             this.levelStats.get(this.level).deadEnemyCount = 0;
-
+            if(!this.endTime) this.endTime = performance.now();
             if(this.game.clicked) {
 			    if (this.game.crosshair.xMidpoint - this.x  >= 300 && this.game.crosshair.xMidpoint - this.x <= 450 &&
                     this.game.crosshair.yMidpoint  - this.y <= 450 && this.game.crosshair.yMidpoint - this.y >= 400) {
@@ -353,6 +359,8 @@ class SceneManager {
                     this.bossSpawned = false;
                     this.seedPickedUp = false;
 				    this.loadLevel(this.level);
+                    this.startTime = performance.now();
+                    this.endTime = null;
                 }
 			}            
         } else if (this.play) { 

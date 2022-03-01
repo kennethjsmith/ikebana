@@ -45,6 +45,7 @@ class Hud {
         if (this.game.camera.health <= 0) this.health = this.sprites.get("heart").get(0);
         else this.health = this.sprites.get("heart").get(this.game.camera.health);
         // update the flower count
+
     };
 
     draw(ctx) {
@@ -55,8 +56,34 @@ class Hud {
         
         ctx.fillText(": " + this.game.camera.flowers, 560, 55);
 
-        ctx.font = 'bold 56px Kouryuu';
-        ctx.strokeStyle ='#2c2f5e';
-        ctx.strokeText(": " + this.game.camera.flowers, 560, 55);
+        // ctx.font = 'bold 56px Kouryuu';
+        // ctx.strokeStyle ='#2c2f5e';
+        // ctx.strokeText(": " + this.game.camera.flowers, 560, 55);
+
+        // draw timer
+        if (!this.game.camera.title) {
+            if (this.game.camera.lose || this.game.camera.win) {
+                ctx.fillStyle = "White";
+                ctx.font = '56px Kouryuu';
+                let milliseconds = Math.floor(((this.game.camera.endTime  - this.game.camera.startTime)%1000)/10) + '';
+                let seconds = Math.floor((this.game.camera.endTime - this.game.camera.startTime)/1000);
+                let minutes = Math.floor(seconds / 60) + '';
+                seconds = seconds%60 + '';
+                ctx.fillText(minutes.padStart(2,'0') + ":" + seconds.padStart(2,'0') + ":" + milliseconds.padStart(2,'0'), 10, 735);
+                // ctx.strokeStyle ='#2c2f5e';
+                // ctx.strokeText(this.game.camera.endTime - this.game.camera.startTime, 0, 600);
+            }
+            else {
+                ctx.fillStyle = "White";
+                ctx.font = '56px Kouryuu';
+                let milliseconds = Math.floor(((performance.now()  - this.game.camera.startTime)%1000)/10) + '';
+                let seconds = Math.floor((performance.now()  - this.game.camera.startTime)/1000);
+                let minutes = Math.floor(seconds / 60) + '';
+                seconds = seconds%60 + '';
+                ctx.fillText(minutes.padStart(2,'0') + ":" + seconds.padStart(2,'0') + ":" + milliseconds.padStart(2,'0'), 10, 735);
+                    // ctx.strokeStyle ='#2c2f5e';
+                    // ctx.strokeText(performance.now() - this.game.camera.startTime, 0, 600);
+            }
+        }
     };
 };

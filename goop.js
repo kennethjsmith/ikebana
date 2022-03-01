@@ -144,7 +144,7 @@ class Goop {
             } 
             
             if ((!this.stats.hurt || this.stats.hurtTimer >= this.stats.hurtTimeout) 
-                && (entity instanceof Slime || entity instanceof HorrorSlime) 
+                && (entity instanceof Slime || entity instanceof HorrorSlime || entity instanceof Boss) 
                 && !entity.stats.dead 
                 && this.game.camera.play) {
                     
