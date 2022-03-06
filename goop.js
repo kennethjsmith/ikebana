@@ -167,7 +167,7 @@ class Goop {
         });
 
             
-        if (!this.game.camera.lose) {
+        if (!this.game.camera.lose && !this.game.camera.win) {
             // update the positions
             this.xMap += this.velocity.x * this.game.clockTick;
             this.yMap += this.velocity.y * this.game.clockTick;

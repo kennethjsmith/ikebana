@@ -242,7 +242,7 @@ class GameEngine {
              //Player radius updates only
             for (let i = this.entities.length - 1; i >= 0; i--) {
                 if (this.goop &&
-                    (getDistance(this.entities[i].xMap, this.entities[i].yMap, this.goop.xMap, this.goop.yMap) < 700 //||
+                    (getDistance(this.entities[i].xMap, this.entities[i].yMap, this.goop.xMap, this.goop.yMap) < 800 //||
                         //this.entities[i] instanceof Goop || 
                         //this.entities[i] instanceof SceneManager
                         )) {
