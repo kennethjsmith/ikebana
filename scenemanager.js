@@ -33,8 +33,8 @@ class SceneManager {
         this.startTime = null;
         this.endTime = null;
 
-        this.levelXSize = 75; // # of tiles
-        this.levelYSize = 41; // # of tiles
+        this.levelXSize = 95 //75; // # of tiles
+        this.levelYSize =  55// 41; // # of tiles
         this.game.numXTiles = this.levelXSize;
         this.game.numYTiles = this.levelYSize;
 
@@ -210,7 +210,6 @@ class SceneManager {
     acceptableSpawnLocation(row, col, size, spawnAwayFromGoop, type) {
         let tempXMap = col * this.game.level.tileSize;
         let tempYMap = row * this.game.level.tileSize;
-        //console.log("temp y: " + tempYMap + ", temp x: " + tempXMap); 
         let tempBoundingBox = new BoundingBox(0, 0, 0, 0);
 
         // make temp bounding boxes
@@ -231,14 +230,13 @@ class SceneManager {
             let horrorWidth = 96;
             let horrorShadow = 8;
             tempBoundingBox = new BoundingBox(tempXMap + 5, tempYMap + 2 * (horrorHeight / 3), horrorWidth - 10, (horrorHeight / 3) - horrorShadow);
-            //console.log(tempBoundingBox);
 
         } else if (type == "Pillar") {
             let pillarScale = 5;
             let pillarBaseHeight = 55;
             let pillarBaseWidth = 35;
             tempBoundingBox = new BoundingBox(tempXMap + (4*pillarScale), tempYMap + (24*pillarScale), pillarBaseWidth, pillarBaseHeight);
-            //console.log(tempBoundingBox);
+        
         } else if (type == "Boss" && this.game.camera.level == "level1") {
             let bossHeight = 208;
             let bossWidth = 208;
@@ -270,29 +268,10 @@ class SceneManager {
                     || entity instanceof HorrorSlime 
                     || entity instanceof Jar 
                     || (entity instanceof Terrain && entity.type == "pillar")) {
-                        //console.log("HERE");
-                        //if (entity instanceof Slime) console.log(entity);
-                        if (entity instanceof HorrorSlime && type == "Pillar") {
-                            console.log("Checking collision between HorrorSlime and Pillar");
-                            console.log("pillar BB: ");
-                            console.log(tempBoundingBox);
-                            console.log(entity);
-                        }
-                        if (entity instanceof Slime && type == "Pillar") {
-                             console.log("Checking collision between Slime and Pillar");
-                             console.log("Checking collision between HorrorSlime and Pillar");
-                             console.log("pillar BB: ");
-                             console.log(tempBoundingBox);
-                             console.log(entity);
-                        }
-
-                        
                     
                     if (entity.boundingBox.collide(tempBoundingBox)) {
-                        console.log("returning false");
                         return false;
                     } 
-                    console.log("returning true");
                 } 
             });
         }

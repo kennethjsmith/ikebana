@@ -54,7 +54,7 @@ class LevelGenerator {
 
         this.maxWalkers = 15; 
         this.chanceWalkerChangeDir = 0.1;
-        this.chanceWalkerSpawn = 0.3;
+        this.chanceWalkerSpawn = 0.8;
         this.chanceWalkerDestroy = 0.25;
         this.percentToFill = 0.45; 
 
@@ -88,7 +88,7 @@ class LevelGenerator {
     createFloors() {
         var numFloors = 0;
         var iteration = 0;
-        var edgeBuffer = 10;
+        var edgeBuffer = 9; 
         
         do {
              //avoid the boarder of the grid
