@@ -113,7 +113,7 @@ class SceneManager {
         let numSlimes = floor(numEnemies * 2 / 3);
         let numHorrorSlimes = numEnemies - numSlimes;
         for (let i = 0; i < numSlimes; i++) {        
-            let enemyLocation = this.randomLocation(2, true, "Slime");
+            let enemyLocation = this.randomLocation(3, true, "Slime");
             this.game.addEntity(new Slime(this.game, enemyLocation.x, enemyLocation.y));
         }
 
@@ -129,6 +129,7 @@ class SceneManager {
         for (let i = 0; i < (Math.random() * 5); i++) {
             let location = this.randomLocation(7, false, "Pillar");
             this.game.addEntity(new Terrain(this.game, "pillar", location.x, location.y));
+
         }
 
         // place a random num of plants
@@ -209,6 +210,7 @@ class SceneManager {
     acceptableSpawnLocation(row, col, size, spawnAwayFromGoop, type) {
         let tempXMap = col * this.game.level.tileSize;
         let tempYMap = row * this.game.level.tileSize;
+        //console.log("temp y: " + tempYMap + ", temp x: " + tempXMap); 
         let tempBoundingBox = new BoundingBox(0, 0, 0, 0);
 
         // make temp bounding boxes
@@ -229,13 +231,14 @@ class SceneManager {
             let horrorWidth = 96;
             let horrorShadow = 8;
             tempBoundingBox = new BoundingBox(tempXMap + 5, tempYMap + 2 * (horrorHeight / 3), horrorWidth - 10, (horrorHeight / 3) - horrorShadow);
-            
+            //console.log(tempBoundingBox);
+
         } else if (type == "Pillar") {
             let pillarScale = 5;
             let pillarBaseHeight = 55;
             let pillarBaseWidth = 35;
             tempBoundingBox = new BoundingBox(tempXMap + (4*pillarScale), tempYMap + (24*pillarScale), pillarBaseWidth, pillarBaseHeight);
-
+            //console.log(tempBoundingBox);
         } else if (type == "Boss" && this.game.camera.level == "level1") {
             let bossHeight = 208;
             let bossWidth = 208;
@@ -262,13 +265,34 @@ class SceneManager {
         } 
 
         if (acceptableSpawnSpot) {
-            this.game.entities.forEach( entity => {
+            this.game.entitiesToAdd.forEach( entity => {
                 if (entity instanceof Slime 
                     || entity instanceof HorrorSlime 
                     || entity instanceof Jar 
                     || (entity instanceof Terrain && entity.type == "pillar")) {
+                        //console.log("HERE");
+                        //if (entity instanceof Slime) console.log(entity);
+                        if (entity instanceof HorrorSlime && type == "Pillar") {
+                            console.log("Checking collision between HorrorSlime and Pillar");
+                            console.log("pillar BB: ");
+                            console.log(tempBoundingBox);
+                            console.log(entity);
+                        }
+                        if (entity instanceof Slime && type == "Pillar") {
+                             console.log("Checking collision between Slime and Pillar");
+                             console.log("Checking collision between HorrorSlime and Pillar");
+                             console.log("pillar BB: ");
+                             console.log(tempBoundingBox);
+                             console.log(entity);
+                        }
+
                         
-                    if (entity.boundingBox.collide(tempBoundingBox)) return false;
+                    
+                    if (entity.boundingBox.collide(tempBoundingBox)) {
+                        console.log("returning false");
+                        return false;
+                    } 
+                    console.log("returning true");
                 } 
             });
         }

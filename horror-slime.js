@@ -46,6 +46,9 @@ class HorrorSlime {
         this.animations = new Map;
         this.loadAnimations();
         this.animation = this.animations.get("left").get("vibing");
+
+        //console.log("IN CONSTRUCTOR:");
+        //console.log(this);
     };
 
     loadAnimations() {

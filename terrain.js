@@ -7,6 +7,10 @@ class Terrain {
 
         this.selectSprite(type);
         this.updateBoundingBox();
+        // if (type == "pillar") {
+        //     console.log("IN CONSTRUCTOR:");
+        //     console.log(this);
+        // }
     };
 
     selectSprite(type) {
