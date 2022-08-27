@@ -5,26 +5,7 @@
     <meta charset="utf-8">
     <title>Ikebana</title>
     
-    <style>
-        body {
-              background-color: #000000;
-              font-family: 'Kouryuu', serif;
-              font-size: 24px;
-          }
-          @font-face {
-              font-family: 'Kouryuu';
-              src: url("./font/Kouryuu.otf");
-          }
-          canvas {
-              /* position: absolute; */
-              padding-left: 0;
-              padding-right: 0;
-              margin-left: auto;
-              margin-right: auto;
-              display: block;
-              font-size: 20px;
-          }  
-      </style>
+
         
     <script type="text/javascript" src="./assetmanager.js"></script>
     <script type="text/javascript" src="./timer.js"></script>
@@ -53,9 +34,46 @@
     <script type="text/javascript" src="./main.js"></script>
 
     <script type="text/javascript" src="./utility/drawing.js"></script>
-    
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="assets/ks_logo.ico" />
+
+    <style>
+        body {
+            background-color: #000000;
+            font-family: 'Kouryuu', serif;
+            font-size: 24px;
+        }
+        @font-face {
+            font-family: 'Kouryuu';
+            src: url("./font/Kouryuu.otf");
+        }
+        canvas {
+            /* position: absolute; */
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            font-size: 20px;
+        }
+    </style>
 </head>
 <body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="navbar-nav left-links">
+                <a class="nav-item nav-link active" style="font-family:kouryuu" href="https://kennethjsmith.github.io/">KS</a>
+                <a class="nav-item nav-link" href="https://kennethjsmith.github.io/about">About</a>
+                <a class="nav-item nav-link" href="https://kennethjsmith.github.io/projects">Projects</a>
+                <a class="nav-item nav-link" href="https://kennethjsmith.github.io/resume">Resume</a>
+            </div>
+        </nav>
+    </header>
+
     <div style= "text-align: center">
         <canvas id="gameWorld" width="750" height="750" style="background: #ffffff; border: 1px solid black" tabindex ="0" autofocus></canvas>
     </div>
